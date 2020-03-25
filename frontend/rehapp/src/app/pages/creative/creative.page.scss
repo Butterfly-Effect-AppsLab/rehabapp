@@ -1,0 +1,45 @@
+.free_version{
+    text-align: center;
+    background-color: red;
+  
+    position: absolute;
+    right: 0px;
+    left: 0px;
+  
+    padding: 30px;
+    //transform: translateY(-50%);
+  }
+  
+  .free_version strong {
+    font-size: 30px;
+    line-height: 26px;
+  }
+  
+  .top {
+    top: calc(25% - 28px);
+  }
+  
+  .mid {
+    top: calc(50% - 28px);
+  }
+  
+  .bot {
+    top: calc(75% - 28px);
+  }
+  
+  #simple_text {
+    text-align: center;
+    color: blue;
+    background-color: bisque;
+    padding: 5px;
+    margin: 10px 10px;
+  }
+  
+  ion-content {
+    --background: rgb(207, 240, 252);
+  }
+  
+  ion-header ion-toolbar {
+    --background: green;
+  }
+  
