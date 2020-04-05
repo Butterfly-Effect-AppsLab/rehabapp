@@ -1,0 +1,47 @@
+ion-content {
+    --background: #ffffff;
+    --color: #0000ff;
+    --keyboard-offset: 0px;
+    --offset-bottom: 0px;
+    --offset-top: 0px;
+    --padding-bottom: 0px;
+    --padding-end: 0px;
+    --padding-start: 0px;
+    --padding-top: 0px;
+}
+
+.core {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.core h2 {
+    font-weight: bold;
+}
+
+.logo { 
+    height: 100%;
+}
+
+.logo a img {
+    max-height: 100%;
+}
+
+
+#next_button {
+    position: fixed;
+    margin-bottom: 15px;
+    bottom: 0;
+    right: 0;
+}
+
+
+#next_button ion-icon{
+    color: black;
+    font-size: 32px;
+}

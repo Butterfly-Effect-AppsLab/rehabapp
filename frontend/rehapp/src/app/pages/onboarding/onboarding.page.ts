@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { APIService } from 'src/app/services/api.service';
-import { Quote } from 'src/assets/data/quote'
 
 
 @Component({
@@ -8,43 +6,14 @@ import { Quote } from 'src/assets/data/quote'
   templateUrl: './onboarding.page.html',
   styleUrls: ['./onboarding.page.scss'],
 })
-export class OnboardingPage implements OnInit {
+export class OnboardingPage {
 
-  constructor(private api: APIService) { }
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  };
 
-  quotes: Quote[] = [];
-  headers: string[] = [];
-  print: string = ""
-
-  ngOnInit() {
-  }
-
-  onClick(){
-    console.log("redirecting"); 
-  }
-
-  getAllQuotes() {
-    
-    this.api.getQuotes()
-      .subscribe(resp => {
-        console.log(resp);
-        
-        
-        const keys = resp.headers.keys;
-
-        for (const q of resp.body) {
-          this.quotes.push(q);
-        }
-        
-        this.print = JSON.stringify(this.quotes);
-      });
-  }
-
-  getQuoteById(id: number) {
-    this.api.getQuoteById(id)
-    .subscribe(data => {
-      this.print = JSON.stringify(data);
-    });
-  }
+  constructor() {}
+  
 
 }

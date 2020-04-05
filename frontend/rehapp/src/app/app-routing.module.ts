@@ -12,6 +12,18 @@ const routes: Routes = [
     path: 'onboarding',
     loadChildren: () => import('./pages/onboarding/onboarding.module').then( m => m.OnboardingPageModule)
   },
+  {
+    path: 'resource',
+    loadChildren: () => import('./pages/resource/resource.module').then( m => m.ResourcePageModule)
+  },
+  {
+    path: 'self/title',
+    loadChildren: () => import('./pages/self-diagnostic/title/title.module').then( m => m.TitlePageModule)
+  },
+  {
+    path: 'self/slider',
+    loadChildren: () => import('./pages/self-diagnostic/slider/slider.module').then( m => m.SliderPageModule)
+  },
 ];
 
 @NgModule({
