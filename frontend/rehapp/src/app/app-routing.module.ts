@@ -24,6 +24,10 @@ const routes: Routes = [
     path: 'self/slider',
     loadChildren: () => import('./pages/self-diagnostic/slider/slider.module').then( m => m.SliderPageModule)
   },
+  {
+    path: 'self/diag',
+    loadChildren: () => import('./pages/self-diagnostic/diag-by-comp/diag-by-comp.module').then( m => m.DiagByCompPageModule)
+  },
 ];
 
 @NgModule({
