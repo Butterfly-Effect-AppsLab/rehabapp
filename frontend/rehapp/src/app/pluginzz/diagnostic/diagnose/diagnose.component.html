@@ -1,0 +1,21 @@
+<ion-content>
+  <h1>Diagnose komponent</h1>
+  
+    <div>
+      <h3>
+        <!-- Tvoja diagnóza je {{diagnose.name}} -->
+        {{this.text}}
+      </h3>
+      <p>
+        {{diagnose.description}}
+      </p>
+  
+      <div *ngIf="diagnose.visitDoctor">
+        <b>S Vašou diagnózou sa odporúča návšteva lekára</b>
+      </div>
+  
+      <div *ngIf="!diagnose.visitDoctor">
+        <b>Začnite Váš program!</b>
+      </div>
+    </div>
+</ion-content>

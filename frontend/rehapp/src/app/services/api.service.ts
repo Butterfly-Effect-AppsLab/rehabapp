@@ -6,7 +6,8 @@ import { Observable, of } from 'rxjs'
 import { catchError, retry } from 'rxjs/operators'
 
 
-const localUrl = './assets/data/quotes.json'
+const localUrl = './assets/data/quotes.json';
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
@@ -15,12 +16,15 @@ const httpOptions = {
 };
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable(
+  // {providedIn: 'root'}
+)
 export class APIService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    console.log("APIService constructor");
+    
+  }
 
   getQuotes(): Observable<HttpResponse<Quote[]>>{
     return this.http.get<Quote[]>(localUrl, {observe: 'response'});

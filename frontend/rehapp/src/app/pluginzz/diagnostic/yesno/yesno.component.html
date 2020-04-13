@@ -1,0 +1,13 @@
+<ion-content>
+  <h1>{{this.question.question}}</h1>
+  <b>{{this.text}}</b>
+
+  <div style="display: block"> 
+    <ion-button (click)="yesAnsClick()" fill="clear" shape="round">
+      Yes
+    </ion-button>
+    <ion-button (click)="noAnsClick()" fill="clear" shape="round">
+      No
+    </ion-button>
+  </div>
+</ion-content>

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiagnosticComponent implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {}
 

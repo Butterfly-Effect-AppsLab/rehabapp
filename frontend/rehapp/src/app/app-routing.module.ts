@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes, NoPreloading } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,16 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/resource/resource.module').then( m => m.ResourcePageModule)
   },
   {
-    path: 'self/title',
-    loadChildren: () => import('./pages/self-diagnostic/title/title.module').then( m => m.TitlePageModule)
-  },
-  {
-    path: 'self/slider',
-    loadChildren: () => import('./pages/self-diagnostic/slider/slider.module').then( m => m.SliderPageModule)
-  },
-  {
-    path: 'self/diag',
-    loadChildren: () => import('./pages/self-diagnostic/diag-by-comp/diag-by-comp.module').then( m => m.DiagByCompPageModule)
+    path: 'self',
+    loadChildren: () => import('./pages/self-diagnostic/self.module').then( m => m.SelfPageModule)
   },
 ];
 

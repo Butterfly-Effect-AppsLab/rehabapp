@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CreativePageRoutingModule } from './creative-routing.module';
 
 import { CreativePage } from './creative.page';
+import { APIService } from 'src/app/services/api.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { CreativePage } from './creative.page';
     IonicModule,
     CreativePageRoutingModule
   ],
-  declarations: [CreativePage]
+  declarations: [CreativePage],
+  providers: [APIService]
 })
 export class CreativePageModule {}

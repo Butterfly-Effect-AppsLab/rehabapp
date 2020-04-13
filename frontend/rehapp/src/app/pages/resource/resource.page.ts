@@ -28,7 +28,6 @@ export class ResourcePage implements OnInit {
       .subscribe(resp => {
         console.log(resp);
         
-        
         const keys = resp.headers.keys;
 
         for (const q of resp.body) {

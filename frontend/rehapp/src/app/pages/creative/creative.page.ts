@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { APIService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-creative',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreativePage implements OnInit {
 
-  constructor() { }
+  constructor(private API: APIService) { }
 
   ngOnInit() {
   }

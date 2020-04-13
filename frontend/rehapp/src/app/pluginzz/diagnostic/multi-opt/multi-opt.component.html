@@ -1,0 +1,16 @@
+<ion-content>
+  <h1>Multiple options komponent</h1>
+  
+  <ion-list radio-group>
+    <ion-item *ngFor="let option of options; let i = index;">
+      <ion-radio value="{{option.id}}"></ion-radio>
+      <ion-label>
+        {{value}} {{option.title}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button (click)="nextPage()" expand="block" fill="clear" shape="round">
+    Pokračovať
+  </ion-button>
+</ion-content>

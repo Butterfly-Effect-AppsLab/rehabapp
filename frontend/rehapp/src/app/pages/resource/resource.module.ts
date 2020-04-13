@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -8,6 +8,8 @@ import { ResourcePageRoutingModule } from './resource-routing.module';
 
 import { ResourcePage } from './resource.page';
 
+import { APIService } from 'src/app/services/api.service'
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,7 @@ import { ResourcePage } from './resource.page';
     IonicModule,
     ResourcePageRoutingModule
   ],
-  declarations: [ResourcePage]
+  declarations: [ResourcePage],
+  providers: [APIService]
 })
 export class ResourcePageModule {}
