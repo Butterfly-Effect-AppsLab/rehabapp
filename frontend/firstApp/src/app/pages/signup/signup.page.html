@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>signup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form action="">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="text" placeholder="Awesome Input"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input type="text" placeholder="Awesome Input"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input type="password" placeholder="Awesome Input"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <a routerLink='/login'>SIGNIN</a>
+      </ion-item>
+
+      <ion-button (click)="onClick()" expand="block" shape="round" color="success">
+        Click me
+      </ion-button>
+    </ion-list>
+  </form>
+</ion-content>

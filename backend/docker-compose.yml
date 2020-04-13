@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    command: >
+      bash -c "cd app
+      && alembic upgrade head
+      && gunicorn main:api -b :8080 --reload"
+    volumes:
+      - ./app:/usr/src/app/app
+    ports:
+      - 8000:8080
+    depends_on:
+      - db
+      - mongo
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: quotes
+    ports:
+    - 5432:5432
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+volumes:
+  postgres_data:
+  mongodb_data_container:
