@@ -34,50 +34,8 @@ export class APIService {
   }
 
 
-  getQuestions() {
-    return [
-      {
-        "id": 1,
-        "question": "Boli vas rameno?",
-        "answer" : {
-          "yes": 3,
-          "no" : 2,
-        } 
-      },
-      {
-        "id": 2,
-        "question": "Boli vas chrbat?",
-        "answer" : {
-          "yes": 4,
-          "no" : -1,
-        } 
-      },
-      {
-        "id": 3,
-        "question": "Boli vas velmi?",
-        "answer" : {
-          "yes": 4,
-          "no" : -1,
-        } 
-      },
-      {
-        "id": 4,
-        "question": "Naozaj?",
-        "answer" : {
-          "yes": 5,
-          "no" : -1,
-        } 
-      },
-      {
-        "id": 5,
-        "question": "Mate COVID-19?",
-        "answer" : {
-          "yes": -2,
-          "no" : -1,
-        } 
-      },
-  
-    ];
+  getQuestions(): Observable<Object> {
+    return this.http.get(url+"questions");
   }
 
   // getQuotes(): Observable<HttpResponse<Quote[]>>{

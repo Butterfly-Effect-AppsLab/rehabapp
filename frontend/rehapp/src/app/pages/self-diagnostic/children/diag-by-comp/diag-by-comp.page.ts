@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { APIService } from 'src/app/services/api.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-diag-by-comp',
@@ -12,25 +13,23 @@ export class DiagByCompPage implements OnInit {
   questionForChild: Object = {};
   textForChild: String = "";
 
-  questions: Array<Object> = [];
+  questions: any;
 
   constructor(private api: APIService) { 
-    this.questions = this.getQuestionsFromAPI();
+    this.getQuestionsFromAPI();
+    // console.log("log" + (this.questions | async));
+    
   }
 
   ngOnInit() {
   }
 
-  getQuestionsFromAPI(): Array<Object> {
-    // this.api.getQuestions()
-    //   .subscribe(resp => {
-    //     console.log(resp);
-        
-    //     return resp;
-    //   });
-    //   return [];
-
-    return this.api.getQuestions();
+  getQuestionsFromAPI() {
+    
+    this.api.getQuestions()
+      .subscribe(resp => {
+        this.questions = resp;
+      });
   }
 
 
