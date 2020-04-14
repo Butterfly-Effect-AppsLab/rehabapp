@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Onboarding
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="mid-height">
+    <h1>Vitajte v revolučnej aplikácii RehApp</h1>
+    <p>Ak <b>nepoznáte svoju diagnózu</b>, pokračujte ďalej.</p>
+    <ion-button class="onboard-button" [routerLink]="['/self/title']" expand="block" fill="outline" 
+        shape="round">
+      Pokračovať na slider
+    </ion-button>
+
+    <p>Alebo využite <b>náhradný nástroj</b> na diagnostiku.</p>
+    <ion-button class="onboard-button" [routerLink]="['/self/diag']" expand="block" fill="outline" 
+        shape="round">
+      Pokračovať na page
+    </ion-button>
+
+    <div style="padding-top: 40px;">
+      <p>Ak poznáte svoju diagnózu, nerobte nič :)</p>
+    </div>
+  </div>
+  
+</ion-content>

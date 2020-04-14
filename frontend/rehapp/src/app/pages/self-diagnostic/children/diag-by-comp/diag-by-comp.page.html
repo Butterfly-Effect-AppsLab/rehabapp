@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Diagnostický nástroj
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<h1>Toto je diagnostický nástroj</h1>
+<div style="display: block;">
+  <ion-button (click)="yesnoClick()" fill="clear" shape="round">
+    YesNo
+  </ion-button>
+  <ion-button (click)="multiOptClick()" fill="clear" shape="round">
+    MultiOpt
+  </ion-button>
+  <ion-button (click)="diagnoseClick()" fill="clear" shape="round">
+    Diagnose
+  </ion-button>
+</div>
+
+
+<yesno *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
+<multi-opt *ngIf="type == 'MultiOpt'"></multi-opt>
+<diagnose *ngIf="type == 'Diagnose'" [text]="textForChild"></diagnose>
+<div *ngIf="type == ''">
+  Prazdne divko
+</div>
+
+
+</ion-content>

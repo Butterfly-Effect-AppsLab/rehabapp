@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Samodiagnostický nástroj
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="core">
+    <p><b>Samodiagnostický nástroj</b> slúži k stanoveniu diagnózy pacienta, za účelom
+      vyhotovenia <b>individuálneho cvičebného plánu</b>.<br> 
+      Bude Vám položneých niekoľko otázok. Prosíme, odpovedajte <b>pravdivo</b> 
+      nakoľko Vaše odpovede môžu ovplyvniť <b>stanovenú diagnózu</b>.
+      <br><br>
+      Otázky boli starostlivo vybraté <b>lekármi a profesionálmi</b> v oblasti
+      fyzioterapie a fyzioliečby z pohybového centra  
+      <a href="https://fitcoregym.sk/">FitCoreGym</a> v Bratislave.
+    </p>
+    <div class="logo">
+      <a href="https://fitcoregym.sk/">
+        <img src="https://fitcoregym.sk/wp-content/themes/fitcore/img/logo.svg">
+      </a>
+    </div>
+  </div>
+
+  <ion-button id="next_button" fill="clear" [routerLink]="['/self/slider']">
+    <ion-icon name="arrow-forward-outline"></ion-icon>
+  </ion-button>
+</ion-content>

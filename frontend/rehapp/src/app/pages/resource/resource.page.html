@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      resource
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="getAllQuotes()" expand="block">
+    Read quotes
+  </ion-button>
+
+  <ion-textarea>{{this.print}}</ion-textarea>
+
+  <ion-button class="bottom" (click)="onClick()" [routerLink]="['/creative']" fill="clear" shape="round">
+    Nothing here :)
+  </ion-button>
+</ion-content>
