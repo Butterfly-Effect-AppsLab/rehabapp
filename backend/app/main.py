@@ -50,6 +50,53 @@ class MyResource:
     def on_get(self, req, res):
         res.media = "OK"
 
+
+class QuestionsResource:
+    def on_get(self, req, res):
+        res.media = [
+            {
+                "id": 1,
+                "question": "Boli vas rameno?",
+                "answer": {
+                    "yes": 3,
+                    "no": 2,
+                }
+            },
+            {
+                "id": 2,
+                "question": "Boli vas chrbat?",
+                "answer": {
+                    "yes": 4,
+                    "no": -1,
+                }
+            },
+            {
+                "id": 3,
+                "question": "Boli vas velmi?",
+                "answer": {
+                    "yes": 4,
+                    "no": -1,
+                }
+            },
+            {
+                "id": 4,
+                "question": "Naozaj?",
+                "answer": {
+                    "yes": 5,
+                    "no": -1,
+                }
+            },
+            {
+                "id": 5,
+                "question": "Mate COVID-19?",
+                "answer": {
+                    "yes": -2,
+                    "no": -1,
+                }
+            },
+        ]
+
+
 class QuoteResource:
     def on_get(self, req, res, quote_id):
         session = Session()
@@ -69,5 +116,6 @@ class QuoteResource:
 
 api = falcon.API()
 api.add_route('/', MyResource())
+api.add_route('/questions', QuestionsResource())
 api.add_route('/quotes', QuoteCollection())
 api.add_route('/quotes/{quote_id:int}', QuoteResource())
