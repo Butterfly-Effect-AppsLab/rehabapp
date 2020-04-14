@@ -48,7 +48,7 @@ class QuoteCollection:
 
 class MyResource:
     def on_get(self, req, res):
-        res.media = "OKi"
+        res.media = "OK"
 
 class QuoteResource:
     def on_get(self, req, res, quote_id):
