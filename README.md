@@ -1,2 +1,1 @@
-v2.1.0
-updated readme
+v2.1.1
