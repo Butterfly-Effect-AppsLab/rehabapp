@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { APIService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-diag-by-comp',
@@ -11,56 +12,28 @@ export class DiagByCompPage implements OnInit {
   questionForChild: Object = {};
   textForChild: String = "";
 
-  questions: Array<Object> = [
-    {
-      "id": 1,
-      "question": "Boli vas rameno?",
-      "answer" : {
-        "yes": 3,
-        "no" : 2,
-      } 
-    },
-    {
-      "id": 2,
-      "question": "Boli vas chrbat?",
-      "answer" : {
-        "yes": 4,
-        "no" : -1,
-      } 
-    },
-    {
-      "id": 3,
-      "question": "Boli vas velmi?",
-      "answer" : {
-        "yes": 4,
-        "no" : -1,
-      } 
-    },
-    {
-      "id": 4,
-      "question": "Naozaj?",
-      "answer" : {
-        "yes": 5,
-        "no" : -1,
-      } 
-    },
-    {
-      "id": 5,
-      "question": "Mate COVID-19?",
-      "answer" : {
-        "yes": -2,
-        "no" : -1,
-      } 
-    },
+  questions: Array<Object> = [];
 
-  ];
-
-  constructor() { 
-    
+  constructor(private api: APIService) { 
+    this.questions = this.getQuestionsFromAPI();
   }
 
   ngOnInit() {
   }
+
+  getQuestionsFromAPI(): Array<Object> {
+    // this.api.getQuestions()
+    //   .subscribe(resp => {
+    //     console.log(resp);
+        
+    //     return resp;
+    //   });
+    //   return [];
+
+    return this.api.getQuestions();
+  }
+
+
 
   childAnswered(id){
     if (id == -1){      

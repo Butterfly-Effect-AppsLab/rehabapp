@@ -8,6 +8,30 @@ authors_schema = AuthorSchema(many=True)
 quote_schema = QuoteSchema()
 quotes_schema = QuoteSchema(many=True)
 
+class CORSComponent(object):
+    def process_response(self, req, resp, resource, req_succeeded):
+        resp.set_header('Access-Control-Allow-Origin', '*')
+
+        if (req_succeeded
+            and req.method == 'OPTIONS'
+            and req.get_header('Access-Control-Request-Method')
+        ):
+            # NOTE(kgriffs): This is a CORS preflight request. Patch the
+            #   response accordingly.
+
+            allow = resp.get_header('Allow')
+            resp.delete_header('Allow')
+
+            allow_headers = req.get_header(
+                'Access-Control-Request-Headers',
+                default='*'
+            )
+
+            resp.set_headers((
+                ('Access-Control-Allow-Methods', allow),
+                ('Access-Control-Allow-Headers', allow_headers),
+                ('Access-Control-Max-Age', '86400'),  # 24 hours
+            ))
 
 class QuoteCollection:
     def on_get(self, req, res):
@@ -48,7 +72,7 @@ class QuoteCollection:
 
 class MyResource:
     def on_get(self, req, res):
-        res.media = "OKiiiiiii"
+        res.media = "Vanes je super"
 
 class QuoteResource:
     def on_get(self, req, res, quote_id):
@@ -67,7 +91,7 @@ class QuoteResource:
             res.code = falcon.HTTP_404
 
 
-api = falcon.API()
+api = falcon.API(middleware=CORSComponent())
 api.add_route('/', MyResource())
 api.add_route('/quotes', QuoteCollection())
 api.add_route('/quotes/{quote_id:int}', QuoteResource())

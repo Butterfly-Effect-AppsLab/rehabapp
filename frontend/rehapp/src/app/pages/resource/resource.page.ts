@@ -24,25 +24,26 @@ export class ResourcePage implements OnInit {
 
   getAllQuotes() {
     
-    this.api.getQuotes()
+    this.api.getResponse()
       .subscribe(resp => {
+
         console.log(resp);
         
-        const keys = resp.headers.keys;
+        // const keys = resp.headers.keys;
 
-        for (const q of resp.body) {
-          this.quotes.push(q);
-        }
+        // for (const q of resp.body) {
+        //   this.quotes.push(q);
+        // }
         
-        this.print = JSON.stringify(this.quotes);
+        // this.print = JSON.stringify(this.quotes);
       });
   }
 
-  getQuoteById(id: number) {
-    this.api.getQuoteById(id)
-    .subscribe(data => {
-      this.print = JSON.stringify(data);
-    });
-  }
+  // getQuoteById(id: number) {
+  //   this.api.getQuoteById(id)
+  //   .subscribe(data => {
+  //     this.print = JSON.stringify(data);
+  //   });
+  // }
 
 }
