@@ -1,0 +1,25 @@
+<ion-toolbar id="close">
+  <ion-button id="close" fill="clear" [routerLink]="['/']">
+    <ion-icon name="close-circle-outline"></ion-icon>
+  </ion-button>
+</ion-toolbar>
+
+
+<ion-content>
+  <ion-slides #slider class="slider" [options]="slideOpts" pager (ionSlideWillChange)="changeText()">
+    <ion-slide>
+      <app-welcome></app-welcome>
+    </ion-slide>
+    <ion-slide>
+      <app-owners></app-owners>
+    </ion-slide>
+    <ion-slide>
+      <h1 style="padding: 20px;">Začnite so samodiagnostikou :)</h1>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-button (click)="slideNext()" expand="block" fill="solid" shape="round">
+    {{buttonText}}
+  </ion-button>
+
+</ion-content> 

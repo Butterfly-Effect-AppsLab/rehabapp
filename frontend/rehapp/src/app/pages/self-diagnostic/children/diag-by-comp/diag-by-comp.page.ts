@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { APIService } from 'src/app/services/api.service';
 import { Observable, Subscription } from 'rxjs';
+import { Question } from 'src/app/services/models/question';
+import { error } from 'util';
 
 @Component({
   selector: 'app-diag-by-comp',
@@ -9,11 +11,11 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class DiagByCompPage implements OnInit {
 
-  type: String = "";
-  questionForChild: Object = {};
-  textForChild: String = "";
+  public type: String = "";
+  public questionForChild: Object = {};
+  public textForChild: String = "";
 
-  questions: any;
+  public questions: Array<Question> = [];
 
   constructor(private api: APIService) { 
     this.getQuestionsFromAPI();
@@ -27,9 +29,8 @@ export class DiagByCompPage implements OnInit {
   getQuestionsFromAPI() {
     
     this.api.getQuestions()
-      .subscribe(resp => {
-        this.questions = resp;
-      });
+      .subscribe(resp => this.questions = resp, 
+        error => console.log(error));
   }
 
 
@@ -49,12 +50,8 @@ export class DiagByCompPage implements OnInit {
     this.questionForChild = this.findQuestion(id);
   }
 
-  findQuestion(id: number): Object {
-    for (let q of this.questions) {       
-      if (q['id'] == id){
-        return q;
-      }
-    }
+  findQuestion(id: number): Question {
+    return this.questions.find(question => question.id == id);
   }
 
   yesnoClick(){

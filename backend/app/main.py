@@ -80,7 +80,7 @@ class QuestionsResource:
         res.media = [
             {
                 "id": 1,
-                "question": "Boli vas rameno?",
+                "question": "Boli vas chodidlo?",
                 "answer": {
                     "yes": 3,
                     "no": 2,

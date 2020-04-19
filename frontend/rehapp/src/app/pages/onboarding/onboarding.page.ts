@@ -8,11 +8,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OnboardingPage {
 
-  slideOpts = {
-    initialSlide: 0,
-    speed: 400
-  };
-
   constructor() {}
   
 

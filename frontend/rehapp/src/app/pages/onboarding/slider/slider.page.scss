@@ -27,11 +27,27 @@ ion-content {
     height: 20px;
     background-color: green;
 }
-
+ 
 .slider {
-    height: 100%;
+    height: 90%;
     text-align: center;
-    padding: 10px;
     position: relative;
     overflow: hidden;
+}
+
+.mid-height {
+    position: fixed;
+    text-align: center;
+    
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.mid-height.h1 {
+    margin: 10px;
+}
+
+.onboard-button {
+    --color: green;
+    --border-color: green;
 }

@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { SliderPageRoutingModule } from './slider-routing.module';
 
 import { SliderPage } from './slider.page';
+import { WelcomeComponent } from 'src/app/pluginzz/onboarding/welcome/welcome.component';
+import { OnboardingModule } from 'src/app/pluginzz/onboarding/onboarding.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SliderPageRoutingModule
+    SliderPageRoutingModule,
+    OnboardingModule
   ],
   declarations: [SliderPage]
 })

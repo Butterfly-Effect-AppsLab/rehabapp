@@ -4,6 +4,7 @@ import { Quote } from '../../assets/data/quote'
 import { Observable, of } from 'rxjs'
 
 import { catchError, retry } from 'rxjs/operators'
+import { Question } from './models/question';
 
 
 const localUrl = './assets/data/quotes.json';
@@ -34,9 +35,15 @@ export class APIService {
   }
 
 
-  getQuestions(): Observable<Object> {
-    return this.http.get(url+"questions");
+  // getQuestions(): Observable<Object> {
+  //   return this.http.get(url+"questions");
+  // }
+
+
+  getQuestions(): Observable<Array<Question>> {
+    return this.http.get<Array<Question>>(url+"questions");
   }
+
 
   // getQuotes(): Observable<HttpResponse<Quote[]>>{
   //   return this.http.get<Quote[]>(localUrl, {observe: 'response'});

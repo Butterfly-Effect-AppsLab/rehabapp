@@ -1,0 +1,50 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonSlides } from '@ionic/angular';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-slider',
+  templateUrl: './slider.page.html',
+  styleUrls: ['./slider.page.scss'],
+})
+export class SliderPage implements OnInit {
+
+  @ViewChild('slider', {static: false}) slides: IonSlides; 
+
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  };
+
+  buttonText: string = "Pokračovať";
+
+  constructor(private router: Router) { 
+    console.log(this.slides ? "slajdy" : "nič");    ////// preco to bez tohoto nefunguje ???? o.O    
+  }
+
+  ngOnInit() {       
+  }
+
+
+  slideNext(){
+    this.slides.getActiveIndex().then(
+      (id) => {       
+        if (id == 2)
+          this.router.navigateByUrl('/self')
+      }     
+    ); 
+    
+    this.slides.slideNext();
+  }
+
+  changeText(text?: string) { 
+    this.slides.getActiveIndex().then(
+      (id) => {       
+        if (id == 2)
+          this.buttonText = "Začať";
+        else
+          this.buttonText = "Pokračovať";
+      }     
+    );   
+  }
+}

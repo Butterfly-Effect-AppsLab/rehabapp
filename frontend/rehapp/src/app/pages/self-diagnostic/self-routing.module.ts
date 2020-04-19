@@ -13,10 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./children/title/title.module').then( m => m.TitlePageModule)
   },
   {
-    path: 'slider',
-    loadChildren: () => import('./children/slider/slider.module').then( m => m.SliderPageModule)
-  },
-  {
     path: 'diag',
     loadChildren: () => import('./children/diag-by-comp/diag-by-comp.module').then( m => m.DiagByCompPageModule)
   },
