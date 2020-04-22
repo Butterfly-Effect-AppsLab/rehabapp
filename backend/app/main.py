@@ -2,6 +2,7 @@ import falcon
 
 from models import Session, Quote, Author
 from schemas import QuoteSchema, AuthorSchema
+from marshmallow import post_load
 
 author_schema = AuthorSchema()
 authors_schema = AuthorSchema(many=True)
@@ -53,14 +54,18 @@ class QuoteCollection:
 
         session = Session()
 
-        author = Author(name=params['author'])
+        quote = quote_schema.load(params)
 
-        quote = Quote(text=params['text'])
+        # author = author_schema.load(req.media)
 
-        quote.author = author
+        # author = Author(name=params['name'])
+        #
+        # quote = Quote(text=params['text'])
+
+        # quote.author = author
 
         session.add(quote)
-        session.add(author)
+        # session.add(author)
         session.commit()
 
         res.code = falcon.HTTP_201
