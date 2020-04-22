@@ -12,16 +12,12 @@
 <ion-content>
 <h1>Toto je diagnostický nástroj</h1>
 
-<ion-button (click)="getQuestionsFromAPI()" expand="block" fill="clear" shape="round">
-  Click me
-</ion-button>
-
-<ion-text color="danger" *ngFor="let q of this.questions; let i = index">
+<ion-text color="danger" *ngFor="let q of questions; let i = index">
   <b>Otázka č.{{i+1}}: {{q.question}} <br></b>
 </ion-text>
 
 
-<div style="display: block;">
+<!-- <div style="display: block;">
   <ion-button (click)="yesnoClick()" fill="clear" shape="round">
     YesNo
   </ion-button>
@@ -31,8 +27,12 @@
   <ion-button (click)="diagnoseClick()" fill="clear" shape="round">
     Diagnose
   </ion-button>
-</div>
-
+</div> -->
+<br />
+<ion-button (click)="yesnoClick()" fill="solid" shape="round">
+  Spustiť
+</ion-button>
+<br />
 
 <yesno *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
 <multi-opt *ngIf="type == 'MultiOpt'"></multi-opt>
