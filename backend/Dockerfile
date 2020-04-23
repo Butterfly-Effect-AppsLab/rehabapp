@@ -15,4 +15,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # copy project
 COPY app ./app
+
+WORKDIR /usr/src/app/app
+
+ENV PYTHONPATH="$PYTHONPATH:/usr/src/app/app"
+
 EXPOSE 8080

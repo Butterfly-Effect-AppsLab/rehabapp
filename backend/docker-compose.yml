@@ -4,9 +4,24 @@ services:
   web:
     build: .
     command: >
-      bash -c "cd app
+      bash -c "alembic upgrade head
       && gunicorn main:api -b :8080 --reload"
     volumes:
       - ./app:/usr/src/app/app
     ports:
       - 8000:8080
+    depends_on:
+      - db
+    container_name: api_container
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: rehabApp
+    ports:
+    - 5432:5432
+volumes:
+  postgres_data:
