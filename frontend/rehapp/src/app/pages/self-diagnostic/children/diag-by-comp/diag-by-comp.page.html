@@ -12,8 +12,8 @@
 <ion-content>
 <h1>Toto je diagnostický nástroj</h1>
 
-<ion-text color="danger" *ngFor="let q of questions; let i = index">
-  <b>Otázka č.{{i+1}}: {{q.question}} <br></b>
+<ion-text color="danger" *ngFor="let q of observables | async; let i = index">
+  <b>Otázka č.{{i+1}}: {{q.question | uppercase}} <br></b>
 </ion-text>
 
 
@@ -34,7 +34,7 @@
 </ion-button>
 <br />
 
-<yesno *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
+<yesno blue *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
 <multi-opt *ngIf="type == 'MultiOpt'"></multi-opt>
 <diagnose *ngIf="type == 'Diagnose'" [text]="textForChild"></diagnose>
 <div *ngIf="type == ''">

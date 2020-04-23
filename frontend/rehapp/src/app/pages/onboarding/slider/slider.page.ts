@@ -18,22 +18,19 @@ export class SliderPage implements OnInit {
 
   buttonText: string = "Pokračovať";
 
-  constructor(private router: Router) { 
-    console.log(this.slides ? "slajdy" : "nič");    ////// preco to bez tohoto nefunguje ???? o.O    
+  constructor(private router: Router) {  
   }
 
   ngOnInit() {       
   }
 
 
-  slideNext(){
-    this.slides.getActiveIndex().then(
-      (id) => {       
-        if (id == 2)
-          this.router.navigateByUrl('/self')
-      }     
-    ); 
-    
+  async slideNext() {
+    let id = await this.slides.getActiveIndex()
+
+    if (id == 2)
+      this.router.navigateByUrl('/self');
+
     this.slides.slideNext();
   }
 

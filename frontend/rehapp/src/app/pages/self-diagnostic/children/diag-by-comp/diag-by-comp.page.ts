@@ -1,21 +1,26 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { APIService } from 'src/app/services/api.service';
 import { Observable, Subscription } from 'rxjs';
 import { Question } from 'src/app/services/models/question';
 import { error } from 'util';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-diag-by-comp',
   templateUrl: './diag-by-comp.page.html',
   styleUrls: ['./diag-by-comp.page.scss'],
 })
-export class DiagByCompPage implements OnInit {
+export class DiagByCompPage implements OnInit, OnDestroy {
 
-  public type: String = "";
-  public questionForChild: Object = {};
+  public type: string = "";
+  public questionForChild: object = {};
   public textForChild: String = "";
 
+
   public questions: Array<Question> = [];
+
+  public subscription: Array<Subscription> = [];
+  public observables;
 
   constructor(private api: APIService) { 
     this.getQuestionsFromAPI();
@@ -26,11 +31,23 @@ export class DiagByCompPage implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.subscription.forEach(
+      (subscribe) => subscribe.unsubscribe()
+    );
+  }
+
+
   getQuestionsFromAPI() {
-    
-    this.api.getQuestions()
-      .subscribe(resp => this.questions = resp, 
-        error => console.log(error));
+    // this.subscription.push(
+    this.observables = this.api.getQuestions().pipe(
+      take(1), 
+      map(resp => {
+        this.questions = resp;
+        return resp;}
+
+      ))      // berie do uvahy iba 1x response
+    //   );    
   }
 
 

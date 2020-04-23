@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Quote } from '../../assets/data/quote'
 import { Observable, of } from 'rxjs'
 
-import { catchError, retry } from 'rxjs/operators'
+import { catchError, retry, map } from 'rxjs/operators'
 import { Question } from './models/question';
 
 
@@ -19,9 +19,12 @@ const httpOptions = {
 
 
 @Injectable(
-  // {providedIn: 'root'}
+   {providedIn: 'root'}
 )
 export class APIService {
+
+  private countOfQuestions: number = 0;
+  private lastQuestion: Question;
 
   constructor(private http: HttpClient) { 
     console.log("APIService constructor");
@@ -41,7 +44,13 @@ export class APIService {
 
 
   getQuestions(): Observable<Array<Question>> {
-    return this.http.get<Array<Question>>(url+"questions");
+    return this.http.get<Array<Question>>(url+"questions").pipe(    // pipe dokaze pristupovat k private properties service
+      map((resp) => {
+        this.countOfQuestions++;
+        this.lastQuestion = resp[0];
+        return resp;
+      })
+    )
   }
 
 
