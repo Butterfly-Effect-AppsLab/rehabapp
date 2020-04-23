@@ -15,7 +15,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # copy project
 COPY app ./app
-EXPOSE 8080
 
-#CMD ["gunicorn", "-b", ":8080", "app.main:api", "--reload"]
-#CMD ["alembic", ""]
+WORKDIR /usr/src/app/app
+
+ENV PYTHONPATH="$PYTHONPATH:/usr/src/app/app"
+
+EXPOSE 8080
