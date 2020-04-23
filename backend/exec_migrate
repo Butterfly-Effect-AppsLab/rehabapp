@@ -1,0 +1,2 @@
+docker exec -it api_container sh -c "alembic revision -m \"MIGRATION_NAME_HERE\""
+docker exec -it api_container sh -c "alembic upgrade head"
