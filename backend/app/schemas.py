@@ -16,3 +16,9 @@ class UserSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+
+
+class DiagnoseSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    text = fields.Str()

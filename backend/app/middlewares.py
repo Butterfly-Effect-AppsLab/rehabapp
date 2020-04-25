@@ -69,7 +69,6 @@ class SessionMiddleware(object):
                 method as keyword arguments.
         """
         req.context.session = Session()
-        print(req.context)
 
     def process_response(self, req, resp, resource, req_succeeded):
         """Post-processing of the response (after routing).

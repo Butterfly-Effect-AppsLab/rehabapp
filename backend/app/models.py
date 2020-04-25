@@ -1,5 +1,5 @@
 from bcrypt import hashpw, gensalt, checkpw
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -7,6 +7,11 @@ postgres = f'postgresql://postgres:password@db:5432/rehabApp'
 engine = create_engine(postgres, echo=True)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
+
+user_diagnoses = Table('user_diagnoses', Base.metadata,
+                       Column('user_id', Integer, ForeignKey('users.id')),
+                       Column('diagnose_id', Integer, ForeignKey('diagnoses.id'))
+                       )
 
 
 class Diagnose(Base):
@@ -98,6 +103,8 @@ class User(Base):
     password = Column(String)
     sex = Column(String)
     birthday = Column(Date)
+
+    diagnoses = relationship("Diagnose", secondary=user_diagnoses)
 
     def generate_password(self, pwd):
         return hashpw(pwd.encode('utf8'), gensalt())

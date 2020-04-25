@@ -2,7 +2,7 @@ import falcon
 from marshmallow import ValidationError
 
 from models import *
-from schemas import UserSchema
+from schemas import UserSchema, DiagnoseSchema
 
 
 class TestResource:
@@ -67,3 +67,27 @@ class UsersResource:
 
             except ValidationError as err:
                 res.media = err.messages
+
+
+class UserDiagnosesResource:
+    def on_post(self, req, res, user_id):
+
+        session = req.context.session
+
+        user = session.query(User).filter(User.id == user_id).first()
+
+        if not user:
+            res.media = "User with this ID does not exist"
+        else:
+            diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+            user.diagnoses.append(diagnose)
+
+            session.add(user)
+            session.commit()
+
+            res.code = falcon.HTTP_201
+
+            diagnoses_schema = DiagnoseSchema(many=True)
+
+            res.media = diagnoses_schema.dump(user.diagnoses)

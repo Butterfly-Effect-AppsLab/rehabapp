@@ -9,6 +9,7 @@ def init_api():
     api_tmp.add_route('/', TestResource())
     api_tmp.add_route('/questions', QuestionsResource())
     api_tmp.add_route('/users', UsersResource())
+    api_tmp.add_route('/users/{user_id:int}/diagnoses', UserDiagnosesResource())
     return api_tmp
 
 
