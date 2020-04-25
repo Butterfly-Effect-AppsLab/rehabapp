@@ -34,9 +34,5 @@ class QuestionsResource:
                 "name": d.name,
                 "text": d.text
             }
-
-        req.context.session.add(Diagnose(name="diagnozaa", text="textik"))
-        req.context.session.flush()
-
         res.media = ret
 
