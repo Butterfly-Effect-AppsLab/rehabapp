@@ -17,17 +17,6 @@
 </ion-text>
 
 
-<!-- <div style="display: block;">
-  <ion-button (click)="yesnoClick()" fill="clear" shape="round">
-    YesNo
-  </ion-button>
-  <ion-button (click)="multiOptClick()" fill="clear" shape="round">
-    MultiOpt
-  </ion-button>
-  <ion-button (click)="diagnoseClick()" fill="clear" shape="round">
-    Diagnose
-  </ion-button>
-</div> -->
 <br />
 <ion-button (click)="start()" fill="solid" shape="round">
   Spustiť
@@ -37,9 +26,6 @@
 <yesno *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
 <multi-opt *ngIf="type == 'MultiOpt'"></multi-opt>
 <diagnose *ngIf="type == 'Diagnose'" [diagnose]="textForChild"></diagnose>
-<div *ngIf="type == ''">
-  Prazdne divko
-</div>
 
 
 </ion-content>
