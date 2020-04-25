@@ -1,13 +1,11 @@
 <ion-content>
-  <h1>Diagnose komponent</h1>
-  
     <div>
-      <h3>
+      <h1>
         <!-- Tvoja diagnóza je {{diagnose.name}} -->
-        {{this.text}}
-      </h3>
+        {{this.diagnose.name}}
+      </h1>
       <p>
-        {{diagnose.description}}
+        {{this.diagnose.text}}
       </p>
   
       <div *ngIf="diagnose.visitDoctor">

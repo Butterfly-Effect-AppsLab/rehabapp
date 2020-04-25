@@ -1,13 +1,8 @@
 <ion-content>
-  <h1>{{this.question.question}}</h1>
+  <h1>{{this.question.text}}</h1>
   <b>{{this.text}}</b>
 
-  <div style="display: block"> 
-    <ion-button (click)="yesAnsClick()" fill="clear" shape="round">
-      Yes
-    </ion-button>
-    <ion-button (click)="noAnsClick()" fill="clear" shape="round">
-      No
-    </ion-button>
+  <div *ngFor="let option of this.options"> 
+    <ion-button (click)="btnClicked($event)" expand="block" fill="clear" shape="round" style="white-space: normal">{{option.label}}</ion-button>
   </div>
 </ion-content>

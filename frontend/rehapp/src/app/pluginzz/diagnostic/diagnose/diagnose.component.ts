@@ -7,25 +7,15 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DiagnoseComponent implements OnInit {
 
-  @Input() text: String;  
-  diagnose: Object = {}
-
+  @Input() diagnose: object;  
 
   constructor() {   
-
-    this.diagnose = 
-      {
-        "name": "diagnozka2",
-        "description": "popiscek2",
-        "visitDoctor": true
-          
-      }
-    
 
   }
 
   ngOnInit() {
-
+    console.log(this.diagnose);
+    
   }
 
 }

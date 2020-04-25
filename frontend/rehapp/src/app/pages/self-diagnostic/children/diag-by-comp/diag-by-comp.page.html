@@ -29,14 +29,14 @@
   </ion-button>
 </div> -->
 <br />
-<ion-button (click)="yesnoClick()" fill="solid" shape="round">
+<ion-button (click)="start()" fill="solid" shape="round">
   Spustiť
 </ion-button>
 <br />
 
-<yesno blue *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
+<yesno *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></yesno>
 <multi-opt *ngIf="type == 'MultiOpt'"></multi-opt>
-<diagnose *ngIf="type == 'Diagnose'" [text]="textForChild"></diagnose>
+<diagnose *ngIf="type == 'Diagnose'" [diagnose]="textForChild"></diagnose>
 <div *ngIf="type == ''">
   Prazdne divko
 </div>

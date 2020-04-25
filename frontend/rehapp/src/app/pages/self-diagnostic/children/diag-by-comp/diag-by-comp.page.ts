@@ -16,6 +16,8 @@ export class DiagByCompPage implements OnInit, OnDestroy {
   public questionForChild: object = {};
   public textForChild: String = "";
 
+  public APIresponse: object = {};
+
 
   public questions: Array<Question> = [];
 
@@ -38,42 +40,52 @@ export class DiagByCompPage implements OnInit, OnDestroy {
   }
 
 
+  // getQuestionsFromAPI() {
+  //   // this.subscription.push(
+  //   this.observables = this.api.getQuestions().pipe(
+  //     take(1), 
+  //     map(resp => {
+  //       this.questions = resp;
+  //       return resp;}
+
+  //     ))      // berie do uvahy iba 1x response
+  //   //   );    
+  // }
+
+
   getQuestionsFromAPI() {
-    // this.subscription.push(
-    this.observables = this.api.getQuestions().pipe(
-      take(1), 
-      map(resp => {
-        this.questions = resp;
-        return resp;}
-
-      ))      // berie do uvahy iba 1x response
-    //   );    
+    this.api.getQuestions().subscribe(
+        resp => { this.APIresponse = resp;
+         }
+    )
+    
   }
 
+  childAnswered(id: string){
+    console.log("ANSWER = " + id);
+    
 
-
-  childAnswered(id){
-    if (id == -1){      
-      this.type = "Diagnose";
-      this.textForChild = "Takze ste zdravy :)";
-      return;
+    if (this.APIresponse[id]["type"] == "question"){
+      this.type = "YesNo"
+      this.questionForChild = this.APIresponse[id];
     }
-    if (id == -2){
-      this.type = "Diagnose";
-      this.textForChild = "Takze asi umriete :(";
-      return;
+    if (this.APIresponse[id]["type"] == "diagnose"){
+      this.type = "Diagnose"
+      this.textForChild = this.APIresponse[id];
     }
 
-    this.questionForChild = this.findQuestion(id);
   }
 
-  findQuestion(id: number): Question {
-    return this.questions.find(question => question.id == id);
+  findQuestion(id: string): Question {
+    return this.APIresponse[id];
   }
 
-  yesnoClick(){
+  start(){
     this.type = "YesNo";
-    this.questionForChild = this.findQuestion(1) ;
+    
+    this.questionForChild = this.findQuestion('q_1');
+    console.log(this.questionForChild);
+    
   }
 
   multiOptClick() {

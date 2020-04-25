@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Option } from 'src/app/services/models/question';
 
 @Component({
   selector: 'yesno',
@@ -8,25 +9,33 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angu
 export class YesnoComponent implements OnInit, OnChanges{
   
   @Input() question: Object
-  @Output() onAnswer: EventEmitter<number> = new EventEmitter();
+  @Output() onAnswer: EventEmitter<string> = new EventEmitter();
   
+  options: Option[];
+
   constructor() { 
   }
 
   ngOnInit() {
+    this.options = this.question['options'];      
   }
 
-  yesAnsClick() {
-    this.onAnswer.emit(this.question['answer']['yes'])
-  }
+  btnClicked(event: any){
+    let btnText = event.srcElement.innerHTML;
+    let option: Option;
+    this.options.forEach((opt) => {
+       if (opt.label == btnText)
+        option = opt;        
+    })
 
-  noAnsClick() {
-    this.onAnswer.emit(this.question['answer']['no'])
+    if (option == undefined)
+      alert('dojebalo sa')
+    
+    this.onAnswer.emit(option.ref);
   }
 
   ngOnChanges() {
-    console.log("Change detected");
-    
+    this.options = this.question['options'];
   }
 
 }

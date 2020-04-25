@@ -1,10 +1,10 @@
 export interface Question {
     id: number;
     text: string;
-    answer: Answer;
+    options: Option[];
 }
 
-export interface Answer {
-    yes: number;
-    no: number;
+export interface Option {
+    label: string;
+    ref: string;
 }

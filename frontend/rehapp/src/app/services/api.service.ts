@@ -41,16 +41,19 @@ export class APIService {
   // }
 
 
-  getQuestions(): Observable<Array<Question>> {
-    return this.http.get<Array<Question>>(url+"questions").pipe(    // pipe dokaze pristupovat k private properties service
-      map((resp) => {
-        this.countOfQuestions++;
-        this.lastQuestion = resp[0];
-        return resp;
-      })
-    )
-  }
+  // getQuestions(): Observable<Array<Question>> {
+  //   return this.http.get<Array<Question>>(url+"questions").pipe(    // pipe dokaze pristupovat k private properties service
+  //     map((resp) => {
+  //       this.countOfQuestions++;
+  //       this.lastQuestion = resp[0];
+  //       return resp;
+  //     })
+  //   )
+  // }
 
+  getQuestions() {
+    return this.http.get(url+"questions");
+  }
 
   // getQuotes(): Observable<HttpResponse<Quote[]>>{
   //   return this.http.get<Quote[]>(localUrl, {observe: 'response'});
