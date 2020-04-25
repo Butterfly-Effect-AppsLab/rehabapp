@@ -11,6 +11,11 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'onboarding',
+    loadChildren: () => import('./pages/onboarding/onboarding-routing.module').then( m => m.OnboardingPageRoutingModule)
+  },
+ 
   
 
 ];
