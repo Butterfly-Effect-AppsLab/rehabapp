@@ -1,36 +1,87 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import sessionmaker, relationship
 
-# class Base(object):
-#     @declared_attr
-#     def __tablename__(cls):
-#         return f"{cls.__name__.lower()}s"
-
-postgres = 'postgresql://postgres:password@db:5432/quotes'
-
+postgres = f'postgresql://postgres:password@db:5432/rehabApp'
 engine = create_engine(postgres, echo=True)
-# engine = create_engine('sqlite:///quotes.db', echo=True)
-# Base = declarative_base(cls=Base)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
-
-class Author(Base):
-
-    __tablename__ = "authors"
+class Diagnose(Base):
+    __tablename__ = "diagnoses"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    surname = Column(String, nullable=True)
+    name = Column(String, unique=True)
+    text = Column(Text)
+
+    def get_id(self):
+        return f"d_{self.id}"
 
 
-class Quote(Base):
-
-    __tablename__ = "quotes"
+class Question(Base):
+    __tablename__ = "questions"
 
     id = Column(Integer, primary_key=True)
     text = Column(Text)
-    author_id = Column(Integer, ForeignKey('authors.id'))
-    author = relationship("Author")
+
+    options = relationship(
+        'Option',
+        backref='questions',
+        foreign_keys="Option.question_id"
+    )
+
+    def get_id(self):
+        return f"q_{self.id}"
+
+
+class Option(Base):
+    __tablename__ = "options"
+    __table_args__ = (
+        CheckConstraint(
+            '(next_question_id IS NULL AND next_diagnose_id IS NOT NULL)'
+            'OR (next_question_id IS NOT NULL AND next_diagnose_id IS NULL)',
+            name='one-of-two'
+        ),
+    )
+
+    id = Column(Integer, primary_key=True)
+    question_id = Column(
+        Integer,
+        ForeignKey(
+            'questions.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=False
+    )
+    label = Column(String)
+    next_question_id = Column(
+        Integer,
+        ForeignKey(
+            'questions.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
+    next_diagnose_id = Column(
+        Integer,
+        ForeignKey(
+            'diagnoses.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
+
+    question = relationship(
+        'Question',
+        backref='questions',
+        foreign_keys="Option.next_question_id"
+    )
+    diagnose = relationship(
+        'Diagnose',
+        backref='questions',
+    )
+
+    def next_option(self):
+        if self.question:
+            return self.question
+        return self.diagnose

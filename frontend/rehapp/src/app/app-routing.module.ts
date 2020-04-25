@@ -19,7 +19,8 @@ const routes: Routes = [
   {
     path: 'self',
     loadChildren: () => import('./pages/self-diagnostic/self.module').then( m => m.SelfPageModule)
-  },  {
+  },
+  {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
