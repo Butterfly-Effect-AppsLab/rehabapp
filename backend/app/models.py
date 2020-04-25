@@ -1,4 +1,5 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint
+from bcrypt import hashpw, gensalt, checkpw
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -86,3 +87,20 @@ class Option(Base):
         if self.question:
             return self.question
         return self.diagnose
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String, unique=True)
+    password = Column(String)
+    sex = Column(String)
+    birthday = Column(Date)
+
+    def generate_password(self, pwd):
+        return hashpw(pwd.encode('utf8'), gensalt())
+
+    def validate_password(self, pwd):
+        return checkpw(pwd.encode('utf8'), self.password)
