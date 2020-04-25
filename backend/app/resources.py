@@ -84,7 +84,7 @@ class UserDiagnosesResource:
             user.diagnoses.append(diagnose)
 
             session.add(user)
-            session.commit()
+            session.flush()
 
             res.code = falcon.HTTP_201
 

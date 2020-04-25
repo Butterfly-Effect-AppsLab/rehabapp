@@ -19,6 +19,9 @@ Steps to init API after pull from origin:
   http://192.168.99.100:8000/  
   http://192.168.99.101:8000/  
   http://192.168.99.102:8000/  
+ 
+ For running UNIT tests run:  
+ `docker exec -it api_container sh -c "python -m unittest"`    
   
  For creating and applying alembic migrations run:  
  `docker exec -it api_container sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  

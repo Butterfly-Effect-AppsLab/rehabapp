@@ -1,4 +1,4 @@
-from tests.main_test_class import MainTestCase
+from test.main_test_class import MainTestCase
 
 
 class TestMyApp(MainTestCase):
