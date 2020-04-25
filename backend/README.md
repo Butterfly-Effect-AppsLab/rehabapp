@@ -21,5 +21,6 @@ Steps to init API after pull from origin:
   http://192.168.99.102:8000/  
   
  For creating and applying alembic migrations run:  
- `docker exec -it api_container sh -c "alembic revision -m \"MIGRATION_NAME_HERE\""`  
- `docker exec -it api_container sh -c "alembic upgrade head"`  
+ `docker exec -it api_container sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  
+ `docker exec -it api_container sh -c "alembic upgrade head"`
+ `docker exec -it api_container sh -c "alembic downgrade -1"`  
