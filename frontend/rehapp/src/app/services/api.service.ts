@@ -5,10 +5,11 @@ import { Observable, of } from 'rxjs'
 
 import { catchError, retry, map } from 'rxjs/operators'
 import { Question } from './models/question';
+import { User } from 'src/assets/data/User';
 
 
-const localUrl = './assets/data/quotes.json';
-const url = 'http://192.168.99.100:8000/'
+const usersUrl = './assets/data/users.json';
+const url = 'http://192.168.99.100:8000/';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,7 +17,6 @@ const httpOptions = {
     'Authorization': 'jwt-token'
   })
 };
-
 
 @Injectable(
    {providedIn: 'root'}
@@ -32,9 +32,7 @@ export class APIService {
   }
 
   getResponse() {
-    
     return this.http.get(url);
-    
   }
 
 
@@ -57,6 +55,10 @@ export class APIService {
   // getQuotes(): Observable<HttpResponse<Quote[]>>{
   //   return this.http.get<Quote[]>(localUrl, {observe: 'response'});
   // }
+
+  public getUsers(): Observable<HttpResponse<User[]>> {
+    return this.http.get<User[]>(usersUrl, {observe: 'response'})
+  }
 
   // getQuoteById(id: number): Observable<any> {
   //   return this.http.get<Quote>(localUrl + id).pipe(

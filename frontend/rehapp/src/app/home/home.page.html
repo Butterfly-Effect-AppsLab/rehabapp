@@ -3,12 +3,16 @@
     <img class="inside_img" src="assets/images/titleimg.png">
   </div>
 
-  <ion-button class="titlebtn" [routerLink]="['/onboarding']" (click)="onClick()" fill="outline" shape="round" size="large">
+  <ion-button class="titlebtn" [routerLink]="['/onboarding']" fill="outline" shape="round" size="large">
     <ion-toolbar>
       <ion-icon slot="start" name="arrow-forward-outline"></ion-icon>
       <p>POKRAČOVAŤ</p> 
     </ion-toolbar>
   </ion-button>
+
+  <div class="titletxt">
+    <p>Vitajte späť! Ak už máte vytvorený účet, pokračujte na <u [routerLink]="['/login']">prihlásenie</u></p>
+  </div>
   
   
 </ion-content>
