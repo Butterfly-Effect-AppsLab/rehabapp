@@ -1,0 +1,42 @@
+<ion-content>
+
+  <div class="main">
+    <div class="heading">
+      <h1 #h>Registrácia</h1>
+    </div>
+  
+    <div class="input_div">
+      <ion-item class="input_item">
+        <ion-label position="floating">Meno</ion-label>
+        <ion-input #username></ion-input>
+      </ion-item>
+    </div>
+  
+    <div class="input_div">
+      <ion-item class="input_item">
+        <ion-label position="floating">Email</ion-label>
+        <ion-input #email></ion-input>
+      </ion-item>
+    </div>
+    
+    <div class="input_div">
+      <ion-item class="input_item">
+        <ion-label position="floating">Heslo</ion-label>
+        <ion-input #password type="password"></ion-input>
+      </ion-item>
+    </div>
+    
+    <div class="input_div">
+      <ion-item class="input_item">
+        <ion-label position="floating">Telefónne číslo</ion-label>
+        <ion-input></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="login_btn">
+      <ion-button (click)="createUser()" expand="block" fill="solid" shape="round" strong>
+        Vytvoriť účet
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
