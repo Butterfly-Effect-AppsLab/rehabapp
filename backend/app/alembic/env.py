@@ -5,6 +5,10 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import sys
+
+sys.path = ['', '..'] + sys.path[1:]
+
 from models import Base
 
 # this is the Alembic Config object, which provides
