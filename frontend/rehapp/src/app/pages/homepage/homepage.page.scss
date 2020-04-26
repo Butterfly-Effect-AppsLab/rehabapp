@@ -1,0 +1,50 @@
+ion-content {
+    --background: rgb(0, 0, 255);
+}
+
+.titleicon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    width: 80%;
+    border-radius: 25px;
+    border-color: white;
+    border: white solid 4px;
+}
+
+.inside_img_alt {
+    max-width: 95%;
+    max-height: 95%;
+    display: block;
+    margin: 0 auto;
+}
+
+.inside_img {
+    border-radius: 25px;
+}
+
+.titlebtn {
+    display: block;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+ion-button {
+    --color: #ffffff;
+    --border-color: #ffffff
+}
+
+ion-toolbar {
+    --opacity: 0;
+}
+
+.titletxt {
+    width: 75%;
+    margin: auto;
+    padding-top: 10px;
+    text-align: center;
+    color: #ffffff;
+}

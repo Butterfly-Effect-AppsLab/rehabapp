@@ -1,0 +1,52 @@
+#close {
+    --background: rgb(164, 226, 255);
+}
+
+#close ion-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#close ion-button ion-icon {
+    color: black;
+    font-size: 20px;
+}
+
+ion-content {
+    --background: rgb(164, 226, 255);
+    --color: #0000ff;
+}
+
+#newdiv {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    background-color: green;
+}
+ 
+.slider {
+    height: 90%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.mid-height {
+    position: fixed;
+    text-align: center;
+    
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.mid-height.h1 {
+    margin: 10px;
+}
+
+.onboard-button {
+    --color: green;
+    --border-color: green;
+}
