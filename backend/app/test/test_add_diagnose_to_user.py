@@ -3,7 +3,7 @@ from schemas import UserSchema, DiagnoseSchema
 from test.main_test_class import MainTestCase
 
 
-class TestMyApp(MainTestCase):
+class TestAddDiagnoseToUser(MainTestCase):
     def test_get_message(self):
 
         session = Session()
@@ -30,12 +30,12 @@ class TestMyApp(MainTestCase):
             "diagnose_id": diagnose.id,
         }
 
-        result = self.simulate_post(f'/test/users/{user.id}/diagnoses', json=data)
+        result = self.simulate_post(f'/test/users/{user.id}/diagnoses', json=data,
+                                    headers={
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvemtvQGpvemtvLnNrIn0.LU2M7QM5p-1mjRBXvb1BSED-95GCg-y_3OCGTceZjE0'})
 
         session.rollback()
 
         diagnose_schema = DiagnoseSchema()
-
-        print(result.json)
 
         self.assertIn(diagnose_schema.dump(diagnose), result.json)

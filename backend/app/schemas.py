@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, post_load, EXCLUDE, validate
+from marshmallow import Schema, fields, post_load, EXCLUDE, validate, pre_dump
 from models import User
 
 
@@ -6,7 +6,7 @@ class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str(required=True)
     email = fields.Email(required=True)
-    password = fields.String(validate=validate.Length(min=8), required=True, load_only=True)
+    password = fields.String(validate=validate.Length(8), required=True)
     sex = fields.String(validate=validate.OneOf(["male", "female"]), required=True)
     birthday = fields.Date(required=True)
 

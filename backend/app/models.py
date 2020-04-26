@@ -1,5 +1,5 @@
 from bcrypt import hashpw, gensalt, checkpw
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Binary
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -100,7 +100,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     email = Column(String, unique=True)
-    password = Column(String)
+    password = Column(Binary)
     sex = Column(String)
     birthday = Column(Date)
 
@@ -110,4 +110,4 @@ class User(Base):
         return hashpw(pwd.encode('utf8'), gensalt())
 
     def validate_password(self, pwd):
-        return checkpw(pwd.encode('utf8'), self.password)
+        return checkpw(pwd.encode(), self.password)
