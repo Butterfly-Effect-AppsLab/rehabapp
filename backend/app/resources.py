@@ -1,6 +1,8 @@
 import falcon
+import jwt
 from marshmallow import ValidationError
 
+from config import key
 from models import *
 from schemas import UserSchema, DiagnoseSchema
 
@@ -41,7 +43,19 @@ class QuestionsResource:
         res.media = ret
 
 
-class UsersResource:
+class MeResource:
+    def on_get(self, req, res):
+        user = req.context.user
+        res.media = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "sex": user.sex,
+            "birthday": user.birthday.isoformat(),
+        }
+
+
+class RegistrationResource:
     def on_post(self, req, res):
 
         session = req.context.session
@@ -54,39 +68,72 @@ class UsersResource:
             user_schema = UserSchema()
 
             try:
+                user_schema.validate(req.media)
                 user = user_schema.load(req.media)
 
-                user.password = user.generate_password(user.password)
+                user.password = user.generate_password(req.media['password'])
 
                 session.add(user)
                 session.flush()
 
                 res.code = falcon.HTTP_201
 
-                res.media = user_schema.dump(user)
+                res.media = {
+                    "id": user.id,
+                    "name": user.name,
+                    "email": user.email,
+                    "sex": user.sex,
+                    "birthday": user.birthday.isoformat(),
+                }
 
             except ValidationError as err:
                 res.media = err.messages
 
 
-class UserDiagnosesResource:
-    def on_post(self, req, res, user_id):
+class LoginResource:
+    def on_post(self, req, res):
 
         session = req.context.session
 
-        user = session.query(User).filter(User.id == user_id).first()
+        user = session.query(User).filter(User.email == req.media['email']).first()
 
         if not user:
-            res.media = "User with this ID does not exist"
+            raise falcon.HTTPUnauthorized(description="Wrong email or password")
         else:
-            diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+            if user.validate_password(req.media['password']):
+                res.media = {
+                    "user": {
+                        "id": user.id,
+                        "name": user.name,
+                        "email": user.email,
+                        "sex": user.sex,
+                        "birthday": user.birthday.isoformat(),
+                    },
+                    "token": jwt.encode({
+                        "email": user.email
+                    }, key, algorithm='HS256').decode('utf-8')
+                }
+            else:
+                raise falcon.HTTPUnauthorized(description="Wrong email or password")
 
+
+class UserDiagnosesResource:
+    def on_post(self, req, res):
+
+        session = req.context.session
+
+        user = req.context.user
+
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+        if not diagnose:
+            res.media = "Diagnose don't exist"
+        else:
             user.diagnoses.append(diagnose)
 
             session.add(user)
-            session.flush()
 
-            res.code = falcon.HTTP_201
+            session.flush()
 
             diagnoses_schema = DiagnoseSchema(many=True)
 

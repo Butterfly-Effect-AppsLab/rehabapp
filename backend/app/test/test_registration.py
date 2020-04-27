@@ -3,26 +3,21 @@ from test.main_test_class import MainTestCase
 from datetime import date
 
 
-class TestMyApp(MainTestCase):
+class TestRegistration(MainTestCase):
     def test_get_message(self):
-
-        birthday = date(1968, 12, 6)
-
         data = {
             "name": "Jozko",
             "email": "tester@jozko.sk",
             "password": "heslo1234",
             "sex": "male",
-            "birthday": f"{birthday}"
+            "birthday": "1968-12-06"
         }
-        result = self.simulate_post('/test/users', json=data)
+
+        result = self.simulate_post('/test/registration', json=data)
 
         res = result.json
+
         del res['id']
+        del data['password']
 
-        data["birthday"] = birthday
-
-        user_schema = UserSchema()
-        user = user_schema.dump(data)
-
-        self.assertDictEqual(user, res)
+        self.assertDictEqual(res, data)

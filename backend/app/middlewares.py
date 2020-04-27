@@ -1,7 +1,12 @@
-from models import Session
+import jwt
+from falcon import HTTPUnauthorized
+from jwt import InvalidTokenError, DecodeError, InvalidSignatureError
+
+from config import key
+from models import Session, User
 
 
-class CORSComponent(object):
+class CORSMiddleware(object):
     def process_response(self, req, resp, resource, req_succeeded):
         resp.set_header('Access-Control-Allow-Origin', '*')
 
@@ -84,9 +89,78 @@ class SessionMiddleware(object):
                 otherwise False.
         """
 
-        if req.context.test:
-            req.context.session.rollback()
-        else:
-            req.context.session.commit()
-        req.context.session.close()
+        if hasattr(req.context, 'session'):
+            if req.context.test:
+                req.context.session.rollback()
+            else:
+                req.context.session.commit()
+            req.context.session.close()
+
+
+class AuthMiddleware(object):
+
+    def __init__(self, exclude_paths=None):
+        if exclude_paths is None:
+            exclude_paths = []
+        self.exclude_paths = exclude_paths
+
+    def authenticate(self, req):
+        if not req.auth:
+            raise HTTPUnauthorized(description="No auth token")
+        token = req.auth.split(" ")[1]
+        try:
+            payload = jwt.decode(token, key, algorithm='HS256')
+        except InvalidSignatureError:
+            raise HTTPUnauthorized(description="Wrong auth token")
+        except DecodeError:
+            raise HTTPUnauthorized(description="Wrong auth token")
+        except InvalidTokenError:
+            raise HTTPUnauthorized(description="Wrong auth token")
+
+        session = req.context.session
+
+        user = session.query(User).filter(User.email == payload['email']).first()
+
+        if not user:
+            raise HTTPUnauthorized(description="Wrong email")
+
+        return user
+
+    def process_resource(self, req, resp, resource, params):
+        """Process the request after routing.
+
+        Note:
+            This method is only called when the request matches
+            a route to a resource.
+
+        Args:
+            req: Request object that will be passed to the
+                routed responder.
+            resp: Response object that will be passed to the
+                responder.
+            resource: Resource object to which the request was
+                routed.
+            params: A dict-like object representing any additional
+                params derived from the route's URI template fields,
+                that will be passed to the resource's responder
+                method as keyword arguments.
+        """
+
+        if req.path not in self.exclude_paths:
+            req.context.user = self.authenticate(req)
+
+
+    def process_response(self, req, resp, resource, req_succeeded):
+        """Post-processing of the response (after routing).
+
+        Args:
+            req: Request object.
+            resp: Response object.
+            resource: Resource object to which the request was
+                routed. May be None if no route was found
+                for the request.
+            req_succeeded: True if no exceptions were raised while
+                the framework processed and routed the request;
+                otherwise False.
+        """
 
