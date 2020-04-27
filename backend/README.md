@@ -20,6 +20,9 @@ Steps to init API after pull from origin:
   http://192.168.99.101:8000/  
   http://192.168.99.102:8000/  
  
+ Api documentation:  
+ `https://documenter.getpostman.com/view/10074667/SzfCTRMC?version=latest`
+ 
  For running UNIT tests run:  
  `docker exec -it api_container sh -c "python -m unittest"`    
   

@@ -98,42 +98,42 @@ class LoginResource:
         user = session.query(User).filter(User.email == req.media['email']).first()
 
         if not user:
-            res.media = "User with email don't have account"
+            raise falcon.HTTPUnauthorized(description="Wrong email or password")
         else:
-            user.validate_password(req.media['password'])
-
-            res.media = {
-                "user": {
-                    "id": user.id,
-                    "name": user.name,
-                    "email": user.email,
-                    "sex": user.sex,
-                    "birthday": user.birthday.isoformat(),
-                },
-                "token": jwt.encode({
-                    "email": user.email
-                }, key, algorithm='HS256').decode('utf-8')
-            }
+            if user.validate_password(req.media['password']):
+                res.media = {
+                    "user": {
+                        "id": user.id,
+                        "name": user.name,
+                        "email": user.email,
+                        "sex": user.sex,
+                        "birthday": user.birthday.isoformat(),
+                    },
+                    "token": jwt.encode({
+                        "email": user.email
+                    }, key, algorithm='HS256').decode('utf-8')
+                }
+            else:
+                raise falcon.HTTPUnauthorized(description="Wrong email or password")
 
 
 class UserDiagnosesResource:
-    def on_post(self, req, res, user_id):
+    def on_post(self, req, res):
 
         session = req.context.session
 
-        user = session.query(User).filter(User.id == user_id).first()
+        user = req.context.user
 
-        if not user:
-            res.media = "User with this ID does not exist"
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+        if not diagnose:
+            res.media = "Diagnose don't exist"
         else:
-            diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
-
             user.diagnoses.append(diagnose)
 
             session.add(user)
-            session.flush()
 
-            res.code = falcon.HTTP_201
+            session.flush()
 
             diagnoses_schema = DiagnoseSchema(many=True)
 

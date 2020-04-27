@@ -122,7 +122,7 @@ class AuthMiddleware(object):
         user = session.query(User).filter(User.email == payload['email']).first()
 
         if not user:
-            raise HTTPUnauthorized(description="User not found")
+            raise HTTPUnauthorized(description="Wrong email")
 
         return user
 
