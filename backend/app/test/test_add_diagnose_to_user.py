@@ -13,7 +13,10 @@ class TestAddDiagnoseToUser(MainTestCase):
         diagnose = Diagnose(name="My test diagnose", text="My test diagnose description")
 
         session.add(diagnose)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
 
         data = {
             "diagnose_id": diagnose.id,
@@ -23,11 +26,16 @@ class TestAddDiagnoseToUser(MainTestCase):
             result = self.simulate_post(f'/test/users/diagnoses', json=data,
                                         headers={
                 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0ZXIuc2siLCJjcmVhdGVkX2F0IjoxNTg4MTQ2MDMyLjM3MTI0OH0.oZuQTEdJW77LeMWEf0ITOWW7_8hV6OkDyYRB_m-iqMY'})
-        finally:
+        except:
             session.delete(diagnose)
             session.commit()
 
         session.delete(diagnose)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
+        finally:
+            session.close()
 
         self.assertIn(diagnose_schema.dump(diagnose), result.json)

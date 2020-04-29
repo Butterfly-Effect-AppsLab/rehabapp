@@ -93,7 +93,10 @@ class SessionMiddleware(object):
             if req.context.test:
                 req.context.session.rollback()
             else:
-                req.context.session.commit()
+                try:
+                    req.context.session.commit()
+                except:
+                    req.context.session.rollback()
             req.context.session.close()
 
 
