@@ -19,9 +19,13 @@ class TestAddDiagnoseToUser(MainTestCase):
             "diagnose_id": diagnose.id,
         }
 
-        result = self.simulate_post(f'/test/users/diagnoses', json=data,
-                                    headers={
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImpvemtvQGpvemtvLnNrIn0.LU2M7QM5p-1mjRBXvb1BSED-95GCg-y_3OCGTceZjE0'})
+        try:
+            result = self.simulate_post(f'/test/users/diagnoses', json=data,
+                                        headers={
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3RlckB0ZXN0ZXIuc2siLCJjcmVhdGVkX2F0IjoxNTg4MTQ2MDMyLjM3MTI0OH0.oZuQTEdJW77LeMWEf0ITOWW7_8hV6OkDyYRB_m-iqMY'})
+        finally:
+            session.delete(diagnose)
+            session.commit()
 
         session.delete(diagnose)
         session.commit()

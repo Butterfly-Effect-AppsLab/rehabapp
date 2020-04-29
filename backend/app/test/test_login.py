@@ -21,7 +21,6 @@ class TestMe(MainTestCase):
 
         self.assertDictEqual(res['user'], data)
 
-
     def test_unsuccessful_login(self):
         # wrong email
         result = self.simulate_post('/test/login', json={
@@ -38,3 +37,18 @@ class TestMe(MainTestCase):
         })
 
         self.assertEqual(result.status_code, 401)
+
+    def test_multiple_logins(self):
+        # first login
+        first_result = self.simulate_post('/test/login', json={
+            "email": "jozko@jozko.sk",
+            "password": "heslo1234"
+        })
+
+        # second login
+        second_result = self.simulate_post('/test/login', json={
+            "email": "jozko@jozko.sk",
+            "password": "heslo1234"
+        })
+
+        self.assertNotEqual(first_result.json['token'], second_result.json['token'])
