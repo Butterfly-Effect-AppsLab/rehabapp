@@ -110,19 +110,15 @@ class AuthMiddleware(object):
         token = req.auth.split(" ")[1]
         try:
             payload = jwt.decode(token, key, algorithm='HS256')
-        except InvalidSignatureError:
-            raise HTTPUnauthorized(description="Wrong auth token")
-        except DecodeError:
-            raise HTTPUnauthorized(description="Wrong auth token")
-        except InvalidTokenError:
+        except (InvalidSignatureError, DecodeError, InvalidTokenError):
             raise HTTPUnauthorized(description="Wrong auth token")
 
         session = req.context.session
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
-        if not user:
-            raise HTTPUnauthorized(description="Wrong email")
+        if not user or user.token_created_at != payload['created_at']:
+            raise HTTPUnauthorized(description="Wrong auth token")
 
         return user
 

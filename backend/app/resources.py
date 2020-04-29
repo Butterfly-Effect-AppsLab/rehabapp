@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import falcon
 import jwt
 from marshmallow import ValidationError
@@ -101,6 +103,11 @@ class LoginResource:
             raise falcon.HTTPUnauthorized(description="Wrong email or password")
         else:
             if user.validate_password(req.media['password']):
+
+                user.token_created_at = datetime.utcnow().timestamp()
+                session.add(user)
+                session.flush()
+
                 res.media = {
                     "user": {
                         "id": user.id,
@@ -110,11 +117,26 @@ class LoginResource:
                         "birthday": user.birthday.isoformat(),
                     },
                     "token": jwt.encode({
-                        "email": user.email
+                        "email": user.email,
+                        "created_at": user.token_created_at
                     }, key, algorithm='HS256').decode('utf-8')
                 }
             else:
                 raise falcon.HTTPUnauthorized(description="Wrong email or password")
+
+
+class LogoutResource:
+    def on_post(self, req, res):
+
+        session = req.context.session
+
+        user = req.context.user
+
+        user.token_created_at = None
+        session.add(user)
+        session.flush()
+
+        res.media = "Successfully logged out"
 
 
 class UserDiagnosesResource:
@@ -127,7 +149,7 @@ class UserDiagnosesResource:
         diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
 
         if not diagnose:
-            res.media = "Diagnose don't exist"
+            res.media = "Diagnose doesn't exist"
         else:
             user.diagnoses.append(diagnose)
 

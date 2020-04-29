@@ -1,5 +1,6 @@
 from bcrypt import hashpw, gensalt, checkpw
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Binary
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Binary, \
+    Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -101,6 +102,7 @@ class User(Base):
     name = Column(String)
     email = Column(String, unique=True)
     password = Column(Binary)
+    token_created_at = Column(Float, nullable=True)
     sex = Column(String)
     birthday = Column(Date)
 

@@ -21,6 +21,7 @@ def init_api():
     api_tmp.add_route('/questions', QuestionsResource())
     api_tmp.add_route('/registration', RegistrationResource())
     api_tmp.add_route('/login', LoginResource())
+    api_tmp.add_route('/logout', LogoutResource())
     api_tmp.add_route('/users/me', MeResource())
     api_tmp.add_route('/users/diagnoses', UserDiagnosesResource())
     return api_tmp
