@@ -1,6 +1,7 @@
 */.idea
 */venv
 */__pycache__
+/backend/app/config_dev.py
 
 /frontend/*/*~
 /frontend/*/*.sw[mnpcod]

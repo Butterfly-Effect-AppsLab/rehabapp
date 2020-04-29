@@ -12,7 +12,6 @@ services:
       - 8000:8080
     depends_on:
       - db
-    container_name: api_container
   db:
     image: postgres
     restart: always

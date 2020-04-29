@@ -1,8 +1,8 @@
 import jwt
 from falcon import HTTPUnauthorized
-from jwt import InvalidTokenError, DecodeError, InvalidSignatureError
+from jwt import InvalidTokenError, DecodeError, InvalidSignatureError, ExpiredSignatureError
 
-from config import key
+from config import KEY
 from models import Session, User
 
 
@@ -48,11 +48,11 @@ class SessionMiddleware(object):
                 the on_* responder.
         """
 
-        if req.path.split("/")[1] == "test":
-            req.path = req.path.replace("test/", "")
-            req.context.test = True
-        else:
-            req.context.test = False
+        # if req.path.split("/")[1] == "test":
+        #     req.path = req.path.replace("test/", "")
+        #     req.context.test = True
+        # else:
+        req.context.test = False
 
     def process_resource(self, req, resp, resource, params):
         """Process the request after routing.
@@ -90,9 +90,7 @@ class SessionMiddleware(object):
         """
 
         if hasattr(req.context, 'session'):
-            if req.context.test:
-                req.context.session.rollback()
-            else:
+            if not req.context.test:
                 req.context.session.commit()
             req.context.session.close()
 
@@ -109,7 +107,9 @@ class AuthMiddleware(object):
             raise HTTPUnauthorized(description="No auth token")
         token = req.auth.split(" ")[1]
         try:
-            payload = jwt.decode(token, key, algorithm='HS256')
+            payload = jwt.decode(token, KEY, algorithm='HS256')
+        except ExpiredSignatureError:
+            raise HTTPUnauthorized(description="Token has expired")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
             raise HTTPUnauthorized(description="Wrong auth token")
 
@@ -117,7 +117,7 @@ class AuthMiddleware(object):
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
-        if not user or user.token_created_at != payload['created_at']:
+        if not user:
             raise HTTPUnauthorized(description="Wrong auth token")
 
         return user
@@ -144,19 +144,4 @@ class AuthMiddleware(object):
 
         if req.path not in self.exclude_paths:
             req.context.user = self.authenticate(req)
-
-
-    def process_response(self, req, resp, resource, req_succeeded):
-        """Post-processing of the response (after routing).
-
-        Args:
-            req: Request object.
-            resp: Response object.
-            resource: Resource object to which the request was
-                routed. May be None if no route was found
-                for the request.
-            req_succeeded: True if no exceptions were raised while
-                the framework processed and routed the request;
-                otherwise False.
-        """
 
