@@ -1,1 +1,2 @@
-key = "49Ex6ZfcKkDNS8xyIBnEpEgQKFz4fjRt"
+from config_dev import KEY
+KEY = KEY
