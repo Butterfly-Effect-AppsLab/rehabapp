@@ -23,7 +23,10 @@ for key, item in self_diagnostic_component.items():
     session.add(model)
     models[key] = model
 
-session.commit()
+try:
+    session.commit()
+except:
+    session.rollback()
 
 for key, item in self_diagnostic_component.items():
     if item['type'] == "question":
@@ -35,6 +38,9 @@ for key, item in self_diagnostic_component.items():
                 model = Option(question_id=models[key].id, label=option['label'], diagnose=models[ref])
 
             session.add(model)
-
-session.commit()
-session.close()
+try:
+    session.commit()
+except:
+    session.rollback()
+finally:
+    session.close()

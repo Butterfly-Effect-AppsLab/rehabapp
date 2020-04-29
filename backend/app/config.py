@@ -1,2 +1,7 @@
-from config_dev import KEY
+from config_dev import *
 KEY = KEY
+APP_URL = APP_URL
+PORT = PORT
+SMTP_SERVER = SMTP_SERVER
+LOGIN = LOGIN
+PASSWORD = PASSWORD

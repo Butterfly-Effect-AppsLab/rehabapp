@@ -91,7 +91,10 @@ class SessionMiddleware(object):
 
         if hasattr(req.context, 'session'):
             if not req.context.test:
-                req.context.session.commit()
+                try:
+                    req.context.session.commit()
+                finally:
+                    req.context.session.close()
             req.context.session.close()
 
 
