@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
-
+from secrets import token_urlsafe
 import falcon
 import jwt
 from jwt import InvalidSignatureError, DecodeError, InvalidTokenError, ExpiredSignatureError
 from marshmallow import ValidationError
+from sqlalchemy import and_
 
-from config import key
+from config import KEY
 from models import *
 from schemas import UserSchema, DiagnoseSchema
 from send_email import send_email
@@ -20,8 +21,8 @@ class QuestionsResource:
     def on_get(self, req, res):
         res.media = []
 
-        questions = req.context.session.query(Question).all()
-        diagnoses = req.context.session.query(Diagnose).all()
+        questions = req.context.session.query(Question)
+        diagnoses = req.context.session.query(Diagnose)
 
         ret = {}
 
@@ -35,7 +36,7 @@ class QuestionsResource:
             for o in options:
                 ret[q.get_id()]["options"].append({
                     "label": o.label,
-                    "ref": o.next_option().get_id()
+                    "ref": o.next_option.get_id()
                 })
 
         for d in diagnoses:
@@ -50,13 +51,9 @@ class QuestionsResource:
 class MeResource:
     def on_get(self, req, res):
         user = req.context.user
-        res.media = {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "sex": user.sex,
-            "birthday": user.birthday.isoformat(),
-        }
+
+        user_schema = UserSchema()
+        res.media = user_schema.dump(user)
 
 
 class RegistrationResource:
@@ -80,15 +77,9 @@ class RegistrationResource:
                 session.add(user)
                 session.flush()
 
-                res.code = falcon.HTTP_201
+                res.status = falcon.HTTP_201
 
-                res.media = {
-                    "id": user.id,
-                    "name": user.name,
-                    "email": user.email,
-                    "sex": user.sex,
-                    "birthday": user.birthday.isoformat(),
-                }
+                res.media = user_schema.dump(user)
 
             except ValidationError as err:
                 res.media = err.messages
@@ -102,65 +93,68 @@ class LoginResource:
         user = session.query(User).filter(User.email == req.media['email']).first()
 
         if not user:
-            raise falcon.HTTPBadRequest(description="Wrong email or password")
+            raise falcon.HTTPUnauthorized(description="Wrong credentials")
         else:
             if user.validate_password(req.media['password']):
 
-                user.token_created_at = datetime.utcnow().timestamp()
+                user_schema = UserSchema()
+
+                user.refresh_token = token_urlsafe()
                 session.add(user)
                 session.flush()
 
                 res.media = {
-                    "user": {
-                        "id": user.id,
-                        "name": user.name,
+                    "user": user_schema.dump(user),
+                    "access_token": jwt.encode({
                         "email": user.email,
-                        "sex": user.sex,
-                        "birthday": user.birthday.isoformat(),
-                    },
-                    "token": jwt.encode({
-                        "email": user.email,
-                        "created_at": user.token_created_at
-                    }, key, algorithm='HS256').decode('utf-8')
+                        "iat": datetime.utcnow(),
+                        "exp": datetime.utcnow() + timedelta(minutes=15)
+                    }, KEY, algorithm='HS256').decode('utf-8'),
+                    "refresh_token": user.refresh_token
                 }
             else:
-                raise falcon.HTTPUnauthorized(description="Wrong email or password")
+                raise falcon.HTTPUnauthorized(description="Wrong credentials")
 
 
-class LogoutResource:
+class RefreshTokenResource:
     def on_post(self, req, res):
         session = req.context.session
 
-        user = req.context.user
+        payload = jwt.decode(req.media['access_token'], verify=False)
 
-        user.token_created_at = None
-        session.add(user)
-        session.flush()
+        user = session.query(User).filter(and_(User.email == payload['email'],
+                                               User.refresh_token == req.media['refresh_token'])).first()
 
-        res.media = "Successfully logged out"
+        if not user:
+            raise falcon.HTTPUnauthorized(description="Wrong tokens")
+
+        res.media = {
+            "access_token": jwt.encode({
+                "email": user.email,
+                "exp": datetime.utcnow() + timedelta(minutes=15)
+            }, KEY, algorithm='HS256').decode('utf-8'),
+        }
 
 
 class UserDiagnosesResource:
-    def on_post(self, req, res):
+    def on_put(self, req, res, diagnose_id):
 
         session = req.context.session
 
         user = req.context.user
 
-        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+        diagnose = session.query(Diagnose).filter(Diagnose.id == diagnose_id).first()
 
         if not diagnose:
             res.media = "Diagnose doesn't exist"
+            res.status = falcon.HTTP_404
         else:
             user.diagnoses.append(diagnose)
 
             session.add(user)
-
             session.flush()
 
-            diagnoses_schema = DiagnoseSchema(many=True)
-
-            res.media = diagnoses_schema.dump(user.diagnoses)
+            res.status = falcon.HTTP_204
 
 
 class ForgotPasswordResource:
@@ -174,9 +168,9 @@ class ForgotPasswordResource:
             raise falcon.HTTPBadRequest(description="Wrong email or password")
         else:
             token = jwt.encode({
-                "exp": datetime.utcnow() + timedelta(1),
+                "exp": datetime.utcnow() + timedelta(days=1),
                 "email": user.email,
-            }, str(user.token_created_at), algorithm='HS256').decode('utf-8')
+            }, KEY, algorithm='HS256').decode('utf-8')
 
             send_email(user.email, token)
 
@@ -193,22 +187,21 @@ class ResetPasswordResource:
         if not token:
             raise falcon.HTTPUnauthorized(description="No auth token")
 
-        payload = jwt.decode(token, verify=False)
+        try:
+            payload = jwt.decode(token, KEY, algorithm='HS256')
+        except ExpiredSignatureError:
+            raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
+        except (InvalidSignatureError, DecodeError, InvalidTokenError):
+            raise falcon.HTTPUnauthorized(description="Wrong auth token")
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
         if not user:
             raise falcon.HTTPUnauthorized(description="Wrong auth token")
 
-        try:
-            jwt.decode(token, str(user.token_created_at), algorithm='HS256')
-        except ExpiredSignatureError:
-            raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
-        except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise falcon.HTTPUnauthorized(description="Wrong auth token")
-
         user.password = user.generate_password(req.media['password'])
-        user.token_created_at = datetime.utcnow().timestamp()
+
+        user.refresh_token = None
         session.add(user)
         session.flush()
 

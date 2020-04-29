@@ -1,12 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from config import app_url
-
-port = 2525
-smtp_server = "smtp.mailtrap.io"
-login = "8bfa39fe09804e"
-password = "7fb2f80b2d0571"
+from config import SMTP_SERVER, LOGIN, PASSWORD, APP_URL, PORT
 
 
 def send_email(reciever_email, token):
@@ -25,7 +20,7 @@ def send_email(reciever_email, token):
             <h3>Vážený používateľ,</h3>
             <p> 
                 vyzerá to, že chcete zmeniť svoje prístupové heslo. V tom prípade pokračujte kliknutím na odkaz:<br>
-                <a href="{app_url}?token={token}">Zmena hesla</a><br>
+                <a href="{APP_URL}?token={token}">Zmena hesla</a><br>
                 Pokiaľ o žiadosti ohľadne zmeny hesla nič neviete, tento e-mail kľudne ignorujte.<br>
                 Odkaz je platný 24 hodín.<br>
                 Prajeme Vám príjemný deň!<br>
@@ -38,6 +33,6 @@ def send_email(reciever_email, token):
     message.attach(part2)
 
     # send your email
-    with smtplib.SMTP("smtp.mailtrap.io", 2525) as server:
-        server.login(login, password)
+    with smtplib.SMTP(SMTP_SERVER, PORT) as server:
+        server.login(LOGIN, PASSWORD)
         server.sendmail(sender_email, receiver_email, message.as_string())

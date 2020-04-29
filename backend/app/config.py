@@ -1,2 +1,7 @@
-key = "49Ex6ZfcKkDNS8xyIBnEpEgQKFz4fjRt"
-app_url = "APP_URL"
+from config_dev import *
+KEY = KEY
+APP_URL = APP_URL
+PORT = PORT
+SMTP_SERVER = SMTP_SERVER
+LOGIN = LOGIN
+PASSWORD = PASSWORD

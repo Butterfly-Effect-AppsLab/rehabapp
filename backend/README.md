@@ -24,9 +24,9 @@ Steps to init API after pull from origin:
  https://documenter.getpostman.com/view/10074667/SzfCTRMC?version=latest
  
  For running UNIT tests run:  
- `docker exec -it api_container sh -c "python -m unittest"`    
+ `docker exec -it backend_web_1 sh -c "python -m unittest"`    
   
  For creating and applying alembic migrations run:  
- `docker exec -it api_container sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  
- `docker exec -it api_container sh -c "alembic upgrade head"`
- `docker exec -it api_container sh -c "alembic downgrade -1"`  
+ `docker exec -it backend_web_1 sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  
+ `docker exec -it backend_web_1 sh -c "alembic upgrade head"`
+ `docker exec -it backend_web_1 sh -c "alembic downgrade -1"`  
