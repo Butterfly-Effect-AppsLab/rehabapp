@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from secrets import token_urlsafe
 import falcon
 import jwt
 from jwt import InvalidSignatureError, DecodeError, InvalidTokenError, ExpiredSignatureError
@@ -8,7 +7,7 @@ from sqlalchemy import and_
 
 from config import KEY
 from models import *
-from schemas import UserSchema, DiagnoseSchema
+from schemas import UserSchema
 from send_email import send_email
 
 
@@ -99,7 +98,10 @@ class LoginResource:
 
                 user_schema = UserSchema()
 
-                user.refresh_token = token_urlsafe()
+                user.refresh_token = jwt.encode({
+                    "email": user.email,
+                    "iat": datetime.utcnow(),
+                }, KEY, algorithm='HS256').decode('utf-8')
                 session.add(user)
                 session.flush()
 
@@ -120,13 +122,17 @@ class RefreshTokenResource:
     def on_post(self, req, res):
         session = req.context.session
 
-        payload = jwt.decode(req.media['access_token'], verify=False)
+        try:
+            payload = jwt.decode(req.media['refresh_token'], KEY, algorithm='HS256')
+        except ExpiredSignatureError:
+            raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
+        except (InvalidSignatureError, DecodeError, InvalidTokenError):
+            raise falcon.HTTPUnauthorized(description="Wrong token")
 
-        user = session.query(User).filter(and_(User.email == payload['email'],
-                                               User.refresh_token == req.media['refresh_token'])).first()
+        user = session.query(User).filter(User.email == payload['email']).first()
 
         if not user:
-            raise falcon.HTTPUnauthorized(description="Wrong tokens")
+            raise falcon.HTTPUnauthorized(description="Wrong token")
 
         res.media = {
             "access_token": jwt.encode({
@@ -185,14 +191,14 @@ class ResetPasswordResource:
         token = req.media['token']
 
         if not token:
-            raise falcon.HTTPUnauthorized(description="No auth token")
+            raise falcon.HTTPUnauthorized(description="No token")
 
         try:
             payload = jwt.decode(token, KEY, algorithm='HS256')
         except ExpiredSignatureError:
             raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise falcon.HTTPUnauthorized(description="Wrong auth token")
+            raise falcon.HTTPUnauthorized(description="Wrong token")
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
