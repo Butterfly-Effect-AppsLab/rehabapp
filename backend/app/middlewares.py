@@ -107,21 +107,21 @@ class AuthMiddleware(object):
 
     def authenticate(self, req):
         if not req.auth:
-            raise HTTPUnauthorized(description="No auth token")
+            raise HTTPUnauthorized(description="No token")
         token = req.auth.split(" ")[1]
         try:
             payload = jwt.decode(token, KEY, algorithm='HS256')
         except ExpiredSignatureError:
             raise HTTPUnauthorized(description="Token has expired")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise HTTPUnauthorized(description="Wrong auth token")
+            raise HTTPUnauthorized(description="Wrong token")
 
         session = req.context.session
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
         if not user:
-            raise HTTPUnauthorized(description="Wrong auth token")
+            raise HTTPUnauthorized(description="Wrong token")
 
         return user
 

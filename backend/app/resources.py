@@ -127,7 +127,7 @@ class RefreshTokenResource:
         except ExpiredSignatureError:
             raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise falcon.HTTPUnauthorized(description="Wrong auth token")
+            raise falcon.HTTPUnauthorized(description="Wrong token")
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
@@ -191,14 +191,14 @@ class ResetPasswordResource:
         token = req.media['token']
 
         if not token:
-            raise falcon.HTTPUnauthorized(description="No auth token")
+            raise falcon.HTTPUnauthorized(description="No token")
 
         try:
             payload = jwt.decode(token, KEY, algorithm='HS256')
         except ExpiredSignatureError:
             raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise falcon.HTTPUnauthorized(description="Wrong auth token")
+            raise falcon.HTTPUnauthorized(description="Wrong token")
 
         user = session.query(User).filter(User.email == payload['email']).first()
 
