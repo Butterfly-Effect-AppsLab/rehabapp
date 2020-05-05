@@ -1,0 +1,49 @@
+<ion-content>
+  <div class="main">
+    <ion-radio-group>
+      <h2 class="caption">Zadajte pohlavie</h2>
+      <div class="radio">
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="m" color="dark"></ion-radio>
+            <ion-label>Muž</ion-label>
+          </ion-item>
+        </div>
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="f" color="dark"></ion-radio>
+            <ion-label>Žena</ion-label>
+          </ion-item>
+        </div>
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="y" color="dark"></ion-radio>
+            <ion-label>Yeti</ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-radio-group>
+
+    <h2 class="caption">Zadajte dátum narodenia</h2>
+    <ion-item style="--background: 'transparent'">
+      <ion-label>Vyberte dátum</ion-label>
+      <ion-datetime displayFormat="DD MMMM YYYY" placeholder="Vyberte dátum" [monthNames]="months"></ion-datetime>
+    </ion-item>
+
+
+    <h2 class="caption">Trpíte nasledujúcimi problémami?</h2>
+    <ion-item style="--background: 'transparent'">
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Cukrovka</ion-label>
+    </ion-item>
+    <ion-item style="--background: 'transparent'">
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Vysoký krvný tlak</ion-label>
+    </ion-item>
+    <ion-item style="--background: 'transparent'">
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Iné</ion-label>
+    </ion-item>
+    
+  </div>
+</ion-content>

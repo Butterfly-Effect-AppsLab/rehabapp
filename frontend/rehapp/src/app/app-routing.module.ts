@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'onboarding',
     loadChildren: () => import('./pages/onboarding/onboarding-routing.module').then( m => m.OnboardingPageRoutingModule)
+  },  {
+    path: 'registration',
+    loadChildren: () => import('./pages/registration/registration.module').then( m => m.RegistrationPageModule)
   },
+
  
   
 

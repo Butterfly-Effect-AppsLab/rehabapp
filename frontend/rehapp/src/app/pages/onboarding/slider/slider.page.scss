@@ -28,7 +28,7 @@ ion-content {
 }
  
 .slider {
-    height: 90%;
+    height: 80%;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -49,4 +49,12 @@ ion-content {
 .onboard-button {
     --color: green;
     --border-color: green;
+}
+
+.titletxt {
+    width: 75%;
+    margin: auto;
+    padding-top: 10px;
+    text-align: center;
+    color: #0000ff;
 }

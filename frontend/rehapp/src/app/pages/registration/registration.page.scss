@@ -1,0 +1,53 @@
+ion-content {
+    --background: #0000ff;
+    --color: #ffffff;   
+}
+
+.main {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+.heading {
+    text-align: center;
+
+    width: 80%;
+    margin: auto;
+    padding: 20% 0;
+}
+
+.heading h1 {
+    font-size: 40px;
+    font-weight: bolder;
+}
+
+.item_div {
+    padding-bottom: 3%;
+}
+
+.item_div ion-item {
+    --background: "transparent";
+}
+
+.input_item {
+    border: 1px solid white;
+    font-size: 18px;
+}
+
+.login_btn {
+    padding-top: 2%;
+    padding-bottom: 5%;
+}
+
+.login_btn ion-button {
+    --color: #0000ff;
+    --background: #ffffff; 
+}
+
+.error_msg {
+    color: red;
+    font-size: small;
+    font-weight: bold;
+    text-align: left;
+}

@@ -1,0 +1,34 @@
+ion-content {
+    --background: #6666bd;
+    --color: #ffffff;   
+}
+
+.main {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+.radio {
+    display: inline-block;
+    width: 100%;
+}
+
+.radio-opt {
+    float: left;
+    width: 33%;
+}
+
+.radio-opt ion-item {
+    --background: "transparent";
+}
+
+.radio-opt  {
+    ion-radio {
+        margin: 5px;
+    }
+}
+
+.caption {
+    padding-top: 15%;
+}
