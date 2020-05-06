@@ -31,3 +31,5 @@
 /frontend/*/plugins
 /frontend/*/www
 /frontend/*/e2e
+/frontend/*/android
+/frontend/*/ios
