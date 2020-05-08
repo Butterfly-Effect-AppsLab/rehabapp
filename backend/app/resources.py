@@ -20,31 +20,61 @@ class QuestionsResource:
     def on_get(self, req, res):
         res.media = []
 
+        areas = req.context.session.query(Area)
         questions = req.context.session.query(Question)
         diagnoses = req.context.session.query(Diagnose)
 
+        areas_ret = {}
+
         ret = {}
 
-        for q in questions:
-            ret[q.get_id()] = {
-                "type": "question",
-                "text": q.text,
-                "options": []
-            }
-            options = q.options
-            for o in options:
-                ret[q.get_id()]["options"].append({
-                    "label": o.label,
-                    "ref": o.next_option.get_id()
+        for area in areas:
+            areas_ret[area.name] = area.unique_id
+
+            options = []
+
+            for option in area.options:
+                options.append({
+                    "id": option.id,
+                    "label": option.label,
+                    "ref": option.next_option.unique_id
                 })
 
-        for d in diagnoses:
-            ret[d.get_id()] = {
-                "type": "diagnose",
-                "name": d.name,
-                "text": d.text
+            ret[area.unique_id] = {
+                "name": area.name,
+                "options": options
             }
-        res.media = ret
+
+        for question in questions:
+            options = []
+
+            for option in question.options:
+                options.append({
+                    "id": option.id,
+                    "label": option.label,
+                    "ref": option.next_option.unique_id
+                })
+
+            ret[question.unique_id] = {
+                "text": question.text,
+                "prepend": question.prepend.text,
+                "color": {
+                    "background-color": question.color.background_color,
+                    "text-color": question.color.text_color
+                },
+                "options": options
+            }
+
+        for diagnose in diagnoses:
+            ret[diagnose.unique_id] = {
+                "name": diagnose.name,
+                "text": diagnose.text
+            }
+
+        res.media = {
+            "areas": areas_ret,
+            "self-diagnose": ret
+        }
 
 
 class MeResource:
