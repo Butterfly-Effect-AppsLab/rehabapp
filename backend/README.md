@@ -23,10 +23,15 @@ Steps to init API after pull from origin:
  Api documentation:  
  https://documenter.getpostman.com/view/10074667/SzfCTRMC?version=latest
  
+ Run seeder:
+ `docker exec -it backend_web_1 sh -c "python self_diagnostic_seeder.py"`
+  
+ 
  For running UNIT tests run:  
  `docker exec -it backend_web_1 sh -c "python -m unittest"`    
   
  For creating and applying alembic migrations run:  
  `docker exec -it backend_web_1 sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  
- `docker exec -it backend_web_1 sh -c "alembic upgrade head"`
+ `docker exec -it backend_web_1 sh -c "alembic upgrade head"`  
  `docker exec -it backend_web_1 sh -c "alembic downgrade -1"`  
+`
