@@ -31,6 +31,8 @@ export class SliderPage implements OnInit {
     // if (id == 2)
     //    this.router.navigateByUrl('/#SOMEPAGE#');     // navigate to slef diagnostic process page
 
+    if (id == 2)
+      this.router.navigateByUrl('/diagnostic');
     this.slides.slideNext();
   }
 
