@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-subpart-selection',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubpartSelectionPage implements OnInit {
 
-  buttons = ['tlacitko','tlacitko','tlacitko','tlacitko','tlacitko','tlacitko']
-  
-  constructor() { }
+  buttons = []
+
+  constructor(private route: ActivatedRoute, private router: Router) {
+
+    this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        let area = this.router.getCurrentNavigation().extras.state.area;
+        let tree = this.router.getCurrentNavigation().extras.state.questions[area];
+        console.log(
+        this.buttons = tree['options']);
+        
+      }
+    });
+  }
 
   ngOnInit() {
   }
