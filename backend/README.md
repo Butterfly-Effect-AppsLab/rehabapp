@@ -23,9 +23,11 @@ Steps to init API after pull from origin:
  Api documentation:  
  https://documenter.getpostman.com/view/10074667/SzfCTRMC?version=latest
  
- Run seeder:
- `docker exec -it backend_web_1 sh -c "python self_diagnostic_seeder.py"`
-  
+ Seed constants:  
+ `docker exec -it backend_web_1 sh -c "python seeders.py"`
+ 
+ Seed self-diagnostic trees:  
+ `docker exec -it backend_web_1 sh -c "python self_diagnostic_seeder.py"`  
  
  For running UNIT tests run:  
  `docker exec -it backend_web_1 sh -c "python -m unittest"`    
