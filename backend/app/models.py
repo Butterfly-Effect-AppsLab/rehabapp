@@ -8,10 +8,27 @@ engine = create_engine(postgres, echo=True)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
-user_diagnoses = Table('user_diagnoses', Base.metadata,
-                       Column('user_id', Integer, ForeignKey('users.id', ondelete='CASCADE')),
-                       Column('diagnose_id', Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
-                       )
+subarea_diagnoses = Table('subarea_diagnoses', Base.metadata,
+                          Column('subarea_id', Integer, ForeignKey('options.id', ondelete='CASCADE')),
+                          Column('diagnose_id', Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
+                          )
+
+
+class SelfDiagnosticSequence(Base):
+    __tablename__ = 'sequences'
+    id = Column(Integer, primary_key=True)
+    next_id = Column(Integer, ForeignKey('sequences.id'), nullable=True)
+    option_id = Column(
+        Integer,
+        ForeignKey(
+            'options.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=False
+    )
+
+    next = relationship("SelfDiagnosticSequence")
+    option = relationship("Option")
 
 
 class Diagnose(Base):
@@ -21,8 +38,48 @@ class Diagnose(Base):
     name = Column(String, unique=True)
     text = Column(Text)
 
-    def get_id(self):
+    @property
+    def unique_id(self):
         return f"d_{self.id}"
+
+
+class UserDiagnose(Base):
+    __tablename__ = "user_diagnoses"
+
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    diagnose_id = Column(Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
+    sequence_id = Column(Integer, ForeignKey('sequences.id', ondelete='CASCADE'))
+
+    diagnose = relationship("Diagnose")
+    seq = relationship("SelfDiagnosticSequence")
+
+    def gen_sequence(self, seq, arr):
+        arr.append(seq.id)
+        if seq.next is None:
+            return arr
+        arr = self.gen_sequence(seq.next, arr)
+        return arr
+
+    @property
+    def sequence(self):
+        return self.gen_sequence(self.seq, [])
+
+
+class Color(Base):
+    __tablename__ = "colors"
+
+    id = Column(Integer, primary_key=True)
+    text_color = Column(String)
+    background_color = Column(String)
+
+
+class Prepend(Base):
+    __tablename__ = "prepends"
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
 
 
 class Question(Base):
@@ -30,6 +87,18 @@ class Question(Base):
 
     id = Column(Integer, primary_key=True)
     text = Column(Text)
+    color_id = Column(
+        Integer,
+        ForeignKey(
+            'colors.id',
+        ), nullable=False
+    )
+    prepend_id = Column(
+        Integer,
+        ForeignKey(
+            'prepends.id',
+        ), nullable=False
+    )
 
     options = relationship(
         'Option',
@@ -37,28 +106,70 @@ class Question(Base):
         foreign_keys="Option.question_id"
     )
 
-    def get_id(self):
+    color = relationship(
+        'Color',
+        uselist=False
+    )
+
+    prepend = relationship(
+        'Prepend',
+        uselist=False
+    )
+
+    @property
+    def unique_id(self):
         return f"q_{self.id}"
+
+
+class Area(Base):
+    __tablename__ = "areas"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    options = relationship(
+        'Option',
+        foreign_keys="Option.area_id"
+    )
+
+    @property
+    def unique_id(self):
+        return f"a_{self.id}"
 
 
 class Option(Base):
     __tablename__ = "options"
     __table_args__ = (
         CheckConstraint(
-            '(next_question_id IS NULL AND next_diagnose_id IS NOT NULL)'
-            'OR (next_question_id IS NOT NULL AND next_diagnose_id IS NULL)',
+            '(next_question_id IS NOT NULL AND next_diagnose_id IS NULL AND next_area_id IS NULL)'
+            'OR (next_question_id IS NULL AND next_diagnose_id IS NOT NULL AND next_area_id IS NULL)'
+            'OR (next_question_id IS NULL AND next_diagnose_id IS NULL AND next_area_id IS NOT NULL)',
+            name='one-of-three'
+        ),
+        CheckConstraint(
+            '(question_id IS NOT NULL AND area_id IS NULL)'
+            'OR (question_id IS NULL AND area_id IS NOT NULL)',
             name='one-of-two'
         ),
     )
 
     id = Column(Integer, primary_key=True)
+
     question_id = Column(
         Integer,
         ForeignKey(
             'questions.id',
             ondelete='CASCADE',
             onupdate='CASCADE'
-        ), nullable=False
+        ), nullable=True
+    )
+    area_id = Column(
+        Integer,
+        ForeignKey(
+            'areas.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
     )
     label = Column(String)
     next_question_id = Column(
@@ -77,6 +188,14 @@ class Option(Base):
             onupdate='CASCADE'
         ), nullable=True
     )
+    next_area_id = Column(
+        Integer,
+        ForeignKey(
+            'areas.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
 
     question = relationship(
         'Question',
@@ -87,12 +206,21 @@ class Option(Base):
         'Diagnose',
         backref='questions',
     )
+    area = relationship(
+        'Area',
+        backref='questions',
+        foreign_keys="Option.next_area_id"
+    )
+
+    diagnoses = relationship("Diagnose", secondary=subarea_diagnoses)
 
     @property
     def next_option(self):
         if self.question:
             return self.question
-        return self.diagnose
+        elif self.diagnose:
+            return self.diagnose
+        return self.area
 
 
 class User(Base):
@@ -106,7 +234,7 @@ class User(Base):
     sex = Column(String)
     birthday = Column(Date)
 
-    diagnoses = relationship("Diagnose", secondary=user_diagnoses)
+    diagnoses = relationship("UserDiagnose")
 
     def generate_password(self, pwd):
         return hashpw(pwd.encode(), gensalt()).decode()

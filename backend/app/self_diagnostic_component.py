@@ -1,95 +1,120 @@
-from sqlalchemy import null
-
-
 self_diagnostic_component = {
-    "q_1": {
-        "type": "question",
-        "text": "Bolest chrbta vyzarujuca na hrudnik",
-        "options": [
-            {
-                "label": "Bolest citit v oblasti rebier",
-                "ref": "q_2"
+    "areas": {
+        "Bolesť vrchnej časti chrbta": "a_33"
+    },
+    "self-diagnose": {
+        "a_33": {
+            "name": "Bolesť vrchnej časti chrbta",
+            "options": [
+                {
+                    "label": "Bolesť pozdĺž hrudnej chrbtice",
+                    "ref": "q_50"
+                },
+                {
+                    "label": "Bolesť v okolí jednej lopatky",
+                    "ref": "q_52"
+                },
+                {
+                    "label": "Bolesť v oblasti krku, vrchu oboch ramien (oblasť šije a trapézov, nie priamo rameno) a v oblasti vrchnej časti  lopatiek",
+                    "ref": "q_53"
+                }
+            ]
+        },
+        "q_50": {
+            "text": "...Vám vyžaruje zboku až spredu smerom na hrudník.",
+            "prepend": "Táto bolesť...",
+            "color": {
+                "background-color": "#F6F1EE",
+                "text-color": "#012C3D"
             },
-            {
-                "label": "Bolest citit v oblasti prs az hrudnej kosti",
-                "ref": "q_3"
-            }
-        ]
-    },
-    "q_2": {
-        "type": "question",
-        "text": "Zhorsuje sa pri nadychu",
-        "options": [
-            {
-                "label": "Ano",
-                "ref": "d_1"
+            "options": [
+                {
+                    "label": "Áno",
+                    "ref": "d_116"
+                },
+                {
+                    "label": "Nie",
+                    "ref": "q_51"
+                }
+            ]
+        },
+        "q_51": {
+            "text": "...sa Vám pri nádychu zhoršuje.",
+            "prepend": "Táto bolesť...",
+            "color": {
+                "background-color": "#F6F1EE",
+                "text-color": "#012C3D"
             },
-            {
-                "label": "Nie",
-                "ref": "d_2"
-            }
-        ]
-    },
-    "q_3": {
-        "type": "question",
-        "text": "Trpite na vysoky krvny tlak",
-        "options": [
-            {
-                "label": "Ano",
-                "ref": "d_3"
+            "options": [
+                {
+                    "label": "Áno",
+                    "ref": "d_117"
+                },
+                {
+                    "label": "Nie",
+                    "ref": "d_118"
+                }
+            ]
+        },
+        "q_52": {
+            "text": "...Vám vyžaruje do hrudníka.",
+            "prepend": "Táto bolesť...",
+            "color": {
+                "background-color": "#F6F1EE",
+                "text-color": "#012C3D"
             },
-            {
-                "label": "Nie",
-                "ref": "q_4"
-            }
-        ]
-    },
-    "q_4": {
-        "type": "question",
-        "text": "Nedavna intenzivna namaha",
-        "options": [
-            {
-                "label": "Ano",
-                "ref": "q_5"
+            "options": [
+                {
+                    "label": "Áno",
+                    "ref": "d_117"
+                },
+                {
+                    "label": "Nie",
+                    "ref": "d_119"
+                }
+            ]
+        },
+        "q_53": {
+            "text": "... Vám vyžaruje iba na jednej strane do ruky.",
+            "prepend": "Táto bolesť...",
+            "color": {
+                "background-color": "#F6F1EE",
+                "text-color": "#012C3D"
             },
-            {
-                "label": "Nie",
-                "ref": "q_2"
-            }
-        ]
-    },
-    "q_5": {
-        "type": "question",
-        "text": "Pritomna bolest aj na chrbte",
-        "options": [
-            {
-                "label": "Ano",
-                "ref": "q_2"
-            },
-            {
-                "label": "Nie",
-                "ref": "d_4"
-            }
-        ]
-    },
-    "d_1": {
-        "type": "diagnose",
-        "name": "Blok stavcov",
-        "text": "nic"
-    },
-    "d_2": {
-        "type": "diagnose",
-        "name": "Myofascialny",
-        "text": "nic"
-    },
-    "d_3": {
-        "type": "diagnose",
-        "name": "Mozne ochorenie srdcoveho svalu",
-        "text": "nic"
-    },
-    "d_4": {
-        "type": "diagnose",
-        "name": "Tendinopatia",
-        "text": "nic"
+            "options": [
+                {
+                    "label": "Áno",
+                    "ref": "d_120"
+                },
+                {
+                    "label": "Nie",
+                    "ref": "d_121"
+                }
+            ]
+        },
+        "d_121": {
+            "name": "Horný skrížený syndróm",
+            "text": ""
+        },
+        "d_116": {
+            "name": "Interkostálna neuralgia",
+            "text": ""
+        },
+        "d_117": {
+            "name": "Blok stavcov hrudnej chrbtice",
+            "text": ""
+        },
+        "d_118": {
+            "name": "Myofasciálny syndróm hrudnej chrbtice",
+            "text": ""
+        },
+        "d_119": {
+            "name": "Myofasciálny synróm - mm. rhomboidei",
+            "text": ""
+        },
+        "d_120": {
+            "name": "Kvadrantový syndŕom",
+            "text": ""
+        }
     }
 }
