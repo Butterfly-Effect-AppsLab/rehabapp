@@ -1,14 +1,8 @@
 .main h1 {
-    margin: 0px 20px;
-  }
-  
-  
-  .grid-container {
-      display: grid;
-      grid-template-columns: auto auto;
-  }
-  
-  .grid-item {
-    padding: 10px;
-  }
-  
+  margin: 20px 20px;
+}
+
+ion-item {
+  --background: "transparent";
+  --color: var(--app-background);
+}

@@ -16,25 +16,27 @@ export class SliderPage implements OnInit {
     speed: 400
   };
 
+
   buttonText: string = "Pokračovať";
 
   constructor(private router: Router) {  
   }
 
-  ngOnInit() {       
+  ngOnInit() {        
   }
 
 
   async slideNext() {
-    let id = await this.slides.getActiveIndex()
+    let id = await this.slides.getActiveIndex();     
 
-    // if (id == 2)
-    //    this.router.navigateByUrl('/#SOMEPAGE#');     // navigate to slef diagnostic process page
 
+    if (id == 2)
+       this.router.navigateByUrl('/selection');    
+    
     this.slides.slideNext();
   }
 
-  changeText(text?: string) { 
+  changeText(text?: string) {
     this.slides.getActiveIndex().then(
       (id) => {       
         if (id == 2)

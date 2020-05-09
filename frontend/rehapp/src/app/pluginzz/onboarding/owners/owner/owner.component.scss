@@ -1,9 +1,12 @@
-ion-item {
-    --background: rgb(164, 226, 255);
-    --color: #0000ff;
-}
-
 .item {
     display: flex;
-    text-align: center;
+}
+
+ion-item {
+    --background: "transparent";
+    --color: var(--app-background);
+
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
