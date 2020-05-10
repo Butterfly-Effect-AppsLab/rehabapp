@@ -16,17 +16,18 @@ export class SelfDiagnosticPage implements OnInit {
   public questionForChild: object = {};
   public textForChild: String = "";
 
-  public APIresponse: object = {};
+  public questions: [];           // create Question interface
+  public areas: {};               // create Areas interface
 
-
-  public questions: Array<Question> = [];
+  private areaID: string;
 
   public subscription: Array<Subscription> = [];
   public observables;
 
   constructor(private api: APIService) { 
-    this.getQuestionsFromAPI();
-    console.log("log" + (JSON.stringify(this.APIresponse)));
+    this.getQuestionsFromAPI();    
+    
+   // console.log(this.questions);
     
   }
 
@@ -42,44 +43,51 @@ export class SelfDiagnosticPage implements OnInit {
   getQuestionsFromAPI() {
     this.api.getQuestions().subscribe(
         resp => { 
-          console.log(resp);
+          console.log(resp.body['self-diagnose']);
+          console.log(resp.body['areas']);
           
-          this.APIresponse = resp;
+          
+          this.questions = resp.body['self-diagnose'];
+          this.areas = resp.body['areas'];
          }
     )
     
   }
 
-  childAnswered(id: string){
-    console.log("ANSWER = " + id);
+  // childAnswered(id: string){
+  //   console.log("ANSWER = " + id);
     
 
-    if (this.APIresponse[id]["type"] == "question"){
-      this.type = "YesNo"
-      this.questionForChild = this.APIresponse[id];
-    }
-    if (this.APIresponse[id]["type"] == "diagnose"){
-      this.type = "Diagnose"
-      this.textForChild = this.APIresponse[id];
-    }
+  //   if (this.APIresponse[id]["type"] == "question"){
+  //     this.type = "YesNo"
+  //     this.questionForChild = this.APIresponse[id];
+  //   }
+  //   if (this.APIresponse[id]["type"] == "diagnose"){
+  //     this.type = "Diagnose"
+  //     this.textForChild = this.APIresponse[id];
+  //   }
 
+  // }
+
+  getQuestionsForArea(area: string) {
+    return this.areas[area];
   }
 
-  findQuestion(id: string): Question {
-    return this.APIresponse[id];
-  }
+  // findQuestion(id: string) {
+  //   return this.APIresponse[id];
+  // }
 
   start(){
-    this.type = "YesNo";
+    this.type = "Question";
     
-    this.questionForChild = this.findQuestion('q_1');
-    console.log(this.questionForChild);
+    // this.questionForChild = this.findQuestion('q_1');
+    // console.log(this.questionForChild);
     
   }
 
-  multiOptClick() {
-    this.type = "MultiOpt";
-  }
+  // multiOptClick() {
+  //   this.type = "MultiOpt";
+  // }
 
   diagnoseClick(){
     this.type = "Diagnose";

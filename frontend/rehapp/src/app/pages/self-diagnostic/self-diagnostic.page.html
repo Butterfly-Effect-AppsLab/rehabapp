@@ -23,7 +23,7 @@
 </ion-button>
 <br />
 
-<app-question *ngIf="type == 'YesNo'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></app-question>
+<app-question *ngIf="type == 'Question'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></app-question>
 <app-diagnose *ngIf="type == 'Diagnose'" [diagnose]="textForChild"></app-diagnose>
 
 
