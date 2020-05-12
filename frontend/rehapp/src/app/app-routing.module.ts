@@ -15,6 +15,12 @@ const routes: Routes = [
     path: 'onboarding',
     loadChildren: () => import('./pages/onboarding/onboarding-routing.module').then( m => m.OnboardingPageRoutingModule)
   },
+  {
+    path: 'selection',
+    loadChildren: () => import('./pages/body-part-selection/body-part-selection.module').then( m => m.BodyPartSelectionPageModule)
+  },
+
+
  
   
 

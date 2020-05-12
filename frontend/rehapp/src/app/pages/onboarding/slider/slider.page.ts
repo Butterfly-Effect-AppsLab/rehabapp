@@ -28,8 +28,8 @@ export class SliderPage implements OnInit {
   async slideNext() {
     let id = await this.slides.getActiveIndex()
 
-    // if (id == 2)
-    //    this.router.navigateByUrl('/#SOMEPAGE#');     // navigate to slef diagnostic process page
+    if (id == 2)
+       this.router.navigateByUrl('/selection');
 
     this.slides.slideNext();
   }
