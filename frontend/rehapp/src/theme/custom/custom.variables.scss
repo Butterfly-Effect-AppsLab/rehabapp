@@ -1,0 +1,17 @@
+:root {
+    --app-background: #F6F1EE;
+}
+
+ion-content {
+    --background: var(--app-background);
+    --color: black;
+}
+
+ion-header {
+    ion-toolbar {
+        --background: var(--app-background);
+        --color: black;
+        text-align: center;
+        text-transform: uppercase;
+    }
+}

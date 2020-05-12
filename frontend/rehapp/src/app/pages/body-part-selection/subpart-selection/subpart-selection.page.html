@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>subpart-selection</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+
+      <ion-col class="ion-no-padding" size="4">
+        <div style="height: 100%;">
+          <span class="helper"></span>
+          <img class="panel" src="/assets/images/img.png" alt="">
+        </div>
+      </ion-col>
+
+      <ion-col class="ion-no-padding" size="8">
+        <div class="btn-wrapper">
+          <div *ngFor="let btn of buttons">
+            <ion-button expand="block" color="light" class="parts-btn" (click)="optionClicked($event)">
+              <p>{{btn.label}}</p> 
+            </ion-button>
+          </div>
+        </div>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <ion-button (click)="onClick()" expand="block" color="light" class="final-btn">
+    Click me
+  </ion-button>
+</ion-content>

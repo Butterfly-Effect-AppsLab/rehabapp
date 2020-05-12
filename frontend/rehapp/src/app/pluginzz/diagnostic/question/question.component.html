@@ -1,3 +1,10 @@
-<p>
-  question works!
-</p>
+<ion-content #cont>
+  <div #main>
+    <h1>{{this.question.prepend}}</h1>
+    <b>{{this.question.text}}</b>
+
+    <div *ngFor="let option of this.options">
+      <ion-button (click)="btnClicked($event)" expand="block" fill="clear" shape="round" style="white-space: normal">{{option.label}}</ion-button>
+    </div>
+  </div>
+</ion-content>

@@ -33,3 +33,4 @@
 /frontend/*/e2e
 /frontend/*/android
 /frontend/*/ios
+/frontend/*/src/app/services/api.config.ts

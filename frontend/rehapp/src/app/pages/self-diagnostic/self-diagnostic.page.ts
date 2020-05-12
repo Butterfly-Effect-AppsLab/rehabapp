@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators'
 
 import { APIService } from 'src/app/services/apiservice.service'
-import { Question } from './Question'
+import { ActivatedRoute, Router } from '@angular/router';
+import { async } from '@angular/core/testing';
+import { Area, Option } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-self-diagnostic',
@@ -16,22 +19,33 @@ export class SelfDiagnosticPage implements OnInit {
   public questionForChild: object = {};
   public textForChild: String = "";
 
-  public questions: [];           // create Question interface
-  public areas: {};               // create Areas interface
+  private subpart: Option;
+  private tree;
 
   private areaID: string;
 
   public subscription: Array<Subscription> = [];
   public observables;
 
-  constructor(private api: APIService) { 
-    this.getQuestionsFromAPI();    
-    
-   // console.log(this.questions);
-    
+  constructor(private route: ActivatedRoute, private router: Router, private api: APIService) {
+
+    this.route.queryParams.subscribe( () => {      
+      if (this.router.getCurrentNavigation().extras.state) {      
+        this.tree = this.router.getCurrentNavigation().extras.state.tree;
+        this.subpart = this.router.getCurrentNavigation().extras.state.subpart;        
+      }
+      console.log("subpart:");        
+      console.log(this.subpart);
+      console.log("tree:");
+      console.log(this.tree);
+    });    
   }
 
   ngOnInit() {
+    if (this.tree == undefined){
+      this.getTreeFromAPI();      // ako spravit, aby pockalo, kym sa vykona ???? 
+      this.subpart = {id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1'};
+    }      
   }
 
   ngOnDestroy() {
@@ -40,18 +54,13 @@ export class SelfDiagnosticPage implements OnInit {
     );
   }
 
-  getQuestionsFromAPI() {
-    this.api.getQuestions().subscribe(
-        resp => { 
-          console.log(resp.body['self-diagnose']);
-          console.log(resp.body['areas']);
-          
-          
-          this.questions = resp.body['self-diagnose'];
-          this.areas = resp.body['areas'];
-         }
-    )
-    
+  getTreeFromAPI() {
+    this.api.getTree().subscribe(
+      resp => { 
+        this.tree = resp.body["self-diagnose"];
+        this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0]; 
+      }     
+    )    
   }
 
   // childAnswered(id: string){
@@ -69,9 +78,9 @@ export class SelfDiagnosticPage implements OnInit {
 
   // }
 
-  getQuestionsForArea(area: string) {
-    return this.areas[area];
-  }
+  // getQuestionsForArea(area: string) {
+  //   return this.areas[area];
+  // }
 
   // findQuestion(id: string) {
   //   return this.APIresponse[id];
@@ -79,10 +88,7 @@ export class SelfDiagnosticPage implements OnInit {
 
   start(){
     this.type = "Question";
-    
-    // this.questionForChild = this.findQuestion('q_1');
-    // console.log(this.questionForChild);
-    
+    this.questionForChild = this.tree[this.subpart.ref]
   }
 
   // multiOptClick() {

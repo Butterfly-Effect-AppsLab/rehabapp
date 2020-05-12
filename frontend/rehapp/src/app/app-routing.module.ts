@@ -19,6 +19,11 @@ const routes: Routes = [
     path: 'diagnostic',
     loadChildren: () => import('./pages/self-diagnostic/self-diagnostic.module').then( m => m.SelfDiagnosticPageModule)
   },
+  {
+    path: 'selection',
+    loadChildren: () => import('./pages/body-part-selection/body-part-selection.module').then( m => m.BodyPartSelectionPageModule)
+  },
+
 
  
   

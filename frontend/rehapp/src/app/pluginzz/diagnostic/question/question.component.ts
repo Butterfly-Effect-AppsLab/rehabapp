@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Option } from 'src/app/pages/self-diagnostic/Question';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Option, Question } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-question',
@@ -8,16 +8,18 @@ import { Option } from 'src/app/pages/self-diagnostic/Question';
 })
 export class QuestionComponent implements OnInit {
 
-  @Input() question: Object
+  @Input() question: Question
   @Output() onAnswer: EventEmitter<string> = new EventEmitter();
-  
+  @ViewChild('main', {static:true} ) mainDiv: ElementRef
+
   options: Option[];
 
-  constructor() { 
-  }
+  constructor() {}
 
   ngOnInit() {
     this.options = this.question['options'];      
+    this.mainDiv.nativeElement['style']['backgroundColor'] = this.question.color["background-color"];
+    this.mainDiv.nativeElement['style']['color'] = this.question.color["text-color"];
   }
 
   btnClicked(event: any){
