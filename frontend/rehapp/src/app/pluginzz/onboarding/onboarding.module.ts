@@ -4,12 +4,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { OwnersComponent } from './owners/owners.component';
 import { OwnerComponent } from './owners/owner/owner.component';
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
     declarations: [
         WelcomeComponent,
         OwnersComponent,
-        OwnerComponent
+        OwnerComponent,
+        InfoComponent
     ],
     imports: [
         IonicModule,
@@ -18,7 +20,8 @@ import { OwnerComponent } from './owners/owner/owner.component';
     exports: [
         WelcomeComponent,
         OwnersComponent,
-        OwnerComponent
+        OwnerComponent,
+        InfoComponent
     ]
     
 })

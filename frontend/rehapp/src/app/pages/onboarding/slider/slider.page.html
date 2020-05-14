@@ -1,11 +1,7 @@
-<!-- <ion-toolbar id="close">
-  <ion-button id="close" fill="clear" [routerLink]="['/']">
-    <ion-icon name="close-circle-outline"></ion-icon>
-  </ion-button>
-</ion-toolbar> -->
-
 <ion-content>
-  <ion-slides #slider class="slider" [options]="slideOpts" pager (ionSlideWillChange)="changeText()">
+  <div class="side left" (click)="slidePrev()"></div>
+  <div class="side right" (click)="slideNext()"></div>
+  <ion-slides #slider class="slider" [options]="slideOpts" (ionSlideWillChange)="changeText()">
     <ion-slide class="slide first">
       <app-welcome></app-welcome>
     </ion-slide>
@@ -13,11 +9,13 @@
       <app-owners></app-owners>
     </ion-slide>
     <ion-slide class="slide third"> 
-      <h1 style="padding: 20px;">Začnite so samodiagnostikou :)</h1>
+      <app-info></app-info>
     </ion-slide>
   </ion-slides>
 
-  <!-- <ion-button (click)="slideNext()" expand="block" fill="solid" shape="round">
-    {{buttonText}}
-  </ion-button> -->
+  <div *ngIf="lastSlide" class="btnDiv"> 
+    <ion-button (click)="slideNext()" expand="block" fill="outline" shape="round" size="large">
+      ZAČNITE
+    </ion-button>
+  </div>
 </ion-content>

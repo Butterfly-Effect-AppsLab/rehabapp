@@ -1,6 +1,28 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins/Poppins-Regular.otf');
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins/Poppins-Bold.otf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets/fonts/Poppins/Poppins-Italic.otf');
+  font-style: italic;
+}
+
+* {
+  font-family: 'Poppins';
+}
+
+
+
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
