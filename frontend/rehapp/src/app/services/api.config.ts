@@ -1,1 +1,0 @@
-export var API_URL:string = 'http://192.168.99.100:8000/';
