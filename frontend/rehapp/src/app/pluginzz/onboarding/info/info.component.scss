@@ -1,8 +1,10 @@
 .main {
     position: absolute;
+    height: 60%;
+    overflow-y: scroll;
+    width: 100%;
     top: 10%;
-    left: 0;
-    margin: 0px 10%;
+    left: 0%;
     color: var(--app-font-color-default);
 
     h1 {
@@ -12,10 +14,11 @@
         text-align: center;
     }
 
-    div {
+    .line {
+        text-align: center;
         height: 1px;
         width: 20%;
-        margin: auto;
+        margin: 5% auto;
         border-bottom: 1px solid var(--app-font-color-default);
     }
 

@@ -3,6 +3,7 @@
 */__pycache__
 /backend/app/config_dev.py
 
+/frontend/rehapp/src/app/services/api.config.ts
 /frontend/*/*~
 /frontend/*/*.sw[mnpcod]
 /frontend/*/.tmp

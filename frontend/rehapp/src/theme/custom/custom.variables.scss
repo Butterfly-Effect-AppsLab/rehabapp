@@ -1,8 +1,18 @@
 :root {
     --app-background: #F6F1EE;
+    --app-font-color-default: #012C3D;  
 }
 
 ion-content {
     --background: var(--app-background);
-    --color: black;
+    --color: var(--app-font-color-default);
+}
+
+ion-header {
+    ion-toolbar {
+        --background: var(--app-background);
+        --color: var(--app-font-color-default);
+        text-align: center;
+        text-transform: uppercase;
+    }
 }
