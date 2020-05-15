@@ -1,10 +1,12 @@
 ion-content {
   width: 100vw;
-  height: 100vh ;
+  height: 100vh;
 }
 
 .main {
   position: absolute;
+  height: 70%;
+  overflow-y: scroll; 
   top: 10%;
   left: 0;
   margin: 0px 5%;
@@ -22,6 +24,17 @@ ion-grid {
     text-align: start;
 
     ion-col {
+      display: table-cell;
+      vertical-align: middle;
+
+      ion-avatar{
+        width: 100%;
+        height: auto;
+        src {
+          width: 100%;
+          width: 80%;
+        }
+      }
       p {
         margin-top: 0;
         margin-bottom: 5px;

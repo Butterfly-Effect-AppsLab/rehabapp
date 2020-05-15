@@ -25,11 +25,28 @@
     right: 0;
 }
 
+.slide {
+    background-size: 300vw 100vh;
+    background-repeat: no-repeat;
+}
+
+.first {
+    background-image: url(src\assets\images\entire.png);
+}   
+.second {
+    background-image: url(src\assets\images\entire.png);
+    background-position-x: -100vw;
+}
+.third {  
+    background-image: url(src\assets\images\entire.png);
+    background-position: -200vw;
+}
+
 .btnDiv {
-    left: 50%;
     width: 50%;
-    margin-left: -25%;
-    margin-top: -20%;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%);
     
     ion-button {
         --border-color: black;    
@@ -38,29 +55,11 @@
 }
 
 .txt {
-    right: 8%;
-    padding-top: 2.5%;
+    right: 5%;
+    bottom: 5%;
 }
 
 .fixed {
     z-index: 99;
     position: fixed;
-    top: 90%;
-}
-
-.slide {
-    background-size: 300vw 100vh;
-    background-repeat: no-repeat;
-}
-
-.first {
-    background-image: url(src\assets\images\entire.png);
-    }   
-.second {
-    background-image: url(src\assets\images\entire.png);
-    background-position-x: -100vw;
-}
-.third {  
-    background-image: url(src\assets\images\entire.png);
-    background-position: -200vw;
 }
