@@ -3,7 +3,12 @@
     text-align: center;
     position: relative;
     overflow: hidden;
+
+    --bullet-background: #8ABEC4;
+    --bullet-background-active: #F8444F;
+    // other pagination bullet design (color, position, opacity) is defined in variables.scss    
 }
+
 
 .side {
     position: absolute;
@@ -21,17 +26,26 @@
 }
 
 .btnDiv {
-    position: fixed;
-    top: 80%;
     left: 50%;
     width: 50%;
     margin-left: -25%;
-    z-index: 99;
+    margin-top: -20%;
     
     ion-button {
         --border-color: black;    
         --color: black;
     }
+}
+
+.txt {
+    right: 8%;
+    padding-top: 2.5%;
+}
+
+.fixed {
+    z-index: 99;
+    position: fixed;
+    top: 90%;
 }
 
 .slide {

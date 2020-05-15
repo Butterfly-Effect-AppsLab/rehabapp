@@ -9,14 +9,21 @@ import { LoadingController } from '@ionic/angular';
 })
 export class HomepagePage implements OnInit {
 
-  constructor(private loadingController: LoadingController) { }
+  progress: number = 0;
+  loaded:boolean = false;
 
-  loaded: boolean = false;
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.loaded = true;
-    }, 2000);
+  constructor(private router: Router) { 
+    let interval = setInterval(() => {
+      this.progress += 0.01;
+      if (this.progress >= 1.2) {
+        clearInterval(interval);
+        this.router.navigateByUrl('/onboarding');
+      }
+    }, 25)
+  }
+
+  ngOnInit() {  
   }
 }
 

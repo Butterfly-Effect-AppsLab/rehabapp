@@ -36,9 +36,13 @@ export class SliderPage implements OnInit {
 
 
     if (id == 2)
-       this.router.navigateByUrl('/selection');    
+      this.skip();          
     
     this.slides.slideNext();
+  }
+
+  skip() {
+    this.router.navigateByUrl('/selection'); 
   }
 
   changeText(text?: string) {

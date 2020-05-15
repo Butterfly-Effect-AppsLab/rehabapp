@@ -1,7 +1,7 @@
 <ion-content>
   <div class="side left" (click)="slidePrev()"></div>
   <div class="side right" (click)="slideNext()"></div>
-  <ion-slides #slider class="slider" [options]="slideOpts" (ionSlideWillChange)="changeText()">
+  <ion-slides #slider class="slider" pager [options]="slideOpts" (ionSlideWillChange)="changeText()">
     <ion-slide class="slide first">
       <app-welcome></app-welcome>
     </ion-slide>
@@ -13,9 +13,10 @@
     </ion-slide>
   </ion-slides>
 
-  <div *ngIf="lastSlide" class="btnDiv"> 
+  <div *ngIf="lastSlide" class="btnDiv fixed"> 
     <ion-button (click)="slideNext()" expand="block" fill="outline" shape="round" size="large">
       ZAČNITE
     </ion-button>
   </div>
+  <b (click)="skip()" class="txt fixed">Preskočiť</b>
 </ion-content>
