@@ -34,7 +34,6 @@ export class SliderPage implements OnInit {
   async slideNext() {
     let id = await this.slides.getActiveIndex();     
 
-
     if (id == 2)
       this.skip();          
     
