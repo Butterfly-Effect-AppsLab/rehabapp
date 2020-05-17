@@ -1,23 +1,36 @@
-.be180c2c-7bf2-4122-8e45-dca7f6b2e4a7 {
-  fill: red;
-}
-
-.a799f157-5312-40ae-8cc0-f2125fcee972 {
-  fill: #a50505;
-}
-
-.a64884cd-0379-459d-81f2-65add6308a0a {
-  fill: #0f0505;
-}
-
 #body{
   margin: auto;
+  // display: none;
   display: block;
   height: 100%;
 }
 
+#backBody{
+  margin: auto;
+  display: none;
+  // display: block;
+  height: 100%;
+}
+
 #body-wrapper{
-  height: 90vh;
+  height:calc(100vh - 50px);
   overflow: hidden;
-  border-bottom: 1px solid black;
+}
+
+#button-wrapper{
+  ion-button{
+    float: left;
+    width: 45%;
+  }
+}
+
+#buttons{
+  opacity: 0;
+  overflow: scroll;
+  display: none;
+
+  ion-button{
+    --background: #C4C4C4;
+    color: #012C3D;
+  }
 }

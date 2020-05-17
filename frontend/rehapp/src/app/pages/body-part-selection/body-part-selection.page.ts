@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Router, NavigationExtras } from '@angular/router';
 
 import { APIService } from 'src/app/services/apiservice.service';
-import { Animation, AnimationController } from '@ionic/angular';
-import { async } from '@angular/core/testing';
+import { Animation, AnimationController, Platform, IonRouterOutlet } from '@ionic/angular';
+import Body from 'src/app/services/models/Body';
 
 
 @Component({
@@ -13,185 +13,281 @@ import { async } from '@angular/core/testing';
 })
 export class BodyPartSelectionPage implements OnInit {
 
-  actualCircle: any;
-  actualSubarea: any;
-  partSelected: boolean = false;
-  partSubmitted: boolean = false;
+  actualCircle: Element;
+  actualSubarea: Element;
+  actualSide: string = 'front';
+  opositeSide: string = 'back';
+  visibleSide: string = 'front';
+  areaSelected: boolean = false;
+  areaSubmitted: boolean = false;
+  subareaSelected: boolean = false;
   questions;
   areas;
-  @ViewChild('square', { static: false }) square: ElementRef;
+  @ViewChild('buttons', { static: false }) buttons: ElementRef;
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
   @ViewChild('body', { static: false }) body: ElementRef;
+  @ViewChild('backBody', { static: false }) backBody: ElementRef;
 
-  left;
-  ratio;
+  left: number;
+  ratio: number;
+  zoom: Animation;
+  opositeZoom: Animation;
+  shrink: Animation;
+  showOptions: Animation;
+  wrapperSize: Number;
 
-  constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController) {
+  bodies: any;
+
+  constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet) {
+
+    this.bodies = {};
+
     this.api.getTree().subscribe(
       resp => {
         this.questions = resp.body['self-diagnose'];
         this.areas = resp.body['areas'];
       }
     )
+
+    platform.ready().then(() => {
+
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        if (this.areaSubmitted)
+          this.backward();
+        else
+          this.routerOutlet.pop();
+      });
+    });
+  }
+
+  changeSubAreaOpacity(opacity: number) {
+    Array.from(this.actualSubarea.children).forEach(function (child: any) {
+      child.style.opacity = opacity;
+    });
+  }
+
+  back() {
+    this.backward();
   }
 
   ngOnInit() {
   }
 
-  ionViewDidEnter() {    
-    this.ratio = this.bodyWrapper.nativeElement.offsetHeight/Number(this.body.nativeElement.getAttribute('viewBox').split(" ")[3]);
+  ionViewDidEnter() {
 
-    console.log(this.ratio);
+    this.bodies['front'] = new Body('front');
+    this.bodies['back'] = new Body('back');
 
-    this.body.nativeElement.style.height = this.bodyWrapper.nativeElement.offsetHeight;
-    this.left = (this.bodyWrapper.nativeElement.offsetWidth - this.body.nativeElement.getBoundingClientRect().width) / 2;
-    console.log(this.left);
-    this.body.nativeElement.style.width = this.bodyWrapper.nativeElement.offsetWidth;
-    this.body.nativeElement.style.margin = 0;
+    this.bodies['front'].body = this.body;
+    this.bodies['back'].body = this.backBody;
 
-    document.getElementById('gulicky').addEventListener('click', event => {
+    this.wrapperSize = this.bodyWrapper.nativeElement.offsetHeight;
+
+    this.ratio = this.bodyWrapper.nativeElement.offsetHeight / Number(this.bodies['front'].body.nativeElement.getAttribute('viewBox').split(" ")[3]);
+    this.left = (this.bodyWrapper.nativeElement.offsetWidth - this.bodies['front'].body.nativeElement.getBoundingClientRect().width) / 2;
+
+    this.bodies['front'].initSide(this.bodyWrapper);
+    this.bodies['back'].initSide(this.bodyWrapper);
+
+    this.bodies['front'].circles = document.getElementById('circles');
+    this.bodies['back'].circles = document.getElementById('backCircles');
+
+    this.bodies['front'].circles.addEventListener('click', event => {
+      this.circleClicked(event);
+    })
+    this.bodies['back'].circles.addEventListener('click', event => {
       this.circleClicked(event);
     })
   }
 
-  circleClicked(element: any) {
+  async forward() {
 
-    this.partSelected = true;
+    this.areaSubmitted = true;
+    this.areaSelected = false;
 
-    if (this.actualCircle != undefined)
-      this.actualCircle['style']['fill'] = "red";
+    var areas = {
+      'front':{
+        x: 100,
+        y: 430,
+        width: 112,
+        height: 100
+      },
+      'back':{
+        x: 90,
+        y: 440,
+        width: 112,
+        height: 100
+      }
+    };
 
+    var subarea =areas[this.actualSide];
+    var opositeArea =areas[this.opositeSide];
 
-    this.actualCircle = element.target;
+    var wrapperWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
+    var wrapperHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
 
-    console.log(this.actualCircle.getAttribute('cx'),this.actualCircle.getAttribute('cy'))
+    var newWrapperWidth = Number(subarea.width) * this.ratio;
 
-    this.actualCircle['style']['fill'] = Math.floor(Math.random() * 16777215).toString(16);
-  }
+    var zoom = wrapperWidth / newWrapperWidth;
 
-  showSubpart(element: any) {
+    var newWrapperHeight = Number(subarea.height) * this.ratio * zoom;
 
-    if (this.actualSubarea != undefined) {
-      Array.from(this.actualSubarea.children).forEach(function (child: any) {
-        child.style.opacity = 0.0;
-      });
-    }
+    var buttonsHeight = wrapperHeight - newWrapperHeight;
 
-    var area = element.srcElement.innerHTML.toLowerCase().trim();
-    this.actualSubarea = document.getElementById(area);
-    Array.from(this.actualSubarea.children).forEach(function (child: any) {
-      child.style.opacity = 0.54;
-    });
-  }
+    this.buttons.nativeElement.style.height = buttonsHeight + 'px';
 
-  async submit() {
+    var width = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().width;
+    var height = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().height;
 
-    // let navigationExtras: NavigationExtras = {
-    //   state: {
-    //     'area' : this.areas[this.actualCircle['dataset']['area']],
-    //     'questions' : this.questions
-    //   }
-    // };
-    // this.router.navigate(['/selection/subpart-selection'], navigationExtras);
+    var x = -subarea.x;
+    var y = -subarea.y;
 
-    var rect = document.getElementById('rect');
+    x = (x * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
+    y = (y * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
-    var newWidth = ((Number(rect.getAttribute('width'))*this.ratio));
+    var opositeX = -opositeArea.x;
+    var opositeY = -opositeArea.y;
 
-    console.log('newWidth', newWidth);
+    opositeX = (opositeX * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
+    opositeY = (opositeY * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
-    var maxHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
-    var maxWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
-
-    var zoom = maxWidth/newWidth;
-    // var zoom = 1/0.5971;
-
-    var newHeight = ((Number(rect.getAttribute('height'))*this.ratio))*zoom;
-
-    console.log(newHeight);
-
-    console.log('maxWidth', maxWidth);
-    console.log('zoom', zoom);
-
-    console.log(zoom);
-
-    console.log(rect);
-
-    console.log(this.body.nativeElement.getBoundingClientRect());
-
-    var width = this.body.nativeElement.getBoundingClientRect().width;
-    var height = this.body.nativeElement.getBoundingClientRect().height;
-
-    console.log(this.body.nativeElement.getAttribute('viewBox'));
-
-    var x = -Number(rect.getAttribute('x'));
-    var y =(-Number(rect.getAttribute('y')));
-    // var y = 0;
-
-    console.log(x, y);
-
-    // this.body.nativeElement.setAttribute('viewBox', '0 100 252 675');
-
-    // requestAnimationFrame
-
-    x = (x * this.ratio)-this.left+((zoom*width-width)/2)/zoom;//-this.body.nativeElement.getBoundingClientRect().width/4;
-    y = (y * this.ratio)+((zoom*height-height)/2)/zoom;//-this.body.nativeElement.getBoundingClientRect().height/4;
-
-    console.log(x, y);
-
-    this.actualCircle['style']['opacity'] = 0.0;
-    this.partSubmitted = true;
+    this.bodies[this.actualSide].hideCircles();
+    this.bodies[this.opositeSide].hideCircles();
 
     var duration = 1500;
 
-    console.log(this.body.nativeElement.getBoundingClientRect());
-
-    const animation: Animation = this.animationCtrl.create()
-      .addElement(this.body.nativeElement)
-      .duration(duration)
-      .iterations(1)
+    this.opositeZoom = this.animationCtrl.create()
+      .direction('normal')
+      .addElement(this.bodies[this.opositeSide].body.nativeElement)
+      .duration(0)
       .keyframes([
         { offset: 0, transform: 'scale(1) translate(0px,0px)' },
-        // { offset: 0.5, transform: 'translate('+x+'px,'+y+'px)' },
-        { offset: 1, transform: 'scale('+zoom+') translate('+x+'px,'+y+'px)'}
+        { offset: 1, transform: 'scale(' + zoom + ') translate(' + x + 'px,' + y + 'px)' }
       ]);
 
-    console.log(x, y);
-      // this.body.nativeElement.style.transform= 'scale('+zoom+') translate('+x+'px,'+y+'px)';
-      console.log(x, y);
+    this.zoom = this.animationCtrl.create()
+      .direction('normal')
+      .addElement(this.bodies[this.actualSide].body.nativeElement)
+      .duration(duration)
+      .keyframes([
+        { offset: 0, transform: 'scale(1) translate(0px,0px)' },
+        { offset: 1, transform: 'scale(' + zoom + ') translate(' + x + 'px,' + y + 'px)' }
+      ]);
 
-    // translate(-'+((x*0.853)/2)+'px,-'+((y*0.853)/2)+'px)
-    // const animation: Animation = createAnimation('')
-    // .addElement(this.square.nativeElement)
-    //   .duration(1500)
-    //   .iterations(Infinity)
-    //   .fromTo('transform', 'scale('+zoom+') translate('+x+'px,'+y+'px)')
-    //   .fromTo('opacity', '1', '0.2');
-
-    console.log('porovnanie',newHeight, maxHeight, newWidth, maxWidth)
-
-    const animation2: Animation = this.animationCtrl.create()
+    this.shrink = this.animationCtrl.create()
+      .direction('normal')
       .addElement(this.bodyWrapper.nativeElement)
       .duration(duration)
       .iterations(1)
       .keyframes([
-        { offset: 0, height: '90vh' },
-        { offset: 0.8, height: '90vh' },
-        { offset: 1, height: newHeight+'px' }
+        { offset: 0, height: this.wrapperSize + "px" },
+        { offset: 0.8, height: this.wrapperSize + "px" },
+        { offset: 1, height: newWrapperHeight + 'px' }
       ]);
 
-    // const animation: Animation = createAnimation('')
-    // .addElement(this.square.nativeElement)
-    //   .duration(1500)
-    //   .iterations(Infinity)
-    //   .fromTo('transform', 'translateX(0px)', 'translateX(100px)')
-    //   .fromTo('opacity', '1', '0.2');
+    this.zoom.play();
+    await this.shrink.play();
 
-    // bodyWrapper.style.height = "30vh";
-    animation.play();
-    animation2.play();
+    this.buttons.nativeElement.style.display = "block";
 
-    console.log(this.body.nativeElement.getBoundingClientRect());
+    this.showOptions = this.animationCtrl.create()
+      .direction('normal')
+      .addElement(this.buttons.nativeElement)
+      .duration(500)
+      .iterations(1)
+      .keyframes([
+        { offset: 0, opacity: '0' },
+        { offset: 1, opacity: '1' }
+      ]);
 
+    await this.showOptions.play();
+    this.opositeZoom.play();
+  }
+
+  async backward() {
+    this.bodies[this.opositeSide].hideBody();
+    this.bodies[this.actualSide].showBody();
+    this.visibleSide = this.actualSide;
+
+    if (this.subareaSelected)
+      this.changeSubAreaOpacity(0.0);
+
+    this.areaSelected = false;
+    this.subareaSelected = false;
+    this.actualCircle = undefined;
+    this.actualSubarea = undefined;
+
+    this.buttons.nativeElement.style.display = "none";
+
+    this.bodies[this.opositeSide].showCircles();
+
+    this.zoom.direction('reverse');
+    this.opositeZoom.direction('reverse');
+    this.shrink.direction('reverse');
+
+    this.zoom.play();
+    await this.shrink.play();
+
+    this.bodies[this.actualSide].showCircles();
+    this.areaSubmitted = false;
+
+    this.showOptions.direction('reverse');
+
+    this.showOptions.play();
+    this.opositeZoom.play();
+  }
+
+  circleClicked(element: any) {
+    this.areaSelected = true;
+
+    if (this.actualCircle != undefined)
+      this.actualCircle['style']['fill'] = "black";
+
+    this.actualCircle = element.target;
+
+    this.actualCircle['style']['fill'] = 'red';
+  }
+
+  showSubpart(subarea: string, side: string) {
+
+    this.subareaSelected = true;
+
+    if (this.actualSubarea != undefined) {
+      this.changeSubAreaOpacity(0.0);
+    }
+
+    if (this.visibleSide != side) {
+      this.visibleSide = side;
+
+      if (this.actualSide == this.visibleSide) {
+        this.bodies[this.opositeSide].hideBody();
+        this.bodies[this.actualSide].showBody();
+      } else {
+        this.bodies[this.actualSide].hideBody();
+        this.bodies[this.opositeSide].showBody();
+      }
+    }
+
+    this.actualSubarea = document.getElementById(subarea);
+    this.changeSubAreaOpacity(0.54);
+  }
+
+  rotate() {
+    var tmpSide = this.actualSide;
+    this.actualSide = this.opositeSide;
+    this.opositeSide = tmpSide;
+    this.visibleSide = this.actualSide;
+
+    this.bodies[this.actualSide].showBody();
+    this.bodies[this.actualSide].changeColorOfCircles('black');
+    this.bodies[this.opositeSide].hideBody();
+
+    this.actualCircle = undefined;
+    this.areaSelected = false;
+  }
+
+  async submit() {
+    if (!this.areaSubmitted)
+      this.forward()
   }
 }
