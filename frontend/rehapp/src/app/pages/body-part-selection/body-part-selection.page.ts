@@ -46,8 +46,8 @@ export class BodyPartSelectionPage implements OnInit {
     this.body.nativeElement.style.height = this.bodyWrapper.nativeElement.offsetHeight;
     this.left = (this.bodyWrapper.nativeElement.offsetWidth - this.body.nativeElement.getBoundingClientRect().width) / 2;
     console.log(this.left);
-    this.body.nativeElement.style.width = this.bodyWrapper.nativeElement.offsetWidth;
-    this.body.nativeElement.style.margin = 0;
+    // this.body.nativeElement.style.width = this.bodyWrapper.nativeElement.offsetWidth;
+    // this.body.nativeElement.style.margin = 0;
 
     document.getElementById('gulicky').addEventListener('click', event => {
       this.circleClicked(event);
@@ -100,8 +100,8 @@ export class BodyPartSelectionPage implements OnInit {
 
     console.log('newWidth', newWidth);
 
-    var maxHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
-    var maxWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
+    var maxHeight = this.body.nativeElement.getBoundingClientRect().height;
+    var maxWidth = this.body.nativeElement.getBoundingClientRect().width;
 
     var zoom = maxWidth/newWidth;
     // var zoom = 1/0.5971;
@@ -134,7 +134,7 @@ export class BodyPartSelectionPage implements OnInit {
 
     // requestAnimationFrame
 
-    x = (x * this.ratio)-this.left+((zoom*width-width)/2)/zoom;//-this.body.nativeElement.getBoundingClientRect().width/4;
+    x = (x * this.ratio)+((zoom*width-width)/2)/zoom;//-this.body.nativeElement.getBoundingClientRect().width/4;
     y = (y * this.ratio)+((zoom*height-height)/2)/zoom;//-this.body.nativeElement.getBoundingClientRect().height/4;
 
     console.log(x, y);
