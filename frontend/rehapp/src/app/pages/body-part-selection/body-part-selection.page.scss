@@ -9,3 +9,15 @@
 .a64884cd-0379-459d-81f2-65add6308a0a {
   fill: #0f0505;
 }
+
+#body{
+  margin: auto;
+  display: block;
+  height: 100%;
+}
+
+#body-wrapper{
+  height: 90vh;
+  overflow: hidden;
+  border-bottom: 1px solid black;
+}
