@@ -44,6 +44,13 @@ export class SliderPage implements OnInit {
     this.router.navigateByUrl('/selection'); 
   }
 
+  clicked(event: MouseEvent) {
+    if(event.x > screen.width/2)
+      this.slideNext();
+    else
+      this.slidePrev();
+  }
+
   changeText(text?: string) {
     this.slides.getActiveIndex().then(
       (id) => {       

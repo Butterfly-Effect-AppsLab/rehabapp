@@ -1,7 +1,5 @@
 <ion-content>
-  <div class="side left" (click)="slidePrev()"></div>
-  <div class="side right" (click)="slideNext()"></div>
-  <ion-slides #slider class="slider" pager [options]="slideOpts" (ionSlideWillChange)="changeText()">
+  <ion-slides #slider class="slider" pager [options]="slideOpts" (ionSlideWillChange)="changeText()" (click)="clicked($event)">
     <ion-slide class="slide first">
       <app-welcome></app-welcome>
     </ion-slide>

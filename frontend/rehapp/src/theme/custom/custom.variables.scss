@@ -1,6 +1,8 @@
 :root {
-    --app-background: #F6F1EE;
-    --app-font-color-default: #012C3D;  
+    --dark:#012C3D;
+    --light:#F6F1EE;
+    --app-background: var(--light);
+    --app-font-color-default: var(--dark);  
 }
 
 ion-content {
