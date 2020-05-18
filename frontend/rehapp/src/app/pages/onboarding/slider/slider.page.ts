@@ -11,36 +11,46 @@ export class SliderPage implements OnInit {
 
   @ViewChild('slider', {static: false}) slides: IonSlides; 
 
+  lastSlide: boolean = false;
+
   slideOpts = {
     initialSlide: 0,
     speed: 400
   };
+
 
   buttonText: string = "Pokračovať";
 
   constructor(private router: Router) {  
   }
 
-  ngOnInit() {       
+  ngOnInit() {        
   }
 
+  slidePrev() {
+    this.slides.slidePrev();
+  }
 
   async slideNext() {
-    let id = await this.slides.getActiveIndex()
+    let id = await this.slides.getActiveIndex();     
 
     if (id == 2)
-       this.router.navigateByUrl('/selection');
-
+      this.skip();          
+    
     this.slides.slideNext();
   }
 
-  changeText(text?: string) { 
+  skip() {
+    this.router.navigateByUrl('/selection'); 
+  }
+
+  changeText(text?: string) {
     this.slides.getActiveIndex().then(
       (id) => {       
         if (id == 2)
-          this.buttonText = "Začať";
+          this.lastSlide = true;
         else
-          this.buttonText = "Pokračovať";
+          this.lastSlide = false;
       }     
     );   
   }

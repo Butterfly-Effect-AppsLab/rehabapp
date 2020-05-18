@@ -1,52 +1,65 @@
-#close {
-    --background: rgb(164, 226, 255);
-}
-
-#close ion-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-#close ion-button ion-icon {
-    color: black;
-    font-size: 20px;
-}
-
-ion-content {
-    --background: rgb(164, 226, 255);
-    --color: #0000ff;
-}
-
-#newdiv {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
-    background-color: green;
-}
- 
 .slider {
-    height: 90%;
+    height: 100%;
     text-align: center;
     position: relative;
     overflow: hidden;
+
+    --bullet-background: #8ABEC4;
+    --bullet-background-active: #F8444F;
+    // other pagination bullet design (color, position, opacity) is defined in variables.scss    
 }
 
-.mid-height {
-    position: fixed;
-    text-align: center;
+
+.side {
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    z-index: 50;
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+}
+
+.slide {
+    background-size: 300vw 100vh;
+    background-repeat: no-repeat;
+}
+
+.first {
+    background-image: url(src\assets\images\entire.png);
+}   
+.second {
+    background-image: url(src\assets\images\entire.png);
+    background-position-x: -100vw;
+}
+.third {  
+    background-image: url(src\assets\images\entire.png);
+    background-position: -200vw;
+}
+
+.btnDiv {
+    width: 50%;
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%);
     
-    top: 50%;
-    transform: translate(0%, -50%);
+    ion-button {
+        --border-color: black;    
+        --color: black;
+    }
 }
 
-.mid-height.h1 {
-    margin: 10px;
+.txt {
+    right: 5%;
+    bottom: 5%;
 }
 
-.onboard-button {
-    --color: green;
-    --border-color: green;
+.fixed {
+    z-index: 99;
+    position: fixed;
 }

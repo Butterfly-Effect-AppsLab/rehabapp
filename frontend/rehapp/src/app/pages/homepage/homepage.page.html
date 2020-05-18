@@ -1,13 +1,11 @@
 <ion-content>
-  <div class="titleicon" >
-    <img class="inside_img" src="assets/images/titleimg.png">
+<div class="main">
+  <div class="main_icon">
+    <img src="../../../assets/images/logo.svg" alt="fitcoregym">
   </div>
-
-  <ion-button class="titlebtn" [routerLink]="['/onboarding']" fill="outline" shape="round" size="large">
-    <ion-toolbar>
-      <ion-icon slot="start" name="arrow-forward-outline"></ion-icon>
-      <p>POKRAČOVAŤ</p> 
-    </ion-toolbar>
-  </ion-button>
-  
+  <div class="main_div">
+    <h1>Vitajte <br/> v Rehappke</h1>
+    <ion-progress-bar [value]="progress"></ion-progress-bar>
+  </div>
+</div>
 </ion-content>
