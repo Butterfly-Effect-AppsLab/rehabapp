@@ -1,5 +1,7 @@
 {
   "name": "rehapp",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

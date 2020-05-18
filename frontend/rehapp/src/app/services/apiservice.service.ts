@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpResponse, HttpHeaders, HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
-
-  const API_URL = 'http://192.168.99.100:8000/';
+import { API_URL } from './api.config'
+import { Tree } from './models/Tree';
 
 
 @Injectable({
@@ -20,11 +20,12 @@ export class APIService {
 
   constructor(private http: HttpClient) { }
 
-  // public getQuestions(): Observable<HttpResponse<any>> {
-  //   return this.http.get<any>(API_URL + "questions", {observe: 'response'})
+  // public getQuestions(): Observable<HttpResponse<Question[]>> {
+  //   return this.http.get<Question[]>(API_URL + "questions", {observe: 'response'})
+  // }
 
-  public getQuestions() {
-    return this.http.get(API_URL + "questions", {observe: 'response'});
+  public getTree(): Observable<HttpResponse<Tree>> {
+    return this.http.get<Tree>(API_URL + "questions", {observe: 'response'});
   }
 
 }

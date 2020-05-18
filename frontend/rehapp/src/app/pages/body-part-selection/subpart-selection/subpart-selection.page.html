@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>subpart-selection</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -19,8 +22,8 @@
       <ion-col class="ion-no-padding" size="8">
         <div class="btn-wrapper">
           <div *ngFor="let btn of buttons">
-            <ion-button expand="block" color="light" class="parts-btn">
-              <p style="font-size: 8px;">{{btn.label}}</p>
+            <ion-button expand="block" color="light" class="parts-btn" (click)="optionClicked($event)">
+              <p>{{btn.label}}</p> 
             </ion-button>
           </div>
         </div>

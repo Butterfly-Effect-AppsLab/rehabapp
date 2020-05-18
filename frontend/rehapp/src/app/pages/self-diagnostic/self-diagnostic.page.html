@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Diagnostický nástroj
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<h1>{{subpart.label}}</h1>
+ 
+<br />
+<ion-button *ngIf="type == ''" (click)="start()" fill="solid" shape="round">
+  Spustiť
+</ion-button>
+<br />
+
+<app-question *ngIf="type == 'Question'" [question]="questionForChild" (onAnswer)="childAnswered($event)"></app-question>
+<app-diagnose *ngIf="type == 'Diagnose'" [diagnose]="textForChild"></app-diagnose>
+
+
+</ion-content>
