@@ -107,10 +107,10 @@ export class BodyPartSelectionPage implements OnInit {
 
     var areas = {
       'front':{
-        x: 100,
-        y: 430,
-        width: 112,
-        height: 100
+        x: 66,
+        y: 410,
+        width: 166,
+        height: 135
       },
       'back':{
         x: 90,
@@ -186,6 +186,7 @@ export class BodyPartSelectionPage implements OnInit {
       ]);
 
     this.zoom.play();
+
     await this.shrink.play();
 
     this.buttons.nativeElement.style.display = "block";
