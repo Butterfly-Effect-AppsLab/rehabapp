@@ -18,7 +18,6 @@ export class SliderPage implements OnInit {
     speed: 400
   };
 
-
   buttonText: string = "Pokračovať";
 
   constructor(private router: Router) {  
@@ -27,31 +26,18 @@ export class SliderPage implements OnInit {
   ngOnInit() {        
   }
 
-  slidePrev() {
-    this.slides.slidePrev();
-  }
-
-  async slideNext() {
-    let id = await this.slides.getActiveIndex();     
-
-    if (id == 2)
-      this.skip();          
-    
-    this.slides.slideNext();
-  }
-
   skip() {
     this.router.navigateByUrl('/selection'); 
   }
 
-  clicked(event: MouseEvent) {
+  sliderClicked(event: MouseEvent) {
     if(event.x > screen.width/2)
-      this.slideNext();
+      this.slides.slideNext();
     else
-      this.slidePrev();
+      this.slides.slidePrev();
   }
 
-  changeText(text?: string) {
+  changeText() {
     this.slides.getActiveIndex().then(
       (id) => {       
         if (id == 2)

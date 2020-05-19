@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-slides #slider class="slider" pager [options]="slideOpts" (ionSlideWillChange)="changeText()" (click)="clicked($event)">
+  <ion-slides #slider class="slider" pager [options]="slideOpts" (ionSlideWillChange)="changeText()" (click)="sliderClicked($event)">
     <ion-slide class="slide first">
       <app-welcome></app-welcome>
     </ion-slide>
@@ -12,7 +12,7 @@
   </ion-slides>
 
   <div *ngIf="lastSlide" class="fixed btnDiv">
-    <ion-button (click)="slideNext()" expand="block" fill="outline" shape="round" size="large">
+    <ion-button (click)="skip()" expand="block" fill="outline" shape="round" size="large">
       ZAČNITE
     </ion-button>
   </div>
