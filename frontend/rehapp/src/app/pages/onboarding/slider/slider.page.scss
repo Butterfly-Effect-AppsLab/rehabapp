@@ -9,22 +9,6 @@
     // other pagination bullet design (color, position, opacity) is defined in variables.scss    
 }
 
-
-.side {
-    position: absolute;
-    width: 20%;
-    height: 100%;
-    z-index: 50;
-}
-
-.left {
-    left: 0;
-}
-
-.right {
-    right: 0;
-}
-
 .slide {
     background-size: 300vw 100vh;
     background-repeat: no-repeat;

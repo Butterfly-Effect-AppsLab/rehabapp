@@ -1,36 +1,139 @@
-#body{
+#main-grid {
+  padding: 0px;
+
+  >ion-row {
+    padding: 0px;
+
+    >ion-col {
+      padding: 0px;
+    }
+  }
+}
+
+#header {
+  height: 8vh;
+  position: relative;
+  padding: 2%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  p{
+    margin: 0px;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+#body {
   margin: auto;
-  // display: none;
   display: block;
   height: 100%;
 }
 
-#backBody{
+#backBody {
   margin: auto;
   display: none;
-  // display: block;
   height: 100%;
 }
 
-#body-wrapper{
-  height:calc(100vh - 50px);
+$buttonHeight: 50px;
+
+#body-wrapper {
+  height: 72vh;
   overflow: hidden;
 }
 
-#button-wrapper{
-  ion-button{
-    float: left;
-    width: 45%;
+#rotate-row, #continue-row{
+  height: 10vh;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
+  ion-grid{
+    height: 100%;
+
+    ion-row{
+      height: 50%;
+    }
   }
 }
 
-#buttons{
+#buttons {
   opacity: 0;
   overflow-y: scroll;
   display: none;
 
-  ion-button{
+  ion-button {
     --background: #C4C4C4;
-    color: #012C3D;
+    color: var(--dark);
   }
+}
+
+$gapSize: 3px;
+
+.custom-btn {
+  width: 80%;
+  border: 2px solid #012C3D;
+  border-radius: 50px;
+  margin: 0 auto;
+  position: relative;
+  padding: 3%;
+  text-align: center;
+
+  ion-grid {
+    padding: 0;
+
+    ion-row {
+      height: 100%;
+
+      ion-col {
+        padding: 0px;
+        text-align: center;
+        height: 100%;
+
+        p {
+          height: 100%;
+          margin: 0;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+#rotate-toggle {
+  width: 50%;
+  height: calc(100% - (2 * #{$gapSize}));
+  background-color: var(--dark);
+  color: var(--light);
+  text-align: center;
+  border-radius: 50px;
+  position: absolute;
+  left: #{$gapSize};
+  top: #{$gapSize};
+  vertical-align: middle;
+
+  div{
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    p{
+      margin: 0px;
+      width: 100%;
+    }
+  }
+}
+
+.not-selected{
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+.selected{
+  background-color: var(--dark);
+  color: var(--light);
 }
