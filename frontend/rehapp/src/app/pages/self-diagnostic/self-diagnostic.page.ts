@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators'
+import { Subscription, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators'
 
 import { APIService } from 'src/app/services/apiservice.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { async } from '@angular/core/testing';
-import { Area, Option } from 'src/app/services/models/Tree';
+import { Area, Option, Question } from 'src/app/services/models/Tree';
+import { StateServiceService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-self-diagnostic',
@@ -26,26 +27,64 @@ export class SelfDiagnosticPage implements OnInit {
 
   public subscription: Array<Subscription> = [];
   public observables;
+  startingState: Question;
 
-  constructor(private route: ActivatedRoute, private router: Router, private api: APIService) {
+  constructor(private route: ActivatedRoute, private router: Router, private api: APIService, private stateService: StateServiceService) {
 
-    this.route.queryParams.subscribe( () => {      
-      if (this.router.getCurrentNavigation().extras.state) {      
-        this.tree = this.router.getCurrentNavigation().extras.state.tree;
-        this.subpart = this.router.getCurrentNavigation().extras.state.subpart;        
-      }
-      console.log("subpart:");        
-      console.log(this.subpart);
-      console.log("tree:");
-      console.log(this.tree);
-    });    
+    // this.route.queryParams.pipe(
+    //   switchMap(() => {
+    //     if (this.router.getCurrentNavigation().extras.state) {
+    //       this.tree = this.router.getCurrentNavigation().extras.state.tree;
+    //       this.subpart = this.router.getCurrentNavigation().extras.state.subpart;
+    //       return of(null);
+    //     }
+
+    //     return this.getTreeFromAPI().pipe(map(() => {
+    //       console.log("subpart:");
+    //       console.log(this.subpart);
+    //       console.log("tree:");
+    //       console.log(this.tree);
+    //       return "";
+    //     }));
+    //   }))
+    //   .subscribe(
+    //     // jeden z returnov
+    //   );
+
+    this.const();
+
+    this.stateService.actualSubpart.pipe(
+      map(state => { this.startingState = state })
+    ).subscribe();
   }
 
+
+
+  async const(){
+    console.log("before: " + this.tree);    
+    let response = await this.getTreeFromAPI().toPromise();
+
+    console.log("after: ", response);    
+    console.log("nieco");    
+  }
+
+  getTreeFromAPI(): Observable<any> {
+    return this.api.getTree().pipe(map(
+      resp => {
+        this.tree = resp.body["self-diagnose"];
+        this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0];
+
+        return resp;
+      }
+    ));
+  }
+
+
   ngOnInit() {
-    if (this.tree == undefined){
+    if (this.tree == undefined) {
       this.getTreeFromAPI();      // ako spravit, aby pockalo, kym sa vykona ???? 
-      this.subpart = {id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1'};
-    }      
+      this.subpart = { id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1' };
+    }
   }
 
   ngOnDestroy() {
@@ -54,18 +93,11 @@ export class SelfDiagnosticPage implements OnInit {
     );
   }
 
-  getTreeFromAPI() {
-    this.api.getTree().subscribe(
-      resp => { 
-        this.tree = resp.body["self-diagnose"];
-        this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0]; 
-      }     
-    )    
-  }
+
 
   // childAnswered(id: string){
   //   console.log("ANSWER = " + id);
-    
+
 
   //   if (this.APIresponse[id]["type"] == "question"){
   //     this.type = "YesNo"
@@ -86,7 +118,7 @@ export class SelfDiagnosticPage implements OnInit {
   //   return this.APIresponse[id];
   // }
 
-  start(){
+  start() {
     this.type = "Question";
     this.questionForChild = this.tree[this.subpart.ref]
   }
@@ -95,7 +127,7 @@ export class SelfDiagnosticPage implements OnInit {
   //   this.type = "MultiOpt";
   // }
 
-  diagnoseClick(){
+  diagnoseClick() {
     this.type = "Diagnose";
   }
 }

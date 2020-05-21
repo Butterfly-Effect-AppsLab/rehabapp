@@ -4,9 +4,24 @@
     position: relative;
     overflow: hidden;
 
-    --bullet-background: #8ABEC4;
-    --bullet-background-active: #F8444F;
-    // other pagination bullet design (color, position, opacity) is defined in variables.scss    
+    --bullet-background: #8abec4;
+    --bullet-background-active: #f8444f;
+}
+
+::ng-deep .swiper-pagination-bullets {
+    bottom: 4% !important;
+}
+
+::ng-deep .swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
+    margin: 0 10px;
+}
+
+::ng-deep .swiper-pagination-bullet {
+    width: 18px !important;
+    height: 18px !important;
+    opacity: 1 !important;
+    border-radius: 40%;
+    transform: rotate(45deg);
 }
 
 .slide {
@@ -16,12 +31,12 @@
 
 .first {
     background-image: url(src\assets\images\entire.png);
-}   
+}
 .second {
     background-image: url(src\assets\images\entire.png);
     background-position-x: -100vw;
 }
-.third {  
+.third {
     background-image: url(src\assets\images\entire.png);
     background-position: -200vw;
 }
@@ -31,9 +46,9 @@
     left: 50%;
     bottom: 10%;
     transform: translate(-50%);
-    
+
     ion-button {
-        --border-color: black;    
+        --border-color: black;
         --color: black;
     }
 }

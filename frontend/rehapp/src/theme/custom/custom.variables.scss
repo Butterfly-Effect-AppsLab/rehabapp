@@ -1,8 +1,28 @@
+@font-face {
+    font-family: "Poppins";
+    src: url("./assets/fonts/Poppins/Poppins-Regular.otf");
+}
+@font-face {
+    font-family: "Poppins";
+    src: url("./assets/fonts/Poppins/Poppins-Bold.otf");
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Poppins";
+    src: url("./assets/fonts/Poppins/Poppins-Italic.otf");
+    font-style: italic;
+}
+
+* {
+    font-family: "Poppins";
+}
+
 :root {
-    --dark:#012C3D;
-    --light:#F6F1EE;
+    --dark: #012c3d;
+    --light: #f6f1ee;
     --app-background: var(--light);
-    --app-font-color-default: var(--dark);  
+    --app-font-color-default: var(--dark);
+    
 }
 
 ion-content {
