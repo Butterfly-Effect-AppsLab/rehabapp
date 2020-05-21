@@ -1,33 +1,33 @@
-interface Property {
-    id: string;
-    name: string;
-}
-
-export interface Tree {
-    'areas': object;
-    'self-diagnose': object; 
-}
-
-export interface Area extends Property {
-    options: Array<Option>;
-}
-
-export interface Diagnose extends Property {
-    text: string;
-}
-
-export interface Question extends Property {
-    color: {
-        'background-color': string,
-        'text-color': string
-    };
-    options: Array<Option>;
-    prepend: string,
+export interface TreeComponent{
     text: string
 }
 
+export interface Area extends TreeComponent{
+    tree: string
+    area_detail:{
+        x: number
+        y: number
+        width: number
+        height: number
+    },
+    options: Array<Option>
+}
+
+export interface Diagnose extends TreeComponent{
+    name: string
+}
+
+export interface Question extends TreeComponent{
+    prepend: string
+    style: {
+        'background-color': string
+        'color': string
+    },
+    options: Array<Option>
+}
+
 export interface Option {
-    id: number;
-    label: string;
-    ref: string;
+    id: number
+    label: string
+    ref: string
 }

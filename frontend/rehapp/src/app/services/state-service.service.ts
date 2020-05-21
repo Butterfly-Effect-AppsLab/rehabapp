@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Question } from './models/Tree';
+import { Question, TreeComponent } from './models/Tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class StateServiceService {
 
   private _actualSubpart: BehaviorSubject<Question> = new BehaviorSubject<Question>(null);
-  constructor() { }
+  constructor() {
+
+  }
 
   set actualSubpart(state: BehaviorSubject<Question>) {
     this._actualSubpart = state;
