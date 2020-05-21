@@ -1,10 +1,10 @@
 from bcrypt import hashpw, gensalt, checkpw
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
 postgres = f'postgresql://postgres:password@db:5432/rehabApp'
-engine = create_engine(postgres, echo=True)
+engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
@@ -126,15 +126,38 @@ class Area(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    tree = Column(String)
+    text = Column(String)
 
     options = relationship(
         'Option',
         foreign_keys="Option.area_id"
     )
+    area_detail = relationship("AreaDetail", uselist=False, back_populates="area")
 
     @property
     def unique_id(self):
-        return f"a_{self.id}"
+        return self.name
+
+
+class AreaDetail(Base):
+    __tablename__ = "area_details"
+
+    id = Column(Integer, primary_key=True)
+    x = Column(Float)
+    y = Column(Float)
+    width = Column(Float)
+    height = Column(Float)
+    area_id = Column(
+        Integer,
+        ForeignKey(
+            'areas.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=False
+    )
+
+    area = relationship("Area", uselist=False, back_populates="area_detail")
 
 
 class Option(Base):
@@ -171,7 +194,8 @@ class Option(Base):
             onupdate='CASCADE'
         ), nullable=True
     )
-    label = Column(String)
+    text = Column(String)
+    label = Column(String, nullable=True)
     next_question_id = Column(
         Integer,
         ForeignKey(
@@ -197,30 +221,41 @@ class Option(Base):
         ), nullable=True
     )
 
-    question = relationship(
+    next_question = relationship(
         'Question',
         backref='questions',
         foreign_keys="Option.next_question_id"
     )
-    diagnose = relationship(
+    next_diagnose = relationship(
         'Diagnose',
         backref='questions',
     )
-    area = relationship(
+    next_area = relationship(
         'Area',
         backref='questions',
         foreign_keys="Option.next_area_id"
+    )
+
+    question = relationship(
+        'Question',
+        backref='question',
+        foreign_keys="Option.question_id"
+    )
+    area = relationship(
+        'Area',
+        backref='question',
+        foreign_keys="Option.area_id"
     )
 
     diagnoses = relationship("Diagnose", secondary=subarea_diagnoses)
 
     @property
     def next_option(self):
-        if self.question:
-            return self.question
-        elif self.diagnose:
-            return self.diagnose
-        return self.area
+        if self.next_question:
+            return self.next_question
+        elif self.next_diagnose:
+            return self.next_diagnose
+        return self.next_area
 
 
 class User(Base):

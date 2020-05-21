@@ -7,7 +7,7 @@ from models import Color, Prepend
 
 
 postgres = f'postgresql://postgres:password@db:5432/rehabApp'
-engine = create_engine(postgres, echo=True)
+engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
