@@ -100,7 +100,7 @@ class AreaDetailSchema(Schema):
 
 
 class AreaSchema(Schema):
-    name = fields.Str(load_only=True)
+    name = fields.Str()
     tree = fields.Str()
     label = fields.Str()
     text = fields.Str()

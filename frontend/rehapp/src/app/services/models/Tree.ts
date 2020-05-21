@@ -4,6 +4,7 @@ export interface TreeComponent{
 
 export interface Area extends TreeComponent{
     tree: string
+    name: string
     area_detail:{
         x: number
         y: number
