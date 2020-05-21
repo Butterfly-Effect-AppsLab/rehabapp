@@ -67,7 +67,7 @@ export class BodyPartSelectionPage implements OnInit {
   async ngOnInit() {
     this.bodies = {};
 
-    await this.api.getTree();
+    await this.api.getTree();    
 
     this.platform.ready().then(() => {
 
