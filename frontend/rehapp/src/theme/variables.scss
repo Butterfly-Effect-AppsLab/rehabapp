@@ -2,41 +2,6 @@
 // http://ionicframework.com/docs/theming/
 
 
-@font-face {
-  font-family: 'Poppins';
-  src: url('../assets/fonts/Poppins/Poppins-Regular.otf');
-}
-@font-face {
-  font-family: 'Poppins';
-  src: url('../assets/fonts/Poppins/Poppins-Bold.otf');
-  font-weight: bold;
-}
-@font-face {
-  font-family: 'Poppins';
-  src: url('../assets/fonts/Poppins/Poppins-Italic.otf');
-  font-style: italic;
-}
-
-* {
-  font-family: 'Poppins';
-}
-
-.swiper-pagination-bullets {
-  bottom: 4% !important;
-}
-
-.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {
-  margin: 0 10px;
-}
-
-.swiper-pagination-bullet {  
-  width: 18px !important;
-  height: 18px !important;
-  opacity: 1 !important;
-  border-radius: 40%;
-  transform: rotate(45deg);
-}
-
 /** Ionic CSS Variables **/
 :root {
   /** primary **/

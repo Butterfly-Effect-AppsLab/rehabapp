@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { Plugins } from '@capacitor/core'
+
+const { SplashScreen } = Plugins;
+
 
 @Component({
   selector: 'app-homepage',
@@ -12,7 +15,6 @@ export class HomepagePage implements OnInit {
   progress: number = 0;
   loaded:boolean = false;
 
-
   constructor(private router: Router) { 
     let interval = setInterval(() => {
       this.progress += 0.01;
@@ -23,8 +25,13 @@ export class HomepagePage implements OnInit {
     }, 25)
   }
 
-  ngOnInit() {  
+  ngOnInit() { 
+    SplashScreen.show({
+      showDuration: 5000,
+      autoHide: true
+    });
   }
+
 }
 
 

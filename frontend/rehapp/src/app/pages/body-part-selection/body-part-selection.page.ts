@@ -4,6 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { APIService } from 'src/app/services/apiservice.service';
 import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow } from '@ionic/angular';
 import Body from 'src/app/services/models/Body';
+import { TreeComponent } from 'src/app/services/models/Tree';
 
 
 @Component({
@@ -21,15 +22,12 @@ export class BodyPartSelectionPage implements OnInit {
   areaSelected: boolean = false;
   areaSubmitted: boolean = false;
   subareaSelected: boolean = false;
-  questions;
-  areas;
   @ViewChild('buttons', { static: false }) buttons: ElementRef;
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
   @ViewChild('body', { static: false }) body: ElementRef;
   @ViewChild('backBody', { static: false }) backBody: ElementRef;
   @ViewChild('rotateBtn', { static: false }) rotateBtn: ElementRef;
   @ViewChild('rotateToggle', { static: false }) rotateToggle: ElementRef;
-
   @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
 
   left: number;
@@ -51,26 +49,9 @@ export class BodyPartSelectionPage implements OnInit {
 
   rotateRowHeight: String = "20vh";
 
+  questions: Array<TreeComponent>;
+
   constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet) {
-
-    this.bodies = {};
-
-    this.api.getTree().subscribe(
-      resp => {
-        this.questions = resp.body['self-diagnose'];
-        this.areas = resp.body['areas'];
-      }
-    )
-
-    platform.ready().then(() => {
-
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        if (this.areaSubmitted)
-          this.back();
-        else
-          this.routerOutlet.pop();
-      });
-    });
   }
 
   changeSubAreaOpacity(opacity: number) {
@@ -83,10 +64,23 @@ export class BodyPartSelectionPage implements OnInit {
     this.backward();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.bodies = {};
+
+    await this.api.getTree();
+
+    this.platform.ready().then(() => {
+
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        if (this.areaSubmitted)
+          this.back();
+        else
+          this.routerOutlet.pop();
+      });
+    });
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {    
 
     this.toggleX = this.rotateBtn.nativeElement.offsetWidth - 6 - this.rotateToggle.nativeElement.offsetWidth - 4;
 

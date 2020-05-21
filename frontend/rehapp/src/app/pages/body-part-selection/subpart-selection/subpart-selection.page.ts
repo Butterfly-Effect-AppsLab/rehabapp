@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Question } from 'src/app/services/models/Tree';
+import { StateServiceService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-subpart-selection',
@@ -11,7 +13,7 @@ export class SubpartSelectionPage implements OnInit {
   buttons = []
   questions;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private stateService: StateServiceService) {
 
     this.route.queryParams.subscribe( () => {      
       if (this.router.getCurrentNavigation().extras.state) {
@@ -30,19 +32,19 @@ export class SubpartSelectionPage implements OnInit {
   }
 
   getOption(label: string) {
-    let opt; 
-    this.buttons.forEach(element => {
-      if (element['label'] == label) {        
-        opt = element;
-      }
-    });
-
+    let opt = this.buttons.find(element => element['label'] == label);
     return opt;
   }
 
   optionClicked(event: Event) {
     // console.log(event.target['textContent']);    
     let option = this.getOption(event.target['textContent']);
+
+    let smth: Question;
+    this.stateService.actualSubpart.next(smth);
+
+
+
     let navigationExtras: NavigationExtras = {
       state: {
         'tree': this.questions,
