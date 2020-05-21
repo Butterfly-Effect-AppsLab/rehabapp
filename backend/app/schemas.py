@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load, EXCLUDE, validate, pre_dump
-from models import User, Diagnose, Area, Question, Option
+from models import User, Diagnose, Area, Question, Option, AreaDetail, Color
 
 
 class UserSchema(Schema):
@@ -19,7 +19,6 @@ class UserSchema(Schema):
 
 
 class DiagnoseSchema(Schema):
-    id = fields.Int(dump_only=True)
     name = fields.Str()
     text = fields.Str(default='')
 
@@ -31,23 +30,28 @@ class DiagnoseSchema(Schema):
         unknown = EXCLUDE
 
 
-class AreaSchema(Schema):
-    id = fields.Int(dump_only=True)
-    name = fields.Str()
+class ColorSchema(Schema):
+    background_color = fields.String(data_key="background-color")
+    text_color = fields.String(data_key="color")
 
     @post_load
     def create_model(self, data, **kwargs):
-        return Area(**data)
+        return Color(**data)
 
     class Meta:
         unknown = EXCLUDE
 
 
 class QuestionSchema(Schema):
-    id = fields.Int(dump_only=True)
     text = fields.Str()
-    color_id = fields.Integer()
-    prepend_id = fields.Integer()
+    color_id = fields.Integer(load_only=True)
+    prepend_id = fields.Integer(load_only=True)
+    color = fields.Nested(ColorSchema(), many=False, dump_only=True, data_key="style")
+    prepend = fields.Method("get_prepend")
+    options = fields.Nested(lambda: OptionSchema(only=("id", "text", "ref")), many=True, dump_only=True)
+
+    def get_prepend(self, question):
+        return question.prepend.text
 
     @post_load
     def create_model(self, data, **kwargs):
@@ -61,14 +65,51 @@ class OptionSchema(Schema):
     id = fields.Int(dump_only=True)
     question_id = fields.Integer(default=None)
     area_id = fields.Integer(default=None)
-    label = fields.String()
+    label = fields.String(default=None)
+    text = fields.String()
     next_question_id = fields.Integer(default=None)
     next_diagnose_id = fields.Integer(default=None)
     next_area_id = fields.Integer(default=None)
+    ref = fields.Method("next_option")
+
+    def next_option(self, option):
+        return option.next_option.unique_id
 
     @post_load
     def create_model(self, data, **kwargs):
         return Option(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+
+
+class AreaDetailSchema(Schema):
+    id = fields.Int(dump_only=True)
+    x = fields.Float()
+    y = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
+    area_id = fields.Integer(load_only=True)
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return AreaDetail(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+
+
+class AreaSchema(Schema):
+    name = fields.Str(load_only=True)
+    tree = fields.Str()
+    label = fields.Str()
+    text = fields.Str()
+    area_detail = fields.Nested(AreaDetailSchema, many=False, dump_only=True)
+    options = fields.Nested(OptionSchema(only=("id", "text", "label", "ref")), many=True, dump_only=True)
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return Area(**data)
 
     class Meta:
         unknown = EXCLUDE

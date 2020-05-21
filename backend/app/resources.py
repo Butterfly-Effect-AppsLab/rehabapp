@@ -1,14 +1,15 @@
+import sys
 from datetime import datetime, timedelta
 import falcon
 import jwt
 from jwt import InvalidSignatureError, DecodeError, InvalidTokenError, ExpiredSignatureError
 from marshmallow import ValidationError
-from sqlalchemy import and_
-
 from config import KEY
 from models import *
-from schemas import UserSchema
+from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema
 from send_email import send_email
+import hashlib
+import json
 
 
 class TestResource:
@@ -20,60 +21,31 @@ class QuestionsResource:
     def on_get(self, req, res):
         res.media = []
 
+        area_schema = AreaSchema()
+        question_schema = QuestionSchema()
+        diagnose_schema = DiagnoseSchema()
+
         areas = req.context.session.query(Area)
         questions = req.context.session.query(Question)
         diagnoses = req.context.session.query(Diagnose)
 
-        areas_ret = {}
-
         ret = {}
 
         for area in areas:
-            areas_ret[area.name] = area.unique_id
-
-            options = []
-
-            for option in area.options:
-                options.append({
-                    "id": option.id,
-                    "label": option.label,
-                    "ref": option.next_option.unique_id
-                })
-
-            ret[area.unique_id] = {
-                "name": area.name,
-                "options": options
-            }
+            ret[area.unique_id] = area_schema.dump(area)
 
         for question in questions:
-            options = []
-
-            for option in question.options:
-                options.append({
-                    "id": option.id,
-                    "label": option.label,
-                    "ref": option.next_option.unique_id
-                })
-
-            ret[question.unique_id] = {
-                "text": question.text,
-                "prepend": question.prepend.text,
-                "color": {
-                    "background-color": question.color.background_color,
-                    "text-color": question.color.text_color
-                },
-                "options": options
-            }
+            ret[question.unique_id] = question_schema.dump(question)
 
         for diagnose in diagnoses:
-            ret[diagnose.unique_id] = {
-                "name": diagnose.name,
-                "text": diagnose.text
-            }
+            ret[diagnose.unique_id] = diagnose_schema.dump(diagnose)
+
+        m = hashlib.md5()
+        m.update(json.dumps(ret).encode())
 
         res.media = {
-            "areas": areas_ret,
-            "self-diagnose": ret
+            'checksum': m.hexdigest(),
+            'questions': ret
         }
 
 

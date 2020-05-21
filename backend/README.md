@@ -26,8 +26,11 @@ Steps to init API after pull from origin:
  Seed constants:  
  `docker exec -it backend_web_1 sh -c "python seeders.py"`
  
- Seed self-diagnostic trees:  
- `docker exec -it backend_web_1 sh -c "python self_diagnostic_seeder.py"`  
+ Seed self-diagnostic trees (TREE_NAME from Whimsical or all):  
+ `docker exec -it backend_web_1 sh -c "python self_diagnostic_trees_modifier.py seed TREE_NAME"`
+ 
+ Delete self-diagnostic trees (TREE_NAME from Whimsical or all):  
+ `docker exec -it backend_web_1 sh -c "python self_diagnostic_trees_modifier.py delete TREE_NAME"`  
  
  For running UNIT tests run:  
  `docker exec -it backend_web_1 sh -c "python -m unittest"`    
@@ -36,4 +39,3 @@ Steps to init API after pull from origin:
  `docker exec -it backend_web_1 sh -c "alembic revision -m \"MIGRATION_NAME_HERE\" --autogenerate"`  
  `docker exec -it backend_web_1 sh -c "alembic upgrade head"`  
  `docker exec -it backend_web_1 sh -c "alembic downgrade -1"`  
-`
