@@ -3,6 +3,7 @@ import { ElementRef } from '@angular/core';
 export default class Body {
     body: ElementRef;
     circles: Element;
+    ids: Array<string> = [];
 
     constructor(public side: string) {
 
@@ -23,7 +24,7 @@ export default class Body {
     showCircles() {
         Array.from(this.circles.getElementsByTagName('circle')).forEach(function (child: any) {
             child.style.display = "block";
-            child.style.fill = "black";
+            child.style.fill = "#C0C6C7";
         });
     }
 

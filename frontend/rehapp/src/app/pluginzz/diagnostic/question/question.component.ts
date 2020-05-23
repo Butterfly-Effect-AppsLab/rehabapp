@@ -18,8 +18,8 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit() {
     this.options = this.question['options'];      
-    this.mainDiv.nativeElement['style']['backgroundColor'] = this.question.color["background-color"];
-    this.mainDiv.nativeElement['style']['color'] = this.question.color["text-color"];
+    this.mainDiv.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
+    this.mainDiv.nativeElement['style']['color'] = this.question.style["text-color"];
   }
 
   btnClicked(event: any){
