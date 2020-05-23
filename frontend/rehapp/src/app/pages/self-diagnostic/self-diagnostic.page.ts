@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators'
 
@@ -23,42 +23,49 @@ export class SelfDiagnosticPage implements OnInit {
   startingState: Question;
   componentStack: Array<Question> = [];
 
-  constructor(private api: APIService, private stateService: StateService) {}
+  constructor(private api: APIService, private stateService: StateService, private router: Router) { }
 
-    // this.route.queryParams.pipe(
-    //   switchMap(() => {
-    //     if (this.router.getCurrentNavigation().extras.state) {
-    //       this.tree = this.router.getCurrentNavigation().extras.state.tree;
-    //       this.subpart = this.router.getCurrentNavigation().extras.state.subpart;
-    //       return of(null);
-    //     }
+  // this.route.queryParams.pipe(
+  //   switchMap(() => {
+  //     if (this.router.getCurrentNavigation().extras.state) {
+  //       this.tree = this.router.getCurrentNavigation().extras.state.tree;
+  //       this.subpart = this.router.getCurrentNavigation().extras.state.subpart;
+  //       return of(null);
+  //     }
 
-    //     return this.getTreeFromAPI().pipe(map(() => {
-    //       console.log("subpart:");
-    //       console.log(this.subpart);
-    //       console.log("tree:");
-    //       console.log(this.tree);
-    //       return "";
-    //     }));
-    //   }))
-    //   .subscribe(
-    //     // jeden z returnov
-    //   );
+  //     return this.getTreeFromAPI().pipe(map(() => {
+  //       console.log("subpart:");
+  //       console.log(this.subpart);
+  //       console.log("tree:");
+  //       console.log(this.tree);
+  //       return "";
+  //     }));
+  //   }))
+  //   .subscribe(
+  //     // jeden z returnov
+  //   );
 
 
-    async ngOnInit() {
-
-      await this.api.getTree();      
-      console.log(this.api.questions);
-          
-      // this.stateService.actualSubpart.next(this.api.questions["q_33"]);
-      this.start();
+  async ngOnInit() {
+    if (this.stateService.actualSubpart.getValue() == null) {
+      this.router.navigateByUrl('/selection');
+      return;
     }
+    this.start();
+  }
 
-    // this.stateService.actualSubpart.pipe(
-    //   map(state => { this.startingState = state })
-    // ).subscribe();
-  
+  ionViewDidEnter() {
+    this.ngOnInit();  // trosku odrb :)
+  }
+
+  ionViewDidLeave() {
+    console.log("should be destroyed");
+  }
+
+  // this.stateService.actualSubpart.pipe(
+  //   map(state => { this.startingState = state })
+  // ).subscribe();
+
 
   // async const(){
   //   console.log("before: " + this.tree);    
@@ -76,19 +83,20 @@ export class SelfDiagnosticPage implements OnInit {
 
   start() {
     this.type = "Question";
+
     this.questionForChild = this.stateService.actualSubpart.getValue();
     this.componentStack.push(this.questionForChild);
   }
 
-  childAnswered(id: string){
+  childAnswered(id: string) {
 
     this.componentStack.push(this.questionForChild);
-    
-    if (id.startsWith('q')){      
+
+    if (id.startsWith('q')) {
       this.type = "Question";
       this.questionForChild = this.api.questions[id];
     }
-    if (id.startsWith('d')){
+    if (id.startsWith('d')) {
       this.type = "Diagnose";
       this.diagnoseForChild = this.api.questions[id];
     }

@@ -13,7 +13,6 @@ export class DiagnoseComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.diagnose);
   }
 
   back() {

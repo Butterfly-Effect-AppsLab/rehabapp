@@ -24,12 +24,12 @@ export class QuestionComponent implements OnInit {
     let option: Option = this.options[index];
 
     if (option == undefined)
-      alert('dojebalo sa')
+      alert('chyba v referencii')
         
     this.onAnswer.emit(option.ref);
   }
 
-  ngOnChanges() {
+  ngOnChanges() {    
     this.options = this.question.options;       
     this.background.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
   }
