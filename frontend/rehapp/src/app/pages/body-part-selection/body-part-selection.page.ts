@@ -387,12 +387,12 @@ export class BodyPartSelectionPage implements OnInit {
     this.areaSelected = false;
   }
 
-  async submit() {
+  async submit() {    
     if (!this.areaSubmitted)
       this.forward()
     else{
-      console.log(this.ref); 
-      this.router.navigate(['/diagnostic']);
+      // this.stateService.actualSubpart.next(this.api.questions[this.ref]);
+      // this.router.navigate(['/diagnostic']);
     }
   }
 }
