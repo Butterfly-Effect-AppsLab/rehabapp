@@ -51,7 +51,7 @@ export class SelfDiagnosticPage implements OnInit {
       await this.api.getTree();      
       console.log(this.api.questions);
           
-      this.stateService.actualSubpart.next(this.api.questions["q_33"]);
+      // this.stateService.actualSubpart.next(this.api.questions["q_33"]);
       this.start();
     }
 
@@ -69,9 +69,9 @@ export class SelfDiagnosticPage implements OnInit {
   // }
 
   ngOnDestroy() {
-    this.subscription.forEach(
-      (subscribe) => subscribe.unsubscribe()
-    );
+    // this.subscription.forEach(
+    //   (subscribe) => subscribe.unsubscribe()
+    // );
   }
 
   start() {
