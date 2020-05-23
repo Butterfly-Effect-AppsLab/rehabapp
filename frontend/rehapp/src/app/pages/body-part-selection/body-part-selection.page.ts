@@ -4,7 +4,8 @@ import { Router, NavigationExtras } from '@angular/router';
 import { APIService } from 'src/app/services/apiservice.service';
 import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow } from '@ionic/angular';
 import Body from 'src/app/services/models/Body';
-import { TreeComponent } from 'src/app/services/models/Tree';
+import { TreeComponent, Area } from 'src/app/services/models/Tree';
+import { TreeError } from '@angular/compiler';
 
 
 @Component({
@@ -49,9 +50,19 @@ export class BodyPartSelectionPage implements OnInit {
 
   rotateRowHeight: String = "20vh";
 
-  questions: Array<TreeComponent>;
+  selectedAreaObject: Area;
+  opositeAreaObject: Area;
+  options: any = [];
+  ref: string = null;
 
   constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet) {
+  }
+
+  getOptions(){
+    if(this.selectedAreaObject == undefined)
+      return [];
+    console.log(this.selectedAreaObject.options);
+    return this.selectedAreaObject.options;
   }
 
   changeSubAreaOpacity(opacity: number) {
@@ -67,7 +78,7 @@ export class BodyPartSelectionPage implements OnInit {
   async ngOnInit() {
     this.bodies = {};
 
-    await this.api.getTree();    
+    await this.api.getTree();
 
     this.platform.ready().then(() => {
 
@@ -80,7 +91,7 @@ export class BodyPartSelectionPage implements OnInit {
     });
   }
 
-  async ionViewDidEnter() {    
+  async ionViewDidEnter() {
 
     this.toggleX = this.rotateBtn.nativeElement.offsetWidth - 6 - this.rotateToggle.nativeElement.offsetWidth - 4;
 
@@ -108,6 +119,24 @@ export class BodyPartSelectionPage implements OnInit {
     this.bodies['front'].body = this.body;
     this.bodies['back'].body = this.backBody;
 
+    var arr = [];
+
+    Array.from(this.bodies['front'].body.nativeElement.getElementsByTagName('g')).forEach(function (child: any) {
+      if(child.id != "")
+        arr.push(child.id);
+  });
+
+  this.bodies['front'].ids = arr;
+
+  arr = [];
+
+    Array.from(this.bodies['back'].body.nativeElement.getElementsByTagName('g')).forEach(function (child: any) {
+      if(child.id != "")
+        arr.push(child.id);
+  });
+
+  this.bodies['back'].ids = arr;
+
     this.wrapperSize = this.bodyWrapper.nativeElement.offsetHeight;
 
     this.ratio = this.bodyWrapper.nativeElement.offsetHeight / Number(this.bodies['front'].body.nativeElement.getAttribute('viewBox').split(" ")[3]);
@@ -128,53 +157,39 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   async forward() {
+
+    this.selectedAreaObject = this.api.questions[this.actualCircle.id];
+    this.options = this.selectedAreaObject.options;
+    this.opositeAreaObject = <Area>Object.values(this.api.questions).find(tree => tree['tree'] == this.selectedAreaObject['tree'] && tree['name'] != this.selectedAreaObject['name']);
+
+    console.log(this.selectedAreaObject.area_detail);
+    console.log(this.opositeAreaObject);
+    
+
     this.areaSelected = false;
     this.areaSubmitted = true;
-
-    var areas = {
-      'front': {
-        x: 66,
-        y: 410,
-        width: 166,
-        height: 135
-      },
-      'back': {
-        x: 90,
-        y: 440,
-        width: 112,
-        height: 100
-      }
-    };
-
-    var subarea = areas[this.actualSide];
-    var opositeArea = areas[this.opositeSide];
 
     var wrapperWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
     var wrapperHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
 
-    var newWrapperWidth = Number(subarea.width) * this.ratio;
+    var newWrapperWidth = Number(this.selectedAreaObject.area_detail.width) * this.ratio;
 
     var zoom = wrapperWidth / newWrapperWidth;
 
-    var newWrapperHeight = Number(subarea.height) * this.ratio * zoom;
+    var newWrapperHeight = Number(this.selectedAreaObject.area_detail.height) * this.ratio * zoom;
 
     var width = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().width;
     var height = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().height;
 
-    var x = -subarea.x;
-    var y = -subarea.y;
+    var x = -this.selectedAreaObject.area_detail.x;
+    var y = -this.selectedAreaObject.area_detail.y;
 
     x = (x * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
     y = (y * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
-    var opositeX = -opositeArea.x;
-    var opositeY = -opositeArea.y;
-
-    opositeX = (opositeX * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
-    opositeY = (opositeY * this.ratio) + ((zoom * height - height) / 2) / zoom;
-
     this.bodies[this.actualSide].hideCircles();
-    this.bodies[this.opositeSide].hideCircles();
+    if(this.opositeAreaObject != undefined)
+      this.bodies[this.opositeSide].hideCircles();
 
     var duration = 1500;
 
@@ -190,16 +205,6 @@ export class BodyPartSelectionPage implements OnInit {
       ]);
 
     this.hideRotationButton.play();
-
-    this.opositeZoom = this.animationCtrl.create()
-      .direction('normal')
-      .addElement(this.bodies[this.opositeSide].body.nativeElement)
-      .iterations(1)
-      .duration(0)
-      .keyframes([
-        { offset: 0, transform: 'scale(1) translate(0px,0px)' },
-        { offset: 1, transform: 'scale(' + zoom + ') translate(' + x + 'px,' + y + 'px)' }
-      ]);
 
     this.zoom = this.animationCtrl.create()
       .direction('normal')
@@ -245,10 +250,30 @@ export class BodyPartSelectionPage implements OnInit {
       ]);
 
     await this.showOptions.play();
-    this.opositeZoom.play();
+    if (this.opositeAreaObject != undefined) {
+
+      var opositeX = -this.opositeAreaObject.area_detail.x;
+      var opositeY = -this.opositeAreaObject.area_detail.y;
+
+      opositeX = (opositeX * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
+      opositeY = (opositeY * this.ratio) + ((zoom * height - height) / 2) / zoom;
+
+      this.opositeZoom = this.animationCtrl.create()
+        .direction('normal')
+        .addElement(this.bodies[this.opositeSide].body.nativeElement)
+        .iterations(1)
+        .duration(0)
+        .keyframes([
+          { offset: 0, transform: 'scale(1) translate(0px,0px)' },
+          { offset: 1, transform: 'scale(' + zoom + ') translate(' + opositeX + 'px,' + opositeY + 'px)' }
+        ]);
+      this.opositeZoom.play();
+    }
   }
 
   async backward() {
+
+    this.ref = null;
 
     this.rotateRowHeight = "20vh";
 
@@ -270,10 +295,11 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.buttons.nativeElement.style.display = "none";
 
-    this.bodies[this.opositeSide].showCircles();
+    if(this.opositeAreaObject != undefined){
+      this.bodies[this.opositeSide].showCircles();
+    }
 
     this.zoom.direction('reverse');
-    this.opositeZoom.direction('reverse');
     this.shrink.direction('reverse');
 
     this.zoom.play();
@@ -286,21 +312,35 @@ export class BodyPartSelectionPage implements OnInit {
     this.showOptions.direction('reverse');
 
     this.showOptions.play();
-    this.opositeZoom.play();
+
+    if(this.opositeAreaObject != undefined){
+      this.opositeZoom.direction('reverse');
+      this.opositeZoom.play();
+    }
+
+    this.selectedAreaObject = undefined;
+    this.opositeAreaObject = undefined;
   }
 
   circleClicked(element: any) {
     this.areaSelected = true;
 
     if (this.actualCircle != undefined)
-      this.actualCircle['style']['fill'] = "black";
+      this.actualCircle['style']['fill'] = "#C0C6C7";
 
     this.actualCircle = element.target;
 
     this.actualCircle['style']['fill'] = 'red';
   }
 
-  showSubpart(subarea: string, side: string) {
+  showSubpart(subarea: string, ref: string) {
+
+    this.ref = ref;    
+
+    var side = 'front';
+
+    if(this.bodies['back'].ids.includes(subarea))
+      side = 'back';
 
     this.subareaSelected = true;
 
@@ -340,7 +380,7 @@ export class BodyPartSelectionPage implements OnInit {
     this.visibleSide = this.actualSide;
 
     this.bodies[this.actualSide].showBody();
-    this.bodies[this.actualSide].changeColorOfCircles('black');
+    this.bodies[this.actualSide].changeColorOfCircles('#C0C6C7');
     this.bodies[this.opositeSide].hideBody();
 
     this.actualCircle = undefined;
@@ -350,5 +390,9 @@ export class BodyPartSelectionPage implements OnInit {
   async submit() {
     if (!this.areaSubmitted)
       this.forward()
+    else{
+      console.log(this.ref); 
+      this.router.navigate(['/diagnostic']);
+    }
   }
 }

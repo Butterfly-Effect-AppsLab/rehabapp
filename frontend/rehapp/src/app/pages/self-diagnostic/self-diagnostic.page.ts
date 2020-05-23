@@ -51,46 +51,44 @@ export class SelfDiagnosticPage implements OnInit {
     //     // jeden z returnov
     //   );
 
-    this.const();
+    // this.const();
 
-    this.stateService.actualSubpart.pipe(
-      map(state => { this.startingState = state })
-    ).subscribe();
+    // this.stateService.actualSubpart.pipe(
+    //   map(state => { this.startingState = state })
+    // ).subscribe();
   }
 
+  // async const(){
+  //   console.log("before: " + this.tree);    
+  //   let response = await this.getTreeFromAPI().toPromise();
 
+  //   console.log("after: ", response);    
+  //   console.log("nieco");    
+  // }
 
-  async const(){
-    console.log("before: " + this.tree);    
-    let response = await this.getTreeFromAPI().toPromise();
+  // getTreeFromAPI(): Observable<any> {
+  //   return this.api.getTree().pipe(map(
+  //     resp => {
+  //       this.tree = resp.body["self-diagnose"];
+  //       this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0];
 
-    console.log("after: ", response);    
-    console.log("nieco");    
-  }
-
-  getTreeFromAPI(): Observable<any> {
-    return this.api.getTree().pipe(map(
-      resp => {
-        this.tree = resp.body["self-diagnose"];
-        this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0];
-
-        return resp;
-      }
-    ));
-  }
+  //       return resp;
+  //     }
+  //   ));
+  // }
 
 
   ngOnInit() {
-    if (this.tree == undefined) {
-      this.getTreeFromAPI();      // ako spravit, aby pockalo, kym sa vykona ???? 
-      this.subpart = { id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1' };
-    }
+    // if (this.tree == undefined) {
+    //   this.getTreeFromAPI();      // ako spravit, aby pockalo, kym sa vykona ???? 
+    //   this.subpart = { id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1' };
+    // }
   }
 
   ngOnDestroy() {
-    this.subscription.forEach(
-      (subscribe) => subscribe.unsubscribe()
-    );
+    // this.subscription.forEach(
+    //   (subscribe) => subscribe.unsubscribe()
+    // );
   }
 
 
@@ -118,16 +116,16 @@ export class SelfDiagnosticPage implements OnInit {
   //   return this.APIresponse[id];
   // }
 
-  start() {
-    this.type = "Question";
-    this.questionForChild = this.tree[this.subpart.ref]
-  }
-
-  // multiOptClick() {
-  //   this.type = "MultiOpt";
+  // start() {
+  //   this.type = "Question";
+  //   this.questionForChild = this.tree[this.subpart.ref]
   // }
 
-  diagnoseClick() {
-    this.type = "Diagnose";
-  }
+  // // multiOptClick() {
+  // //   this.type = "MultiOpt";
+  // // }
+
+  // diagnoseClick() {
+  //   this.type = "Diagnose";
+  // }
 }
