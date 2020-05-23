@@ -58,6 +58,26 @@ export class BodyPartSelectionPage implements OnInit {
 
   constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet, private stateService: StateService) {
   }
+  
+  async ngOnInit() {
+    this.bodies = {};
+
+    await this.api.getTree();
+
+    if (this.api.questions == undefined) {
+      alert("Prerusilo sa spojenie.")
+    }    
+
+    this.platform.ready().then(() => {
+
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        if (this.areaSubmitted)
+          this.back();
+        else
+          this.routerOutlet.pop();
+      });
+    });
+  }
 
   getOptions(){
     if(this.selectedAreaObject == undefined)
@@ -76,20 +96,8 @@ export class BodyPartSelectionPage implements OnInit {
     this.backward();
   }
 
-  async ngOnInit() {
-    this.bodies = {};
-
-    await this.api.getTree();
-
-    this.platform.ready().then(() => {
-
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        if (this.areaSubmitted)
-          this.back();
-        else
-          this.routerOutlet.pop();
-      });
-    });
+  refresh() {
+    location.reload();
   }
 
   async ionViewDidEnter() {
@@ -392,6 +400,8 @@ export class BodyPartSelectionPage implements OnInit {
     if (!this.areaSubmitted)
       this.forward()
     else{
+      console.log(this.api.questions[this.ref]);
+      
       this.stateService.actualSubpart.next(this.api.questions[this.ref]);
       this.router.navigate(['/diagnostic']);
     }

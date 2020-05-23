@@ -3,8 +3,14 @@
     <ion-row>
 
       <div id="header">
-        <p>
-          tu bude popis
+        <ion-button *ngIf="areaSubmitted" (click)="back()" slot="start" fill="clear" style="--color: var(--dark)">
+          <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="!areaSubmitted" (click)="refresh()" slot="start" fill="clear" style="--color: var(--dark)">
+          <ion-icon name="refresh-outline"></ion-icon>
+        </ion-button>
+        <p style="margin-left: -10%;">
+          Vyberte bolestivú oblasť
         </p>
       </div>
 
@@ -341,7 +347,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-button *ngIf="areaSubmitted" (click)="back()" expand="block" shape="round"
+<!-- <ion-button *ngIf="areaSubmitted" (click)="back()" expand="block" shape="round"
   style="position: fixed; top: 1%; z-index: 20;">
   Back
-</ion-button>
+</ion-button> -->
