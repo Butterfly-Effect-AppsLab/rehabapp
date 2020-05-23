@@ -94,11 +94,11 @@ export class SelfDiagnosticPage implements OnInit {
 
     if (id.startsWith('q')) {
       this.type = "Question";
-      this.questionForChild = this.api.questions[id];
+      this.questionForChild = this.stateService.questions[id];
     }
     if (id.startsWith('d')) {
       this.type = "Diagnose";
-      this.diagnoseForChild = this.api.questions[id];
+      this.diagnoseForChild = this.stateService.questions[id];
     }
   }
 

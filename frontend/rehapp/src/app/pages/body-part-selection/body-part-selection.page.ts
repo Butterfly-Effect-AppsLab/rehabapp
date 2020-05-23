@@ -55,18 +55,28 @@ export class BodyPartSelectionPage implements OnInit {
   opositeAreaObject: Area;
   options: any = [];
   ref: string = null;
+  loadedContent: boolean = false;
 
   constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet, private stateService: StateService) {
+    this.api.checkConnection().subscribe(
+      (resp) => {        
+        if(resp == "Saying HI from RehabApp API :)")
+          console.log("Connection succesful");
+        else
+          alert("Nebolo možné nadviazať pripojenie.");
+      }   
+    )
   }
   
-  async ngOnInit() {
+  ngOnInit() {
     this.bodies = {};
 
-    await this.api.getTree();
-
-    if (this.api.questions == undefined) {
-      alert("Prerusilo sa spojenie.")
-    }    
+    this.api.getTree().subscribe( 
+      (resp) => { 
+        this.stateService.questions = resp['questions'];        
+      },
+      (err) => alert("Prerusilo sa spojenie.")
+    );
 
     this.platform.ready().then(() => {
 
@@ -166,10 +176,14 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   async forward() {
-
-    this.selectedAreaObject = this.api.questions[this.actualCircle.id];
+    if (this.stateService.questions == undefined){
+      alert('Čaká sa na pripojenie.')
+      return;
+    }
+    
+    this.selectedAreaObject = this.stateService.questions[this.actualCircle.id];
     this.options = this.selectedAreaObject.options;
-    this.opositeAreaObject = <Area>Object.values(this.api.questions).find(tree => tree['tree'] == this.selectedAreaObject['tree'] && tree['name'] != this.selectedAreaObject['name']);
+    this.opositeAreaObject = <Area>Object.values(this.stateService.questions).find(tree => tree['tree'] == this.selectedAreaObject['tree'] && tree['name'] != this.selectedAreaObject['name']);
 
     console.log(this.selectedAreaObject.area_detail);
     console.log(this.opositeAreaObject);
@@ -400,9 +414,9 @@ export class BodyPartSelectionPage implements OnInit {
     if (!this.areaSubmitted)
       this.forward()
     else{
-      console.log(this.api.questions[this.ref]);
+      console.log(this.stateService.questions[this.ref]);
       
-      this.stateService.actualSubpart.next(this.api.questions[this.ref]);
+      this.stateService.actualSubpart.next(this.stateService.questions[this.ref]);
       this.router.navigate(['/diagnostic']);
     }
   }
