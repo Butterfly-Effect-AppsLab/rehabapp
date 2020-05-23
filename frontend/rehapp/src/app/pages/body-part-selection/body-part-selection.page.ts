@@ -54,7 +54,7 @@ export class BodyPartSelectionPage implements OnInit {
   constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet) {
   }
 
-  changeSubAreaOpacity(opacity: number) {
+  changeSubAreaOpacity(opacity: number) { 
     Array.from(this.actualSubarea.children).forEach(function (child: any) {
       child.style.opacity = opacity;
     });

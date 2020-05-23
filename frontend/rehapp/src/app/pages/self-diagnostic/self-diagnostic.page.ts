@@ -5,8 +5,8 @@ import { map, switchMap } from 'rxjs/operators'
 import { APIService } from 'src/app/services/apiservice.service'
 import { ActivatedRoute, Router } from '@angular/router';
 import { async } from '@angular/core/testing';
-import { Area, Option, Question } from 'src/app/services/models/Tree';
-import { StateServiceService } from 'src/app/services/state-service.service';
+import { Area, Option, Question, Diagnose } from 'src/app/services/models/Tree';
+import { StateService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-self-diagnostic',
@@ -15,21 +15,15 @@ import { StateServiceService } from 'src/app/services/state-service.service';
 })
 export class SelfDiagnosticPage implements OnInit {
 
-
   public type: string = "";
-  public questionForChild: object = {};
-  public textForChild: String = "";
-
-  private subpart: Option;
-  private tree;
-
-  private areaID: string;
+  public questionForChild: Question;
+  public diagnoseForChild: Diagnose;
 
   public subscription: Array<Subscription> = [];
-  public observables;
   startingState: Question;
+  componentStack: Array<Question> = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private api: APIService, private stateService: StateServiceService) {
+  constructor(private api: APIService, private stateService: StateService) {}
 
     // this.route.queryParams.pipe(
     //   switchMap(() => {
@@ -51,41 +45,28 @@ export class SelfDiagnosticPage implements OnInit {
     //     // jeden z returnov
     //   );
 
-    this.const();
 
-    this.stateService.actualSubpart.pipe(
-      map(state => { this.startingState = state })
-    ).subscribe();
-  }
+    async ngOnInit() {
 
-
-
-  async const(){
-    console.log("before: " + this.tree);    
-    let response = await this.getTreeFromAPI().toPromise();
-
-    console.log("after: ", response);    
-    console.log("nieco");    
-  }
-
-  getTreeFromAPI(): Observable<any> {
-    return this.api.getTree().pipe(map(
-      resp => {
-        this.tree = resp.body["self-diagnose"];
-        this.subpart = resp.body["self-diagnose"]["a_1"]['options'][0];
-
-        return resp;
-      }
-    ));
-  }
-
-
-  ngOnInit() {
-    if (this.tree == undefined) {
-      this.getTreeFromAPI();      // ako spravit, aby pockalo, kym sa vykona ???? 
-      this.subpart = { id: -1, label: "Bolesť pozdĺž hrudnej chrbtice", ref: 'q_1' };
+      await this.api.getTree();      
+      console.log(this.api.questions);
+          
+      this.stateService.actualSubpart.next(this.api.questions["q_33"]);
+      this.start();
     }
-  }
+
+    // this.stateService.actualSubpart.pipe(
+    //   map(state => { this.startingState = state })
+    // ).subscribe();
+  
+
+  // async const(){
+  //   console.log("before: " + this.tree);    
+  //   let response = await this.getTreeFromAPI().toPromise();
+
+  //   console.log("after: ", response);    
+  //   console.log("nieco");    
+  // }
 
   ngOnDestroy() {
     this.subscription.forEach(
@@ -93,41 +74,29 @@ export class SelfDiagnosticPage implements OnInit {
     );
   }
 
-
-
-  // childAnswered(id: string){
-  //   console.log("ANSWER = " + id);
-
-
-  //   if (this.APIresponse[id]["type"] == "question"){
-  //     this.type = "YesNo"
-  //     this.questionForChild = this.APIresponse[id];
-  //   }
-  //   if (this.APIresponse[id]["type"] == "diagnose"){
-  //     this.type = "Diagnose"
-  //     this.textForChild = this.APIresponse[id];
-  //   }
-
-  // }
-
-  // getQuestionsForArea(area: string) {
-  //   return this.areas[area];
-  // }
-
-  // findQuestion(id: string) {
-  //   return this.APIresponse[id];
-  // }
-
   start() {
     this.type = "Question";
-    this.questionForChild = this.tree[this.subpart.ref]
+    this.questionForChild = this.stateService.actualSubpart.getValue();
+    this.componentStack.push(this.questionForChild);
   }
 
-  // multiOptClick() {
-  //   this.type = "MultiOpt";
-  // }
+  childAnswered(id: string){
 
-  diagnoseClick() {
-    this.type = "Diagnose";
+    this.componentStack.push(this.questionForChild);
+    
+    if (id.startsWith('q')){      
+      this.type = "Question";
+      this.questionForChild = this.api.questions[id];
+    }
+    if (id.startsWith('d')){
+      this.type = "Diagnose";
+      this.diagnoseForChild = this.api.questions[id];
+    }
+  }
+
+  back() {
+    this.type = "Question";
+    if (this.componentStack.length > 0)
+      this.questionForChild = this.componentStack.pop();
   }
 }

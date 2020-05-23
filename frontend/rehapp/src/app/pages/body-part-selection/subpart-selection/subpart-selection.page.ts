@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Question } from 'src/app/services/models/Tree';
-import { StateServiceService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-subpart-selection',
@@ -13,7 +13,7 @@ export class SubpartSelectionPage implements OnInit {
   buttons = []
   questions;
 
-  constructor(private route: ActivatedRoute, private router: Router, private stateService: StateServiceService) {
+  constructor(private route: ActivatedRoute, private router: Router, private stateService: StateService) {
 
     this.route.queryParams.subscribe( () => {      
       if (this.router.getCurrentNavigation().extras.state) {

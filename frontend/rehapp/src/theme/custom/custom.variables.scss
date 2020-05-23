@@ -23,6 +23,20 @@
     --app-background: var(--light);
     --app-font-color-default: var(--dark);
     
+    .app-button-light {    
+        --border-color: var(--dark);
+        --border-width: 3px;
+        --color: var(--dark);
+        white-space: normal;
+        font-weight: bold;
+    }
+
+    .app-button-dark {
+        --background: var(--dark);
+        --color: var(--light);
+        white-space: normal;
+        font-weight: 500;
+    }
 }
 
 ion-content {
@@ -38,3 +52,4 @@ ion-header {
         text-transform: uppercase;
     }
 }
+

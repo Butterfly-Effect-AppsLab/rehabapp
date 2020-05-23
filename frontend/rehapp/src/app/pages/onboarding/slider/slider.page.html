@@ -12,9 +12,9 @@
   </ion-slides>
 
   <div *ngIf="lastSlide" class="fixed btnDiv">
-    <ion-button (click)="skip()" expand="block" fill="outline" shape="round" size="large">
+    <ion-button (click)="skip()" expand="block" fill="outline" shape="round" class="app-button-light">
       ZAČNITE
     </ion-button>
   </div>
-  <b (click)="skip()" class="fixed txt">Preskočiť</b>
+  <b *ngIf="!lastSlide" (click)="skip()" class="fixed txt">Preskočiť</b>
 </ion-content>

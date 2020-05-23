@@ -1,10 +1,22 @@
-<ion-content #cont>
-  <div #main>
-    <h1>{{this.question.prepend}}</h1>
-    <b>{{this.question.text}}</b>
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-button (click)="back()" slot="start" fill="clear">
+      <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+      Späť
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
 
-    <div *ngFor="let option of this.options">
-      <ion-button (click)="btnClicked($event)" expand="block" fill="clear" shape="round" style="white-space: normal">{{option.label}}</ion-button>
+<div #cont id="cont">
+  <div #main id="main">
+    <h1>{{question.prepend}}</h1>
+    <p>{{question.text}}</p>
+
+    <div id="btnDiv">
+      <div class="buttons" *ngFor="let option of options; index as i">
+        <ion-button (click)="btnClicked(i)" expand="block" fill="solid" shape="round" class="app-button-dark">
+          {{option.text}}</ion-button>
+      </div>
     </div>
   </div>
-</ion-content>
+</div>

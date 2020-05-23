@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-diagnose',
@@ -7,14 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DiagnoseComponent implements OnInit {
 
-  @Input() diagnose: object;  
+  @Input() diagnose: object;
+  @Output() onBack: EventEmitter<null> = new EventEmitter;;
 
-  constructor() {   
-
-  }
+  constructor() {}
 
   ngOnInit() {
-    console.log(this.diagnose);    
+    console.log(this.diagnose);
   }
 
+  back() {
+    this.onBack.emit();
+  }
 }
