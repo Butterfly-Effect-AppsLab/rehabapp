@@ -5,13 +5,14 @@ from models import Question, Diagnose, Option, Area
 from schemas import AreaSchema, DiagnoseSchema, QuestionSchema, OptionSchema, AreaDetailSchema
 import sys
 from self_diagnostic_trees import getTree
+from config import DB
 
 import logging
 
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.WARN)
 
-postgres = f'postgresql://postgres:password@db:5432/rehabApp'
+postgres = DB
 engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)

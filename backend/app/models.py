@@ -2,8 +2,9 @@ from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from config import DB
 
-postgres = f'postgresql://postgres:password@db:5432/rehabApp'
+postgres = DB
 engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
