@@ -15,10 +15,12 @@ services:
   db:
     image: postgres
     restart: always
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DB: rehabApp
     ports:
     - 5432:5432
