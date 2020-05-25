@@ -1,25 +1,22 @@
+tree = {
+    "name": "rameno",
+    "text": "Bolesť ramena"
+}
+
 areas = [
     {
-        "tree": "rameno",
         "name": "circles-rameno-spredu",
-        "text": "Bolesť ramena",
-        "area_detail": {
-            "x": 117.7777,
-            "y": 74.5713,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 117.7777,
+        "y": 74.5713,
+        "width": 132.817,
+        "height": 135.605,
     },
     {
-        "tree": "rameno",
         "name": "backcircles-rameno-zozadu",
-        "text": "Bolesť ramena",
-        "area_detail": {
-            "x": 28.3175,
-            "y": 76.3063,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 28.3175,
+        "y": 76.3063,
+        "width": 132.817,
+        "height": 135.605,
     }
 ]
 
@@ -151,18 +148,21 @@ options = [
         "from": "a",
         "text": "Oblasť krku a ramena",
         "label": "rameno-zbokukrku",
+        "side": "back",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Zozadu ramena",
         "label": "rameno-zozadu",
+        "side": "back",
         "to": "q5",
     },
     {
         "from": "a",
         "text": "Spredu a zboku ramena",
         "label": "rameno-spredu",
+        "side": "front",
         "to": "q8",
     },
     {

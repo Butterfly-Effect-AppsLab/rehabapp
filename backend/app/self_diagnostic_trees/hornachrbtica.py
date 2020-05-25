@@ -1,14 +1,15 @@
+tree = {
+    "name": "hornachrbtica",
+    "text": "Bolesť vrchnej časti chrbta",
+}
+
 areas = [
     {
-        "tree": "hornachrbtica",
         "name": "backcircles-hornachrbtica-zozadu",
-        "text": "Bolesť vrchnej časti chrbta",
-        "area_detail": {
-            "x": 52.1545,
-            "y": 59.23125,
-            "width": 188.8602,
-            "height": 147.8931,
-        }
+        "x": 52.1545,
+        "y": 59.23125,
+        "width": 188.8602,
+        "height": 147.8931,
     },
 ]
 
@@ -78,18 +79,21 @@ options = [
         "from": "a",
         "text": "Pozdĺž hrudnej chrbtice",
         "label": "hornachrbtica-hrudna",
+        "side": "back",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "V okolí jednej lopatky",
         "label": "hornachrbtica-lopatka",
+        "side": "back",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Oblasť krku, vrchnej časti ramien a lopatiek",
         "label": "hornachrbtica-krk",
+        "side": "back",
         "to": "q4",
     },
     {
@@ -133,4 +137,3 @@ options = [
         "to": "d6",
     }
 ]
-

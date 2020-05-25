@@ -1,14 +1,15 @@
+tree = {
+    "name": "zapastie",
+    "text": "Bolesť v oblasti zápästia",
+}
+
 areas = [
     {
-        "tree": "zapastie",
         "name": "circles-zapastie",
-        "text": "Bolesť v oblasti zápästia",
-        "area_detail": {
-            "x": 137.66885,
-            "y": 290.91625,
-            "width": 114.0921,
-            "height": 116.4871,
-        }
+        "x": 137.66885,
+        "y": 290.91625,
+        "width": 114.0921,
+        "height": 116.4871,
     },
 ]
 
@@ -58,11 +59,11 @@ diagnoses = [
         "name": "Artróza palca",
         "text": ""
     },
-    # {
-    #     "id": "d10",
-    #     "name": "Útlak lunárneho nervu v oblasti zápästia",
-    #     "text": ""
-    # },
+    {
+        "id": "d10",
+        "name": "Útlak lunárneho nervu v oblasti zápästia",
+        "text": ""
+    },
     {
         "id": "d11",
         "name": "Pronátorový syndróm",
