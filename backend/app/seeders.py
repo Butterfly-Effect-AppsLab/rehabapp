@@ -4,9 +4,10 @@ from sqlalchemy.orm import sessionmaker
 
 from constants import colors, prepends
 from models import Color, Prepend
+from config import DB
 
 
-postgres = f'postgresql://postgres:password@db:5432/rehabApp'
+postgres = DB
 engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)

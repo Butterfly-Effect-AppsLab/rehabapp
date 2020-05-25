@@ -2,6 +2,7 @@
 */venv
 */__pycache__
 /backend/app/config_dev.py
+/backend/.env
 
 /frontend/rehapp/src/app/services/api.config.ts
 /frontend/*/*~
