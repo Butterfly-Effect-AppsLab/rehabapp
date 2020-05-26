@@ -1,25 +1,22 @@
+tree = {
+    "name": "rameno",
+    "text": "Bolesť ramena"
+}
+
 areas = [
     {
-        "tree": "rameno",
         "name": "circles-rameno-spredu",
-        "text": "Bolesť ramena",
-        "area_detail": {
-            "x": 117.7777,
-            "y": 74.5713,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 117.7777,
+        "y": 74.5713,
+        "width": 132.817,
+        "height": 135.605,
     },
     {
-        "tree": "rameno",
         "name": "backcircles-rameno-zozadu",
-        "text": "Bolesť ramena",
-        "area_detail": {
-            "x": 28.3175,
-            "y": 76.3063,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 28.3175,
+        "y": 76.3063,
+        "width": 132.817,
+        "height": 135.605,
     }
 ]
 
@@ -66,11 +63,6 @@ diagnoses = [
     },
     {
         "id": "d9",
-        "name": "Poškodenie/natrhnutie rotatorovej manžety",
-        "text": ""
-    },
-    {
-        "id": "d10",
         "name": "Poškodenie akromio-klavikulárneho spojenia",
         "text": ""
     }
@@ -151,18 +143,21 @@ options = [
         "from": "a",
         "text": "Oblasť krku a ramena",
         "label": "rameno-zbokukrku",
+        "side": "back",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Zozadu ramena",
         "label": "rameno-zozadu",
+        "side": "back",
         "to": "q5",
     },
     {
         "from": "a",
         "text": "Spredu a zboku ramena",
         "label": "rameno-spredu",
+        "side": "front",
         "to": "q8",
     },
     {
@@ -250,16 +245,15 @@ options = [
         "text": "Áno",
         "to": "q10",
     },
-    # SH: nemame moznost pre nie
-    # {
-    #     "from": "q9",
-    #     "text": "Nie",
-    #     "to": "...",
-    # },
+    {
+        "from": "q9",
+        "text": "Nie",
+        "to": "d2",
+    },
     {
         "from": "q10",
         "text": "Áno",
-        "to": "d9",
+        "to": "d7",
     },
     {
         "from": "q10",
@@ -269,7 +263,7 @@ options = [
     {
         "from": "q11",
         "text": "Áno",
-        "to": "d10",
+        "to": "d9",
     },
     {
         "from": "q11",

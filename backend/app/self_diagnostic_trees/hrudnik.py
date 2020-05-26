@@ -1,17 +1,17 @@
+tree = {
+    "name": "hrudnik",
+    "text": "Bolesť chrbta vyžarujúca na hrudník"
+}
+
 areas = [
     {
-        "tree": "hrudnik",
         "name": "circles-hrudnik",
-        "text": "Bolesť chrbta vyžarujúca na hrudník",
-        "area_detail": {
-            "x": 94.9191,
-            "y": 113.195,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 94.9191,
+        "y": 113.195,
+        "width": 132.817,
+        "height": 135.605,
     }
 ]
-
 
 diagnoses = [
     {
@@ -73,12 +73,14 @@ options = [
         "from": "a",
         "text": "V oblasti rebier",
         "label": "hrudnik-rebra",
+        "side": "front",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "V prsiach až hrudnej kosti",
         "label": "hrudnik-prsia",
+        "side": "front",
         "to": "q2",
     },
     {

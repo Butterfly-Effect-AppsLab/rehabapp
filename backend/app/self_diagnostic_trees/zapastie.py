@@ -1,14 +1,15 @@
+tree = {
+    "name": "zapastie",
+    "text": "Bolesť v oblasti zápästia",
+}
+
 areas = [
     {
-        "tree": "zapastie",
         "name": "circles-zapastie",
-        "text": "Bolesť v oblasti zápästia",
-        "area_detail": {
-            "x": 137.66885,
-            "y": 290.91625,
-            "width": 114.0921,
-            "height": 116.4871,
-        }
+        "x": 137.66885,
+        "y": 290.91625,
+        "width": 114.0921,
+        "height": 116.4871,
     },
 ]
 
@@ -58,11 +59,11 @@ diagnoses = [
         "name": "Artróza palca",
         "text": ""
     },
-    # {
-    #     "id": "d10",
-    #     "name": "Útlak lunárneho nervu v oblasti zápästia",
-    #     "text": ""
-    # },
+    {
+        "id": "d10",
+        "name": "Útlak lunárneho nervu v oblasti zápästia",
+        "text": ""
+    },
     {
         "id": "d11",
         "name": "Pronátorový syndróm",
@@ -125,12 +126,12 @@ questions = [
         "prepend_id": 3,
         "color_id": 2
     },
-    # {
-    #     "id": "q8",
-    #     "text": "...Vám taktiež spôsobuje tŕpnutie malíčka a prsteníka.",
-    #     "prepend_id": 1,
-    #     "color_id": 1
-    # },
+    {
+        "id": "q8",
+        "text": "...Vám taktiež spôsobuje tŕpnutie malíčka a prsteníka.",
+        "prepend_id": 1,
+        "color_id": 1
+    },
     {
         "id": "q9",
         "text": "...Vám spôsobuje tŕpnutie prstov a vyžaruje až do prstov.",
@@ -149,6 +150,18 @@ questions = [
                 "obrátite dlaň nahor.",
         "prepend_id": 1,
         "color_id": 1
+    },
+    {
+        "id": "q12",
+        "text": "...táto bolesť prítomná aj v krku?",
+        "prepend_id": 4,
+        "color_id": 3
+    },
+    {
+        "id": "q13",
+        "text": "...táto bolesť prítomná aj v ramene?",
+        "prepend_id": 4,
+        "color_id": 2
     }
 ]
 
@@ -157,24 +170,28 @@ options = [
         "from": "a",
         "text": "Zvrchu zápästia",
         "label": "zapastie-zvrchu",
+        "side": "front",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Celého zápästia a opuch",
         "label": "zapastie-celeaopuch",
+        "side": "front",
         "to": "q5",
     },
     {
         "from": "a",
         "text": "V oblasti palca",
         "label": "zapastie-palec",
+        "side": "front",
         "to": "q6",
     },
     {
         "from": "a",
         "text": "Zvnútra či zospodu zápästia",
         "label": "zapastie-zvnutra",
+        "side": "front",
         "to": "q9",
     },
     {
@@ -258,28 +275,26 @@ options = [
         "text": "Nie",
         "to": "d13",
     },
-    # SH: zakomentovane, lebo sme odstranili otazku q8
-    # {
-    #     "from": "q10",
-    #     "text": "Áno",
-    #     "to": "q8",
-    # },
+    {
+        "from": "q10",
+        "text": "Áno",
+        "to": "q8",
+    },
     {
         "from": "q10",
         "text": "Nie",
         "to": "q11",
     },
-    # SH: nemame ani jednu vetvu na otazku q8
-    # {
-    #     "from": "q8",
-    #     "text": "...",
-    #     "to": "d9",
-    # },
-    # {
-    #     "from": "q8",
-    #     "text": "...",
-    #     "to": "...",
-    # },
+    {
+        "from": "q8",
+        "text": "Áno",
+        "to": "q12",
+    },
+    {
+        "from": "q8",
+        "text": "Nie",
+        "to": "d10",
+    },
     {
         "from": "q11",
         "text": "Áno",
@@ -290,4 +305,27 @@ options = [
         "text": "Nie",
         "to": "d12",
     },
+    {
+        "from": "q12",
+        "text": "Áno",
+        "to": "different_tree",
+        "tree": "circles-krk-spredu"
+    },
+    {
+        "from": "q12",
+        "text": "Nie",
+        "to": "q13",
+    },
+    {
+        "from": "q13",
+        "text": "Áno",
+        "to": "different_tree",
+        "tree": "circles-rameno-spredu"
+    },
+    {
+        "from": "q13",
+        "text": "Nie",
+        "to": "different_tree",
+        "tree": "circles-laket-spredu"
+    }
 ]

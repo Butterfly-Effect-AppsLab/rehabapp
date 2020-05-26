@@ -1,25 +1,22 @@
+tree = {
+    "name": "chodidlo",
+    "text": "Bolesť chodidla"
+}
+
 areas = [
     {
-        "tree": "chodidlo",
         "name": "circles-chodidlo-spredu",
-        "text": "Bolesť chodidla",
-        "area_detail": {
-            "x": 62,
-            "y": 545.0952,
-            "width": 166,
-            "height": 130,
-        }
+        "x": 62,
+        "y": 545.0952,
+        "width": 166,
+        "height": 130,
     },
     {
-        "tree": "chodidlo",
         "name": "backcircles-chodidlo-zozadu",
-        "text": "Bolesť chodidla",
-        "area_detail": {
-            "x": 61.9602,
-            "y": 545.2499,
-            "width": 166,
-            "height": 130,
-        }
+        "x": 61.9602,
+        "y": 545.2499,
+        "width": 166,
+        "height": 130,
     },
 ]
 
@@ -58,6 +55,11 @@ diagnoses = [
     {
         "id": "d7",
         "name": "Tendinopatia m. tibialis",
+        "text": ""
+    },
+    {
+        "id": "d8",
+        "name": "Syndróm hrany holennej kosti",
         "text": ""
     }
 ]
@@ -114,24 +116,28 @@ options = [
         "from": "a",
         "text": "Zospodu chodidla",
         "label": "chodidlo-zospodu",
+        "side": "back",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Zvrchu chodidla",
         "label": "chodidlo-zvrchu",
+        "side": "back",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Prstov",
         "label": "chodidlo-prsty",
+        "side": "front",
         "to": "q7",
     },
     {
         "from": "a",
         "text": "Päty",
         "label": "chodidlo-pata",
+        "side": "back",
         "to": "different_tree_question",
         "tree": "clenok",
         "option": "clenok-zozadu",
@@ -188,18 +194,16 @@ options = [
         "text": "Nie (je stále rovnaká)",
         "to": "q6",
     },
-    # SH: mozno sa bude menit nazov
     {
         "from": "q6",
         "text": "Áno",
         "to": "d7",
     },
-    # SH: chyba vetva na Nie
-    # {
-    #     "from": "q6",
-    #     "text": "Nie",
-    #     "to": "...",
-    # },
+    {
+        "from": "q6",
+        "text": "Nie",
+        "to": "d8",
+    },
     {
         "from": "q7",
         "text": "Áno (k večeru a po zahriatí sa bolesť zmierňuje)",

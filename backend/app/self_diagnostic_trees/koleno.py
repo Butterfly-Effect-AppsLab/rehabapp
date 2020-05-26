@@ -1,25 +1,22 @@
+tree = {
+    "name": "koleno",
+    "text": "Bolesť kolena"
+}
+
 areas = [
     {
-        "tree": "koleno",
         "name": "circles-koleno-spredu",
-        "text": "Bolesť kolena",
-        "area_detail": {
-            "x": 66.14575,
-            "y": 410.8686,
-            "width": 166.4057,
-            "height": 130.3094,
-        }
+        "x": 66.14575,
+        "y": 410.8686,
+        "width": 166.4057,
+        "height": 130.3094,
     },
     {
-        "tree": "koleno",
         "name": "backcircles-koleno-zozadu",
-        "text": "Bolesť kolena",
-        "area_detail": {
-            "x": 66.14575,
-            "y": 410.8686,
-            "width": 166.4057,
-            "height": 130.3094,
-        }
+        "x": 66.14575,
+        "y": 410.8686,
+        "width": 166.4057,
+        "height": 130.3094,
     },
 ]
 
@@ -317,7 +314,6 @@ questions = [
         "prepend_id": 4,
         "color_id": 3
     },
-    # SH: custom tag
     {
         "id": "q23",
         "text": "...náhly rotačný pohyb v kolene (zmena smeru behu/chôdze, zlý dopad...), prípade aj "
@@ -368,42 +364,49 @@ options = [
         "from": "a",
         "text": "Celého obvodu kolena",
         "label": "koleno-obvod",
+        "side": "front",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Zozadu kolena",
         "label": "koleno-zozadu",
+        "side": "back",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Z vnútornej strany kolena",
         "label": "koleno-zvnutornej",
+        "side": "front",
         "to": "q10",
     },
     {
         "from": "a",
         "text": "Z vonkajšej strany kolena",
         "label": "koleno-vonkajsej",
+        "side": "front",
         "to": "q13",
     },
     {
         "from": "a",
         "text": "Spredu pod kolenom",
         "label": "koleno-spredupod",
+        "side": "front",
         "to": "q18",
     },
     {
         "from": "a",
         "text": "Spredu pozdĺž celého kolena",
         "label": "koleno-spreduzostran",
+        "side": "front",
         "to": "q19",
     },
     {
         "from": "a",
         "text": "Spredu nad kolenom",
         "label": "koleno-spredunad",
+        "side": "front",
         "to": "q25",
     },
     {

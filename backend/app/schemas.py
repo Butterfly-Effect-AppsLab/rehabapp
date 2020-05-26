@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load, EXCLUDE, validate, pre_dump
-from models import User, Diagnose, Area, Question, Option, AreaDetail, Color
+from models import User, Diagnose, Area, Question, Option, Color, Tree
 
 
 class UserSchema(Schema):
@@ -21,6 +21,7 @@ class UserSchema(Schema):
 class DiagnoseSchema(Schema):
     name = fields.Str()
     text = fields.Str(default='')
+    type = fields.String(default='diagnose', dump_only=True)
 
     @post_load
     def create_model(self, data, **kwargs):
@@ -42,6 +43,18 @@ class ColorSchema(Schema):
         unknown = EXCLUDE
 
 
+class TreeSchema(Schema):
+    name = fields.Str()
+    text = fields.Str()
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return Tree(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+
+
 class QuestionSchema(Schema):
     text = fields.Str()
     color_id = fields.Integer(load_only=True)
@@ -49,6 +62,7 @@ class QuestionSchema(Schema):
     color = fields.Nested(ColorSchema(), many=False, dump_only=True, data_key="style")
     prepend = fields.Method("get_prepend")
     options = fields.Nested(lambda: OptionSchema(only=("id", "text", "ref")), many=True, dump_only=True)
+    type = fields.String(default='question', dump_only=True)
 
     def get_prepend(self, question):
         return question.prepend.text
@@ -66,6 +80,7 @@ class OptionSchema(Schema):
     question_id = fields.Integer(default=None)
     area_id = fields.Integer(default=None)
     label = fields.String(default=None)
+    side = fields.String(default=None)
     text = fields.String()
     next_question_id = fields.Integer(default=None)
     next_diagnose_id = fields.Integer(default=None)
@@ -83,28 +98,14 @@ class OptionSchema(Schema):
         unknown = EXCLUDE
 
 
-class AreaDetailSchema(Schema):
-    id = fields.Int(dump_only=True)
+class AreaSchema(Schema):
+    type = fields.String(default='area', dump_only=True)
+    name = fields.Str()
+    tree = fields.Nested(TreeSchema, many=False)
     x = fields.Float()
     y = fields.Float()
     width = fields.Float()
     height = fields.Float()
-    area_id = fields.Integer(load_only=True)
-
-    @post_load
-    def create_model(self, data, **kwargs):
-        return AreaDetail(**data)
-
-    class Meta:
-        unknown = EXCLUDE
-
-
-class AreaSchema(Schema):
-    name = fields.Str()
-    tree = fields.Str()
-    label = fields.Str()
-    text = fields.Str()
-    area_detail = fields.Nested(AreaDetailSchema, many=False, dump_only=True)
     options = fields.Nested(OptionSchema(only=("id", "text", "label", "ref")), many=True, dump_only=True)
 
     @post_load
