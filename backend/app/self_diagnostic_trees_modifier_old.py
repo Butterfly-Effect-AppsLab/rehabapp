@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine, or_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from models import Question, Diagnose, Option, Area, Tree
-from schemas import AreaSchema, DiagnoseSchema, QuestionSchema, OptionSchema, TreeSchema
+from models import Question, Diagnose, Option, Area
+from schemas import AreaSchema, DiagnoseSchema, QuestionSchema, OptionSchema, AreaDetailSchema
 import sys
 from self_diagnostic_trees import getTree
 from config import DB
@@ -21,34 +21,37 @@ session = Session()
 
 def seed(tree_name='all'):
 
-    for tree_file in getTree(tree_name):
+    for area in getTree(tree_name):
         models = {}
         added_diagnoses = {}
 
         # check if tree exists
-        model = session.query(Tree).filter(Tree.name == tree_file.tree['name']).first()
+        model = session.query(Area).filter(Area.tree == area.areas[0]['tree']).first()
 
         if model:
             continue
 
-        tree_schema = TreeSchema()
-        tree_model = tree_schema.load(tree_file.tree)
-        session.add(tree_model)
-
         models["a"] = []
 
         # create areas
-        for a in tree_file.areas:
+        for a in area.areas:
             schema = AreaSchema()
             area_model = schema.load(a)
-            area_model.tree = tree_model
             session.add(area_model)
             models["a"].append(area_model)
+
+            session.flush()
+
+            # create area detail
+            schema = AreaDetailSchema()
+            model = schema.load(a['area_detail'])
+            model.area = area_model
+            session.add(model)
 
         session.flush()
 
         # create diagnoses
-        for diagnose in tree_file.diagnoses:
+        for diagnose in area.diagnoses:
             schema = DiagnoseSchema()
 
             if diagnose['name'] in added_diagnoses.keys():
@@ -67,11 +70,10 @@ def seed(tree_name='all'):
         session.flush()
 
         # create questions
-        for question in tree_file.questions:
+        for question in area.questions:
             schema = QuestionSchema()
 
             model = schema.load(question)
-            model.tree = tree_model
             session.add(model)
 
             models[question["id"]] = model
@@ -79,7 +81,7 @@ def seed(tree_name='all'):
         session.flush()
 
         # create options
-        for option in tree_file.options:
+        for option in area.options:
             schema = OptionSchema()
 
             if option["to"] == "different_tree":
@@ -87,7 +89,7 @@ def seed(tree_name='all'):
                 m = session.query(Area).filter(Area.name == option["tree"]).first()
                 if not m:
                     session.close()
-                    sys.exit(f"Tree {tree_file.areas[0]['tree']} has a reference to non existing tree {option['tree']}. Please "
+                    sys.exit(f"Tree {area.areas[0]['tree']} has a reference to non existing tree {option['tree']}. Please "
                              f"create it before creating this tree.")
                 option[key] = m.id
             elif option['to'] == "different_tree_question":
@@ -96,7 +98,7 @@ def seed(tree_name='all'):
                 if not m:
                     session.close()
                     sys.exit(
-                        f"Tree {tree_file.areas[0]['tree']} has a reference to non existing tree {option['tree']}. Please "
+                        f"Tree {area.areas[0]['tree']} has a reference to non existing tree {option['tree']}. Please "
                         f"create it before creating this tree.")
                 option[key] = m.next_option.id
             else:
@@ -143,15 +145,13 @@ references = {
     "laket": ["zapastie"],
     "driek": ["chodidlo", "clenok", "koleno"],
     "clenok": ["chodidlo"],
-    "bedro": ["koleno"],
-    "rameno": ["zapastie"],
-    "krk": ["zapastie"],
+    "bedro": ["koleno"]
 }
 
 
 def deleteTree(tree_name='all'):
     if tree_name in references.keys():
-        referenced_areas = session.query(Area).distinct(Area.tree).filter(Area.tree.name.in_(references[tree_name])).all()
+        referenced_areas = session.query(Area).distinct(Area.tree).filter(Area.tree.in_(references[tree_name])).all()
         if len(referenced_areas) > 0:
             session.close()
             sys.exit("This tree is referenced from other trees, you have to remove them first. List of trees with "

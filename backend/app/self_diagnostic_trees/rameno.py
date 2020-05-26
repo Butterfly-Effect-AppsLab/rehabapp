@@ -63,11 +63,6 @@ diagnoses = [
     },
     {
         "id": "d9",
-        "name": "Poškodenie/natrhnutie rotatorovej manžety",
-        "text": ""
-    },
-    {
-        "id": "d10",
         "name": "Poškodenie akromio-klavikulárneho spojenia",
         "text": ""
     }
@@ -250,16 +245,15 @@ options = [
         "text": "Áno",
         "to": "q10",
     },
-    # SH: nemame moznost pre nie
-    # {
-    #     "from": "q9",
-    #     "text": "Nie",
-    #     "to": "...",
-    # },
+    {
+        "from": "q9",
+        "text": "Nie",
+        "to": "d2",
+    },
     {
         "from": "q10",
         "text": "Áno",
-        "to": "d9",
+        "to": "d7",
     },
     {
         "from": "q10",
@@ -269,7 +263,7 @@ options = [
     {
         "from": "q11",
         "text": "Áno",
-        "to": "d10",
+        "to": "d9",
     },
     {
         "from": "q11",

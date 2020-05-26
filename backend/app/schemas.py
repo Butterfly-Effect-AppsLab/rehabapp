@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load, EXCLUDE, validate, pre_dump
-from models import User, Diagnose, Area, Question, Option, Color
+from models import User, Diagnose, Area, Question, Option, Color, Tree
 
 
 class UserSchema(Schema):
@@ -21,7 +21,7 @@ class UserSchema(Schema):
 class DiagnoseSchema(Schema):
     name = fields.Str()
     text = fields.Str(default='')
-    type = fields.String(default='diagnose')
+    type = fields.String(default='diagnose', dump_only=True)
 
     @post_load
     def create_model(self, data, **kwargs):
@@ -43,6 +43,18 @@ class ColorSchema(Schema):
         unknown = EXCLUDE
 
 
+class TreeSchema(Schema):
+    name = fields.Str()
+    text = fields.Str()
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return Tree(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+
+
 class QuestionSchema(Schema):
     text = fields.Str()
     color_id = fields.Integer(load_only=True)
@@ -50,7 +62,7 @@ class QuestionSchema(Schema):
     color = fields.Nested(ColorSchema(), many=False, dump_only=True, data_key="style")
     prepend = fields.Method("get_prepend")
     options = fields.Nested(lambda: OptionSchema(only=("id", "text", "ref")), many=True, dump_only=True)
-    type = fields.String(default='question')
+    type = fields.String(default='question', dump_only=True)
 
     def get_prepend(self, question):
         return question.prepend.text
@@ -86,29 +98,14 @@ class OptionSchema(Schema):
         unknown = EXCLUDE
 
 
-# class AreaDetailSchema(Schema):
-#     id = fields.Int(dump_only=True)
-#     x = fields.Float()
-#     y = fields.Float()
-#     width = fields.Float()
-#     height = fields.Float()
-#     area_id = fields.Integer(load_only=True)
-#
-#     @post_load
-#     def create_model(self, data, **kwargs):
-#         return AreaDetail(**data)
-#
-#     class Meta:
-#         unknown = EXCLUDE
-
-
 class AreaSchema(Schema):
-    type = fields.String(default='area')
+    type = fields.String(default='area', dump_only=True)
     name = fields.Str()
-    tree = fields.Str()
-    label = fields.Str()
-    text = fields.Str()
-    # area_detail = fields.Nested(AreaDetailSchema, many=False, dump_only=True)
+    tree = fields.Nested(TreeSchema, many=False)
+    x = fields.Float()
+    y = fields.Float()
+    width = fields.Float()
+    height = fields.Float()
     options = fields.Nested(OptionSchema(only=("id", "text", "label", "ref")), many=True, dump_only=True)
 
     @post_load

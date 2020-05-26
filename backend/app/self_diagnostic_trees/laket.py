@@ -1,25 +1,22 @@
+tree = {
+    "name": "laket",
+    "text": "Bolesť v oblasti lakťa"
+}
+
 areas = [
     {
-        "tree": "laket",
         "name": "circles-laket-spredu",
-        "text": "Bolesť v oblasti lakťa",
-        "area_detail": {
-            "x": 137.57935,
-            "y": 190.30805,
-            "width": 114.0921,
-            "height": 116.4871,
-        }
+        "x": 137.57935,
+        "y": 190.30805,
+        "width": 114.0921,
+        "height": 116.4871,
     },
     {
-        "tree": "laket",
         "name": "backcircles-laket-zozadu",
-        "text": "Bolesť v oblasti lakťa",
-        "area_detail": {
-            "x": 21,
-            "y": 191,
-            "width": 114.0921,
-            "height": 116.4871,
-        }
+        "x": 21,
+        "y": 191,
+        "width": 114.0921,
+        "height": 116.4871,
     }
 ]
 
@@ -132,25 +129,38 @@ options = [
         "from": "a",
         "text": "Zozadu lakťa",
         "label": "laket-zozadu",
+        "side": "back",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Z vnútornej strany lakťa",
         "label": "laket-vnutorny",
+        "side": "front",
         "to": "q3",
     },
     {
         "from": "a",
         "text": "Z vonkajšej strany lakťa",
         "label": "laket-vonkajsi",
+        "side": "front",
         "to": "q5",
     },
     {
         "from": "a",
         "text": "V lakťovej jame",
         "label": "laket-jamka",
+        "side": "front",
         "to": "q6",
+    },
+    {
+        "from": "a",
+        "text": "V oblasti paže, ramena a krku",
+        "label": "laket-paza",
+        "side": "front",
+        "to": "different_tree_question",
+        "tree": "rameno",
+        "option": "rameno-zbokukrku",
     },
     {
         "from": "q1",
