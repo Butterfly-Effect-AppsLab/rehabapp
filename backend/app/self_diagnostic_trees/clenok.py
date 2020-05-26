@@ -1,25 +1,22 @@
+tree = {
+    "name": "clenok",
+    "text": "Bolesť členku"
+}
+
 areas = [
     {
-        "tree": "clenok",
         "name": "circles-clenok-spredu",
-        "text": "Bolesť členku",
-        "area_detail": {
-            "x": 61.37805,
-            "y": 529.54515,
-            "width": 166.4057,
-            "height": 145.1845,
-        }
+        "x": 61.37805,
+        "y": 529.54515,
+        "width": 166.4057,
+        "height": 145.1845,
     },
     {
-        "tree": "clenok",
         "name": "backcircles-clenok-zozadu",
-        "text": "Bolesť členku",
-        "area_detail": {
-            "x": 61.37805,
-            "y": 529.54515,
-            "width": 166.4057,
-            "height": 145.1845,
-        }
+        "x": 61.37805,
+        "y": 529.54515,
+        "width": 166.4057,
+        "height": 145.1845,
     },
 ]
 
@@ -50,17 +47,16 @@ diagnoses = [
         "name": "Syndróm tibiálnej hrany (Shin splits)",
         "text": ""
     },
-    # SH: zatial sa sem nemame ako dostat
-    # {
-    #     "id": "d6",
-    #     "name": "Laterálny impingement členku",
-    #     "text": ""
-    # },
-    # {
-    #     "id": "d7",
-    #     "name": "Subluxáca šľachy peroneálneho svalu",
-    #     "text": ""
-    # },
+    {
+        "id": "d6",
+        "name": "Laterálny impingement členku",
+        "text": ""
+    },
+    {
+        "id": "d7",
+        "name": "Subluxáca šľachy peroneálneho svalu",
+        "text": ""
+    },
     {
         "id": "d8",
         "name": "Vyvrtnutý/podvrtnutý členok",
@@ -110,6 +106,11 @@ diagnoses = [
         "id": "d17",
         "name": "Ostroh (Calcar calcanei)",
         "text": ""
+    },
+    {
+        "id": "d18",
+        "name": "Tendinitída lýtkového svalu",
+        "text": ""
     }
 ]
 
@@ -138,13 +139,13 @@ questions = [
         "prepend_id": 2,
         "color_id": 3
     },
-    # {
-    #     "id": "q5",
-    #     "text": "...potiahnete špičku nohy nahor (k sebe) a pokúsite sa ju vytočiť do vonakjšej strany, pociťujete "
-    #             "preskakovanie (šľachy) za vonkajším členkom?",
-    #     "prepend_id": 3,
-    #     "color_id": 3
-    # },
+    {
+        "id": "q5",
+        "text": "...potiahnete špičku nohy nahor (k sebe) a pokúsite sa ju vytočiť do vonakjšej strany, pociťujete "
+                "preskakovanie (šľachy) za vonkajším členkom?",
+        "prepend_id": 3,
+        "color_id": 3
+    },
     {
         "id": "q6",
         "text": "...v nedávnej dobe úraz členku ako napríklad vyvrtnutie/potvrdnutie, alebo ste utrpeli opakované "
@@ -227,24 +228,28 @@ options = [
         "from": "a",
         "text": "Spredu členku",
         "label": "clenok-spredu",
+        "side": "front",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Z vonkajšej strany členku",
         "label": "clenok-vonkajsia",
+        "side": "back",
         "to": "q6",
     },
     {
         "from": "a",
         "text": "Z vnútornej strany členku",
         "label": "clenok-vnutorna",
+        "side": "front",
         "to": "q9",
     },
     {
         "from": "a",
         "text": "Zozadu členku",
         "label": "clenok-zozadu",
+        "side": "back",
         "to": "q14",
     },
     {
@@ -287,17 +292,16 @@ options = [
         "text": "Nie",
         "to": "d4",
     },
-    # SH: nemame sa ako dostat do otazky q5
-    # {
-    #     "from": "q5",
-    #     "text": "Áno",
-    #     "to": "d7",
-    # },
-    # {
-    #     "from": "q5",
-    #     "text": "Nie",
-    #     "to": "d6",
-    # },
+    {
+        "from": "q5",
+        "text": "Áno",
+        "to": "d7",
+    },
+    {
+        "from": "q5",
+        "text": "Nie",
+        "to": "d6",
+    },
     {
         "from": "q6",
         "text": "Áno, nedávny úraz",
@@ -307,6 +311,11 @@ options = [
         "from": "q6",
         "text": "Nie, nemal/a som úraz",
         "to": "q7",
+    },
+    {
+        "from": "q6",
+        "text": "V minulosti opakove, nedávno nie",
+        "to": "q5",
     },
     {
         "from": "q7",
@@ -407,12 +416,11 @@ options = [
         "text": "Áno",
         "to": "d17",
     },
-    # SH: chyba vetva na nie
-    # {
-    #     "from": "q16",
-    #     "text": "Nie",
-    #     "to": "...",
-    # },
+    {
+        "from": "q16",
+        "text": "Nie",
+        "to": "d18",
+    },
     {
         "from": "q17",
         "text": "Áno",

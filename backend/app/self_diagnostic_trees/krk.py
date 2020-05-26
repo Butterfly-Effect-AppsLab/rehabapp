@@ -1,25 +1,22 @@
+tree = {
+    "name": "krk",
+    "text": "Bolesť zboku na krku"
+}
+
 areas = [
     {
-        "tree": "krk",
         "name": "circles-krk-spredu",
-        "text": "Bolesť zboku na krku",
-        "area_detail": {
-            "x": 83.0394,
-            "y": 38.6362,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 83.0394,
+        "y": 38.6362,
+        "width": 132.817,
+        "height": 135.605,
     },
     {
-        "tree": "krk",
         "name": "backcircles-krk-zozadu",
-        "text": "Bolesť zboku na krku",
-        "area_detail": {
-            "x": 62.7951,
-            "y": 30.8045,
-            "width": 132.817,
-            "height": 135.605,
-        }
+        "x": 62.7951,
+        "y": 30.8045,
+        "width": 132.817,
+        "height": 135.605,
     }
 ]
 
@@ -99,18 +96,21 @@ options = [
         "from": "a",
         "text": "Vyžaruje do oblasti záhlavia a vrchu lopatky",
         "label": "krk-dolopatky",
+        "side": "back",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Vyžaruje do kľúčnej kosti",
         "label": "krk-klucnakost",
+        "side": "front",
         "to": "q2",
     },
     {
         "from": "a",
         "text": "Vyžaruje do oblasti ucha a oka",
         "label": "krk-doucha",
+        "side": "back",
         "to": "q3",
     },
     {

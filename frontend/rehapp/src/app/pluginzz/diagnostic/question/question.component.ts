@@ -37,7 +37,9 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.options = this.question['options'];
+    console.log(this.question)
+    this.options = this.question.options;         
+    // this.background.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
   }
 
 }

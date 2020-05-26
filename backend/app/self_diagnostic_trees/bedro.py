@@ -1,25 +1,22 @@
+tree = {
+    "name": "bedro",
+    "text": "Bolesť v oblasti bedra"
+}
+
 areas = [
     {
-        "tree": "bedro",
         "name": "circles-bedro-spredu",
-        "text": "Bolesť v oblasti bedra",
-        "area_detail": {
-            "x": 67,
-            "y": 255.4481,
-            "width": 185.119,
-            "height": 145.6538,
-        }
+        "x": 67,
+        "y": 255.4481,
+        "width": 185.119,
+        "height": 145.6538,
     },
     {
-        "tree": "bedro",
         "name": "backcircles-bedro-zozadu",
-        "text": "Bolesť v oblasti bedra",
-        "area_detail": {
-            "x": -0.2528,
-            "y": 261.0274,
-            "width": 185.119,
-            "height": 145.6538,
-        }
+        "x": -0.2528,
+        "y": 261.0274,
+        "width": 185.119,
+        "height": 145.6538,
     },
 ]
 
@@ -143,7 +140,6 @@ questions = [
         "prepend_id": 3,
         "color_id": 2
     },
-    # SH: mozno sa bude menit farba
     {
         "id": "q7",
         "text": "...v stoji podopriete chrbát a vrch zadku rukami, tak aby prsty smerovali von a  zakloníte sa, "
@@ -170,7 +166,6 @@ questions = [
         "prepend_id": 3,
         "color_id": 2
     },
-    # SH: mozno sa bude menit farba
     {
         "id": "q11",
         "text": "...zároveň bolesť v oblasti driekovej chrbtice?",
@@ -192,18 +187,21 @@ options = [
         "from": "a",
         "text": "Zboku bedra",
         "label": "bedro-zboku",
+        "side": "front",
         "to": "q1",
     },
     {
         "from": "a",
         "text": "Zozadu bedra",
         "label": "bedro-zozadu",
+        "side": "back",
         "to": "q5",
     },
     {
         "from": "a",
         "text": "Spredu bedra",
         "label": "bedro-spredu",
+        "side": "front",
         "to": "q8",
     },
     {

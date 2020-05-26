@@ -9,10 +9,10 @@ engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
-subarea_diagnoses = Table('subarea_diagnoses', Base.metadata,
-                          Column('subarea_id', Integer, ForeignKey('options.id', ondelete='CASCADE')),
-                          Column('diagnose_id', Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
-                          )
+tree_references = Table('tree_references', Base.metadata,
+                        Column('tree_id', Integer, ForeignKey('trees.id', ondelete='CASCADE')),
+                        Column('ref_tree_id', Integer, ForeignKey('trees.id', ondelete='CASCADE'))
+                        )
 
 
 class SelfDiagnosticSequence(Base):
@@ -28,7 +28,7 @@ class SelfDiagnosticSequence(Base):
         ), nullable=False
     )
 
-    next = relationship("SelfDiagnosticSequence")
+    next = relationship("SelfDiagnosticSequence", cascade="delete")
     option = relationship("Option")
 
 
@@ -38,6 +38,10 @@ class Diagnose(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
     text = Column(Text)
+
+    options = relationship(
+        'Option',
+    )
 
     @property
     def unique_id(self):
@@ -53,8 +57,8 @@ class UserDiagnose(Base):
     diagnose_id = Column(Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
     sequence_id = Column(Integer, ForeignKey('sequences.id', ondelete='CASCADE'))
 
-    diagnose = relationship("Diagnose")
-    seq = relationship("SelfDiagnosticSequence")
+    diagnose = relationship("Diagnose", cascade="delete")
+    seq = relationship("SelfDiagnosticSequence", cascade="delete")
 
     def gen_sequence(self, seq, arr):
         arr.append(seq.id)
@@ -100,11 +104,25 @@ class Question(Base):
             'prepends.id',
         ), nullable=False
     )
+    tree_id = Column(
+        Integer,
+        ForeignKey(
+            'trees.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=False
+    )
+
+    tree = relationship(
+        'Tree',
+        uselist=False, back_populates="questions"
+    )
 
     options = relationship(
         'Option',
         backref='questions',
-        foreign_keys="Option.question_id"
+        foreign_keys="Option.question_id",
+        cascade="delete"
     )
 
     color = relationship(
@@ -122,43 +140,66 @@ class Question(Base):
         return f"q_{self.id}"
 
 
+class Tree(Base):
+    __tablename__ = "trees"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    text = Column(String)
+
+    areas = relationship('Area', cascade="delete")
+    questions = relationship('Question', cascade="delete")
+
+    referenced_trees = relationship(
+        'Tree',
+        secondary=tree_references,
+        primaryjoin=id == tree_references.c.tree_id,
+        secondaryjoin=id == tree_references.c.ref_tree_id,
+        back_populates="references_from",
+    )
+
+    references_from = relationship(
+        'Tree',
+        secondary=tree_references,
+        primaryjoin=id == tree_references.c.ref_tree_id,
+        secondaryjoin=id == tree_references.c.tree_id,
+        back_populates="referenced_trees",
+        lazy='joined'
+    )
+
+
 class Area(Base):
     __tablename__ = "areas"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    tree = Column(String)
-    text = Column(String)
-
-    options = relationship(
-        'Option',
-        foreign_keys="Option.area_id"
-    )
-    area_detail = relationship("AreaDetail", uselist=False, back_populates="area")
-
-    @property
-    def unique_id(self):
-        return self.name
-
-
-class AreaDetail(Base):
-    __tablename__ = "area_details"
-
-    id = Column(Integer, primary_key=True)
     x = Column(Float)
     y = Column(Float)
     width = Column(Float)
     height = Column(Float)
-    area_id = Column(
+    tree_id = Column(
         Integer,
         ForeignKey(
-            'areas.id',
+            'trees.id',
             ondelete='CASCADE',
             onupdate='CASCADE'
         ), nullable=False
     )
 
-    area = relationship("Area", uselist=False, back_populates="area_detail")
+    tree = relationship(
+        'Tree',
+        uselist=False, back_populates="areas"
+    )
+
+    options = relationship(
+        'Option',
+        foreign_keys="Option.area_id",
+        cascade="delete"
+    )
+
+    @property
+    def unique_id(self):
+        return self.name
 
 
 class Option(Base):
@@ -197,6 +238,7 @@ class Option(Base):
     )
     text = Column(String)
     label = Column(String, nullable=True)
+    side = Column(String, nullable=True)
     next_question_id = Column(
         Integer,
         ForeignKey(
@@ -248,8 +290,6 @@ class Option(Base):
         foreign_keys="Option.area_id"
     )
 
-    diagnoses = relationship("Diagnose", secondary=subarea_diagnoses)
-
     @property
     def next_option(self):
         if self.next_question:
@@ -270,7 +310,7 @@ class User(Base):
     sex = Column(String)
     birthday = Column(Date)
 
-    diagnoses = relationship("UserDiagnose")
+    diagnoses = relationship("UserDiagnose", cascade="delete")
 
     def generate_password(self, pwd):
         return hashpw(pwd.encode(), gensalt()).decode()
