@@ -106,7 +106,7 @@ class AreaSchema(Schema):
     y = fields.Float()
     width = fields.Float()
     height = fields.Float()
-    options = fields.Nested(OptionSchema(only=("id", "text", "label", "ref")), many=True, dump_only=True)
+    options = fields.Nested(OptionSchema(only=("id", "text", "label", "ref", "side")), many=True, dump_only=True)
 
     @post_load
     def create_model(self, data, **kwargs):
