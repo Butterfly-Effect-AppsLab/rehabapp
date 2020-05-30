@@ -1,34 +1,43 @@
-export interface TreeComponent{
-    text: string
+export interface TreeComponent {
+    type: string
 }
 
-export interface Area extends TreeComponent{
-    tree: string
+export class Area implements TreeComponent {
     name: string
-    area_detail:{
-        x: number
-        y: number
-        width: number
-        height: number
-    },
+    x: number
+    y: number
+    width: number
+    height: number
+    tree: {
+        name: string
+        text: string
+    }
     options: Array<Option>
+    type: string
+    first: boolean = false
 }
 
-export interface Diagnose extends TreeComponent{
+export class Diagnose implements TreeComponent {
     name: string
+    text: string
+    type: string
 }
 
-export interface Question extends TreeComponent{
+export class Question implements TreeComponent {
     prepend: string
+    text: string
     style: {
         'background-color': string
         'color': string
-    },
+    }
     options: Array<Option>
+    type: string
 }
 
-export interface Option {
+export class Option {
     id: number
     label: string
-    ref: string
-}
+    ref: string 
+    text: string
+    side: string = null;
+} 

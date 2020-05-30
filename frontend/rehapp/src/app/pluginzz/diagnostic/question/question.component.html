@@ -13,8 +13,8 @@
     <p>{{question.text}}</p>
 
     <div id="btnDiv">
-      <div class="buttons" *ngFor="let option of options; index as i">
-        <ion-button (click)="btnClicked(i)" expand="block" fill="solid" shape="round" class="app-button-dark">
+      <div class="buttons" *ngFor="let option of options">
+        <ion-button (click)="btnClicked(option.ref)" expand="block" fill="solid" shape="round" class="app-button-dark">
           {{option.text}}</ion-button>
       </div>
     </div>

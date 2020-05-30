@@ -3,7 +3,6 @@ import { ElementRef } from '@angular/core';
 export default class Body {
     body: ElementRef;
     circles: Element;
-    ids: Array<string> = [];
 
     constructor(public side: string) {
 

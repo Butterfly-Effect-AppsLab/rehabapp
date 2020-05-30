@@ -20,6 +20,8 @@
 :root {
     --dark: #012c3d;
     --light: #f6f1ee;
+    --blue: #8ABEC4;
+    --gray: #C0C6C7;
     --app-background: var(--light);
     --app-font-color-default: var(--dark);
     
@@ -52,4 +54,16 @@ ion-header {
         text-transform: uppercase;
     }
 }
+
+.my-custom-class {
+    --background: #222;
+    --spinner-color: #fff;
+  
+    color: #fff;
+    --backdrop-opacity: 1;
+    ion-backdrop{
+        background-color: var(--light);
+    }
+    
+  }
 

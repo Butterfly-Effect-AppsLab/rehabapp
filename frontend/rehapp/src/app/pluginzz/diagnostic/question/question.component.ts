@@ -20,13 +20,8 @@ export class QuestionComponent implements OnInit {
   ngOnInit() {
   }
 
-  btnClicked(index: number){
-    let option: Option = this.options[index];
-
-    if (option == undefined)
-      alert('chyba v referencii')
-        
-    this.onAnswer.emit(option.ref);
+  btnClicked(ref: string){
+    this.onAnswer.emit(ref);
   }
 
   ngOnChanges() {    
