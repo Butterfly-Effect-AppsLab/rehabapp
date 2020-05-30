@@ -173,8 +173,10 @@ export class BodyPartSelectionPage implements OnInit {
     this.bodies[this.stateService.actualSide.getValue()].showBody();
     this.visibleSide = this.stateService.actualSide.getValue();
 
-    if (this.subareaSelected)
+    if (this.subareaSelected) {
       this.changeSubAreaOpacity(0.0);
+      this.actualSubareaBtn.classList.remove('selected-subarea');
+    }
 
     this.subareaSelected = false;
     this.actualSubarea = undefined;
@@ -205,7 +207,6 @@ export class BodyPartSelectionPage implements OnInit {
     }
 
     this.stateService.animationInPogress = false;
-    this.actualSubareaBtn.classList.remove('selected-subarea');
   }
 
   async forward(duration=this.duration, optionsDuration=this.optionsDuration) {
