@@ -10,36 +10,26 @@ export class QuestionComponent implements OnInit {
 
   @Input() question: Question
   @Output() onAnswer: EventEmitter<string> = new EventEmitter();
-  @ViewChild('main', {static:true} ) mainDiv: ElementRef
+  @Output() onBack: EventEmitter<null> = new EventEmitter();
+  @ViewChild('cont', {static:true} ) background: ElementRef
 
   options: Option[];
 
   constructor() {}
 
   ngOnInit() {
-    this.options = this.question['options'];      
-    this.mainDiv.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
-    this.mainDiv.nativeElement['style']['color'] = this.question.style["text-color"];
   }
 
-  btnClicked(event: any){
-    let btnText = event.srcElement.innerHTML;
-    let option: Option;
-    this.options.forEach((opt) => {
-       if (opt.label == btnText)
-        option = opt;        
-    })
-
-    if (option == undefined)
-      alert('dojebalo sa')
-    
-    this.onAnswer.emit(option.ref);
+  btnClicked(ref: string){
+    this.onAnswer.emit(ref);
   }
 
-  ngOnChanges() {
-    console.log(this.question)
-    this.options = this.question.options;         
-    // this.background.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
+  ngOnChanges() {    
+    this.options = this.question.options;       
+    this.background.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
   }
 
+  back() {
+    this.onBack.emit();
+  }
 }

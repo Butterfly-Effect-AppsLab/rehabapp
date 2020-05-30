@@ -2,10 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Router, NavigationExtras } from '@angular/router';
 
 import { APIService } from 'src/app/services/apiservice.service';
-import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow } from '@ionic/angular';
+import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow, NavController, LoadingController } from '@ionic/angular';
 import Body from 'src/app/services/models/Body';
-import { TreeComponent, Area } from 'src/app/services/models/Tree';
-import { TreeError } from '@angular/compiler';
+import { TreeComponent, Area, Option } from 'src/app/services/models/Tree';
+import { TreeError, compileBaseDefFromMetadata } from '@angular/compiler';
+import { StateService } from 'src/app/services/state-service.service';
+import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
+import { BodyComponent } from 'src/app/pluginzz/body/body.component';
 
 
 @Component({
@@ -17,19 +20,19 @@ export class BodyPartSelectionPage implements OnInit {
 
   actualCircle: Element;
   actualSubarea: Element;
-  actualSide: string = 'front';
-  opositeSide: string = 'back';
+  actualSubareaBtn: Element;
   visibleSide: string = 'front';
   areaSelected: boolean = false;
   areaSubmitted: boolean = false;
   subareaSelected: boolean = false;
   @ViewChild('buttons', { static: false }) buttons: ElementRef;
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
-  @ViewChild('body', { static: false }) body: ElementRef;
-  @ViewChild('backBody', { static: false }) backBody: ElementRef;
-  @ViewChild('rotateBtn', { static: false }) rotateBtn: ElementRef;
-  @ViewChild('rotateToggle', { static: false }) rotateToggle: ElementRef;
+  @ViewChild('fadeEffect', { static: false }) fadeEffect: ElementRef;
+  
   @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
+  @ViewChild('toggleComponent',{ static: false }) toggleComponent: ToggleComponent;
+  @ViewChild('bodyComponent',{ static: false }) bodyComponent: BodyComponent;
+  rotateRowHeight = "10vh";
 
   left: number;
   ratio: number;
@@ -48,20 +51,46 @@ export class BodyPartSelectionPage implements OnInit {
 
   bodies: any;
 
-  rotateRowHeight: String = "20vh";
-
   selectedAreaObject: Area;
   opositeAreaObject: Area;
   options: any = [];
   ref: string = null;
+  loadedContent: boolean = false;
 
-  constructor(private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public routerOutlet: IonRouterOutlet) {
+  initialized: boolean = false;
+
+  duration: number = 1500;
+  optionsDuration: number = 500;
+
+  constructor(public loadingController: LoadingController, private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public navCtrl: NavController, private stateService: StateService) {
+
+    this.stateService.actualSide.subscribe(()=>{
+      if(this.initialized)
+        this.rotate();
+    });
   }
 
-  getOptions(){
-    if(this.selectedAreaObject == undefined)
+  async ngOnInit() {
+
+    this.bodies = {};
+
+    this.platform.ready().then(() => {
+
+      this.platform.backButton.subscribeWithPriority(10, () => {
+        this.back();
+      });
+    });
+  }
+
+  ngAfterViewInit(){
+    
+    if(this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first)
+      this.areaSubmitted = true;
+  }
+
+  getOptions() {
+    if (this.selectedAreaObject == undefined)
       return [];
-    console.log(this.selectedAreaObject.options);
     return this.selectedAreaObject.options;
   }
 
@@ -71,71 +100,29 @@ export class BodyPartSelectionPage implements OnInit {
     });
   }
 
-  back() {
-    this.backward();
+  async back() {
+    if(this.stateService.animationInPogress)
+      return;
+    if (this.areaSubmitted && (<Area>this.stateService.actualTreeComponent.getValue()).first)
+      this.backward();
+    else{
+      await this.stateService.back();
+      if(this.areaSubmitted)
+        this.reset();
+    }
   }
 
-  async ngOnInit() {
-    this.bodies = {};
-
-    await this.api.getTree();
-
-    this.platform.ready().then(() => {
-
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        if (this.areaSubmitted)
-          this.back();
-        else
-          this.routerOutlet.pop();
-      });
-    });
+  refresh() {
+    location.reload();
   }
 
-  async ionViewDidEnter() {
-
-    this.toggleX = this.rotateBtn.nativeElement.offsetWidth - 6 - this.rotateToggle.nativeElement.offsetWidth - 4;
-
-    this.toggleBack = this.animationCtrl.create()
-      .addElement(this.rotateToggle.nativeElement)
-      .duration(300)
-      .iterations(1)
-      .keyframes([
-        { offset: 0, transform: 'translateX(0px)' },
-        { offset: 1, transform: 'translateX(' + this.toggleX + 'px)' }
-      ]);
-
-    this.toggleFront = this.animationCtrl.create()
-      .addElement(this.rotateToggle.nativeElement)
-      .duration(300)
-      .iterations(1)
-      .keyframes([
-        { offset: 0, transform: 'translateX(' + this.toggleX + 'px)' },
-        { offset: 1, transform: 'translateX(0px)' }
-      ]);
+  init(){
 
     this.bodies['front'] = new Body('front');
     this.bodies['back'] = new Body('back');
 
-    this.bodies['front'].body = this.body;
-    this.bodies['back'].body = this.backBody;
-
-    var arr = [];
-
-    Array.from(this.bodies['front'].body.nativeElement.getElementsByTagName('g')).forEach(function (child: any) {
-      if(child.id != "")
-        arr.push(child.id);
-  });
-
-  this.bodies['front'].ids = arr;
-
-  arr = [];
-
-    Array.from(this.bodies['back'].body.nativeElement.getElementsByTagName('g')).forEach(function (child: any) {
-      if(child.id != "")
-        arr.push(child.id);
-  });
-
-  this.bodies['back'].ids = arr;
+    this.bodies['front'].body = this.bodyComponent.body;
+    this.bodies['back'].body = this.bodyComponent.backBody;
 
     this.wrapperSize = this.bodyWrapper.nativeElement.offsetHeight;
 
@@ -154,61 +141,124 @@ export class BodyPartSelectionPage implements OnInit {
     this.bodies['back'].circles.addEventListener('click', event => {
       this.circleClicked(event);
     })
+
+    this.initialized = true;
   }
 
-  async forward() {
+  async ionViewDidEnter() {
+    if(!this.initialized){
+      this.init();
+    }
 
-    this.selectedAreaObject = this.api.questions[this.actualCircle.id];
-    this.options = this.selectedAreaObject.options;
-    this.opositeAreaObject = <Area>Object.values(this.api.questions).find(tree => tree['tree'] == this.selectedAreaObject['tree'] && tree['name'] != this.selectedAreaObject['name']);
+    var area = <Area>this.stateService.actualTreeComponent.getValue();
 
-    console.log(this.selectedAreaObject.area_detail);
-    console.log(this.opositeAreaObject);
+    if((area != null && area.type == "area" && !area.first) || (area != null && area.type == "area" && area.first && this.areaSubmitted)){
+      await this.forward(0,0);
+    }
+
+    this.stateService.stopLoading();
+  }
+
+  async reset(duration=0, optionsDuration=0){
+
+    this.stateService.animationInPogress = true;
     
+    this.fadeEffect.nativeElement['style']['display'] = 'none';
+
+    this.ref = null;
+
+    this.rotateRowHeight = "10vh";
+
+    this.bodies[this.stateService.opositeSide.getValue()].hideBody();
+    this.bodies[this.stateService.actualSide.getValue()].showBody();
+    this.visibleSide = this.stateService.actualSide.getValue();
+
+    if (this.subareaSelected) {
+      this.changeSubAreaOpacity(0.0);
+      this.actualSubareaBtn.classList.remove('selected-subarea');
+    }
+
+    this.subareaSelected = false;
+    this.actualSubarea = undefined;
+
+    this.toggleComponent.showToggle();
+
+    this.buttons.nativeElement.style.display = "none";
+
+    if (this.opositeAreaObject != undefined) {
+      this.bodies[this.stateService.opositeSide.getValue()].showCircles();
+    }
+
+    this.zoom.direction('reverse').duration(duration);
+    this.shrink.direction('reverse').duration(duration);
+
+    this.zoom.play();
+    await this.shrink.play();
+
+    this.bodies[this.stateService.actualSide.getValue()].showCircles();
+
+    this.showOptions.direction('reverse').duration(optionsDuration);
+
+    this.showOptions.play();
+
+    if (this.opositeAreaObject != undefined) {
+      this.opositeZoom.direction('reverse');
+      await this.opositeZoom.play();
+    }
+
+    this.stateService.animationInPogress = false;
+  }
+
+  async forward(duration=this.duration, optionsDuration=this.optionsDuration) {
+
+    this.stateService.animationInPogress = true;
+
+    this.areaSubmitted = true;
+
+    if (this.stateService.questions == undefined) {
+      alert('Čaká sa na pripojenie.')
+      return;
+    }
+
+    this.selectedAreaObject = <Area>this.stateService.actualTreeComponent.getValue();
+    this.options = this.selectedAreaObject.options;
+    this.opositeAreaObject = Object.values(this.stateService.questions)
+      .filter(area =>
+        area['type'] == ['area'] &&
+        area['tree']['name'] == this.selectedAreaObject["tree"]["name"] &&
+        area['name'] != this.selectedAreaObject["name"]
+      )[0];
 
     this.areaSelected = false;
-    this.areaSubmitted = true;
+    
 
     var wrapperWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
     var wrapperHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
 
-    var newWrapperWidth = Number(this.selectedAreaObject.area_detail.width) * this.ratio;
+    var newWrapperWidth = Number(this.selectedAreaObject.width) * this.ratio;
 
     var zoom = wrapperWidth / newWrapperWidth;
 
-    var newWrapperHeight = Number(this.selectedAreaObject.area_detail.height) * this.ratio * zoom;
+    var newWrapperHeight = Number(this.selectedAreaObject.height) * this.ratio * zoom;
 
-    var width = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().width;
-    var height = this.bodies[this.actualSide].body.nativeElement.getBoundingClientRect().height;
+    var width = this.bodies[this.stateService.actualSide.getValue()].body.nativeElement.getBoundingClientRect().width;
+    var height = this.bodies[this.stateService.actualSide.getValue()].body.nativeElement.getBoundingClientRect().height;
 
-    var x = -this.selectedAreaObject.area_detail.x;
-    var y = -this.selectedAreaObject.area_detail.y;
+    var x = -this.selectedAreaObject.x;
+    var y = -this.selectedAreaObject.y;
 
     x = (x * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
     y = (y * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
-    this.bodies[this.actualSide].hideCircles();
-    if(this.opositeAreaObject != undefined)
-      this.bodies[this.opositeSide].hideCircles();
+    this.bodies[this.stateService.actualSide.getValue()].hideCircles();
+    if (this.opositeAreaObject != undefined)
+      this.bodies[this.stateService.opositeSide.getValue()].hideCircles();
 
-    var duration = 1500;
-
-    this.hideRotationButton = this.animationCtrl.create()
-      .direction('normal')
-      .addElement(this.rotateBtn.nativeElement)
-      .duration(duration)
-      .iterations(1)
-      .keyframes([
-        { offset: 0, opacity: 1 },
-        { offset: 0.8, opacity: 0 },
-        { offset: 1, opacity: 0 },
-      ]);
-
-    this.hideRotationButton.play();
+    this.toggleComponent.hideToggle();
 
     this.zoom = this.animationCtrl.create()
       .direction('normal')
-      .addElement(this.bodies[this.actualSide].body.nativeElement)
+      .addElement(this.bodies[this.stateService.actualSide.getValue()].body.nativeElement)
       .iterations(1)
       .duration(duration)
       .keyframes([
@@ -239,10 +289,12 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.buttons.nativeElement.style.display = "block";
 
+    this.setFade();
+
     this.showOptions = this.animationCtrl.create()
       .direction('normal')
       .addElement(this.buttons.nativeElement)
-      .duration(500)
+      .duration(optionsDuration)
       .iterations(1)
       .keyframes([
         { offset: 0, opacity: '0' },
@@ -252,15 +304,15 @@ export class BodyPartSelectionPage implements OnInit {
     await this.showOptions.play();
     if (this.opositeAreaObject != undefined) {
 
-      var opositeX = -this.opositeAreaObject.area_detail.x;
-      var opositeY = -this.opositeAreaObject.area_detail.y;
+      var opositeX = -this.opositeAreaObject.x;
+      var opositeY = -this.opositeAreaObject.y;
 
       opositeX = (opositeX * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
       opositeY = (opositeY * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
       this.opositeZoom = this.animationCtrl.create()
         .direction('normal')
-        .addElement(this.bodies[this.opositeSide].body.nativeElement)
+        .addElement(this.bodies[this.stateService.opositeSide.getValue()].body.nativeElement)
         .iterations(1)
         .duration(0)
         .keyframes([
@@ -269,60 +321,23 @@ export class BodyPartSelectionPage implements OnInit {
         ]);
       this.opositeZoom.play();
     }
+
+    this.stateService.animationInPogress = false;
   }
 
   async backward() {
-
-    this.ref = null;
-
-    this.rotateRowHeight = "20vh";
-
-    this.bodies[this.opositeSide].hideBody();
-    this.bodies[this.actualSide].showBody();
-    this.visibleSide = this.actualSide;
-
-    if (this.subareaSelected)
-      this.changeSubAreaOpacity(0.0);
+    this.reset(this.duration, this.optionsDuration);
 
     this.areaSelected = false;
-    this.subareaSelected = false;
     this.actualCircle = undefined;
-    this.actualSubarea = undefined;
-
-    this.hideRotationButton.direction('reverse');
-
-    this.hideRotationButton.play();
-
-    this.buttons.nativeElement.style.display = "none";
-
-    if(this.opositeAreaObject != undefined){
-      this.bodies[this.opositeSide].showCircles();
-    }
-
-    this.zoom.direction('reverse');
-    this.shrink.direction('reverse');
-
-    this.zoom.play();
-    await this.shrink.play();
 
     this.areaSubmitted = false;
 
-    this.bodies[this.actualSide].showCircles();
-
-    this.showOptions.direction('reverse');
-
-    this.showOptions.play();
-
-    if(this.opositeAreaObject != undefined){
-      this.opositeZoom.direction('reverse');
-      this.opositeZoom.play();
-    }
-
-    this.selectedAreaObject = undefined;
-    this.opositeAreaObject = undefined;
+    this.stateService.actualTreeComponent.next(null);
   }
 
   circleClicked(element: any) {
+
     this.areaSelected = true;
 
     if (this.actualCircle != undefined)
@@ -330,69 +345,84 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.actualCircle = element.target;
 
+    var actualTreeComponent = this.stateService.questions[this.actualCircle.id];
+    actualTreeComponent.first = true;
+
+    this.stateService.actualTreeComponent.next(actualTreeComponent);
+
     this.actualCircle['style']['fill'] = 'red';
   }
 
-  showSubpart(subarea: string, ref: string) {
+  showSubpart(event: Event, option: Option) {
 
-    this.ref = ref;    
-
-    var side = 'front';
-
-    if(this.bodies['back'].ids.includes(subarea))
-      side = 'back';
+    this.ref = option.ref;
 
     this.subareaSelected = true;
 
     if (this.actualSubarea != undefined) {
       this.changeSubAreaOpacity(0.0);
+      this.actualSubareaBtn.classList.remove('selected-subarea');
     }
 
-    if (this.visibleSide != side) {
-      this.visibleSide = side;
+    if (this.visibleSide != option.side) {
+      this.visibleSide = option.side;
 
-      if (this.actualSide == this.visibleSide) {
-        this.bodies[this.opositeSide].hideBody();
-        this.bodies[this.actualSide].showBody();
+      if (this.stateService.actualSide.getValue() == this.visibleSide) {
+        this.bodies[this.stateService.opositeSide.getValue()].hideBody();
+        this.bodies[this.stateService.actualSide.getValue()].showBody();
       } else {
-        this.bodies[this.actualSide].hideBody();
-        this.bodies[this.opositeSide].showBody();
+        this.bodies[this.stateService.actualSide.getValue()].hideBody();
+        this.bodies[this.stateService.opositeSide.getValue()].showBody();
       }
     }
 
-    this.actualSubarea = document.getElementById(subarea);
+    this.actualSubarea = document.getElementById(option.label);
+    this.actualSubareaBtn = <Element>event.target;
     this.changeSubAreaOpacity(0.54);
+    (<Element>event.target).classList.add('selected-subarea');
   }
 
-  async rotate() {
-    if (this.actualSide == 'front') {
-      this.toggleFront.stop();
-      this.toggleBack.play();
-    }
-    else {
-      this.toggleBack.stop();
-      this.toggleFront.play();
-    }
+  rotate() {
 
-    var tmpSide = this.actualSide;
-    this.actualSide = this.opositeSide;
-    this.opositeSide = tmpSide;
-    this.visibleSide = this.actualSide;
+    if(this.stateService.animationInPogress)
+      return;
 
-    this.bodies[this.actualSide].showBody();
-    this.bodies[this.actualSide].changeColorOfCircles('#C0C6C7');
-    this.bodies[this.opositeSide].hideBody();
+    this.bodies[this.stateService.actualSide.getValue()].showBody();
+    this.bodies[this.stateService.actualSide.getValue()].changeColorOfCircles('#C0C6C7');
+    this.bodies[this.stateService.opositeSide.getValue()].hideBody();
 
     this.actualCircle = undefined;
     this.areaSelected = false;
   }
 
-  async submit() {    
-    if (!this.areaSubmitted)
-      this.forward()
+  getBottom(element){
+    return element.getBoundingClientRect().bottom;
+  }
+
+  setFade(){
+    if(this.getBottom(this.buttons.nativeElement.lastElementChild)-2  > this.getBottom(this.buttons.nativeElement)){
+      this.fadeEffect.nativeElement['style']['display'] = 'block';
+    }
     else{
-      // this.stateService.actualSubpart.next(this.api.questions[this.ref]);
-      // this.router.navigate(['/diagnostic']);
+      this.fadeEffect.nativeElement['style']['display'] = 'none';
+    }
+  }
+
+  buttonsScroll(){
+    this.setFade();
+  }
+
+  async submit() {
+    
+    if (!this.areaSubmitted && (<Area>this.stateService.actualTreeComponent.getValue()).first)
+      this.forward()
+    else {
+      this.stateService.pushComponent(this.stateService.actualTreeComponent.getValue());
+      this.stateService.actualTreeComponent.next(this.stateService.questions[this.ref]);
+      
+      await this.stateService.startLoading();
+      await this.reset();
+      this.router.navigate(['/diagnostic'])
     }
   }
 }

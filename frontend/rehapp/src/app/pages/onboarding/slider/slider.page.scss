@@ -42,20 +42,16 @@
 }
 
 .btnDiv {
-    width: 50%;
+    width: 70%;
     left: 50%;
-    bottom: 10%;
+    bottom: 12%;
     transform: translate(-50%);
-
-    ion-button {
-        --border-color: black;
-        --color: black;
-    }
 }
 
 .txt {
     right: 5%;
-    bottom: 5%;
+    bottom: 4%;
+    line-height: 30px;
 }
 
 .fixed {

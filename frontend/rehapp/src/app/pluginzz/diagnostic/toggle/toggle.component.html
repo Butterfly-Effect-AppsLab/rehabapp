@@ -1,0 +1,30 @@
+<div class="custom-btn" (click)="!areaSubmitted && rotate()" #rotateBtn>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p>
+          <span *ngIf="actualSide == 'back'">
+            Spredu
+          </span>
+        </p>
+      </ion-col>
+      <ion-col>
+        <p>
+          <span *ngIf="actualSide == 'front'">
+            Zozadu
+          </span>
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div id="rotate-toggle" #rotateToggle>
+    <div>
+      <p *ngIf="actualSide == 'front'">
+        Spredu
+      </p>
+      <p *ngIf="actualSide == 'back'">
+        Zozadu
+      </p>
+    </div>
+  </div>
+</div>

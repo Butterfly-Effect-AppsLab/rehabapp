@@ -18,196 +18,79 @@
   display: flex;
   align-items: center;
 
-  p{
+  p {
     margin: 0px;
     text-align: center;
     width: 100%;
   }
 }
 
-#body {
-  margin: auto;
-  display: block;
-  height: 100%;
-
-  .st0 {
-    fill: none;
-  }
-  
-  .st1 {
-    fill: #F6F1EE;
-  }
-  
-  .st2 {
-    fill: #012C3D;
-  }
-  
-  .st3 {
-    fill: none;
-    stroke: #012C3D;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st4 {
-    fill: #345664;
-  }
-  
-  .st5 {
-    fill: none;
-    stroke: #345664;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st6 {
-    fill: #67808B;
-  }
-  
-  .st7 {
-    fill: none;
-    stroke: #67808B;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st8 {
-    fill: #99ABB1;
-  }
-  
-  .st9 {
-    fill: none;
-    stroke: #99ABB1;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st10 {
-    fill: #8ABEC4;
-  }
-  
-  .st11 {
-    fill: none;
-    stroke: #8ABEC4;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st12 {
-    fill: #A1CBD0;
-  }
-  
-  .st13 {
-    fill: none;
-    stroke: #A1CBD0;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st14 {
-    fill: #C0C6C7;
-  }
-  
-  .st15 {
-    fill: none;
-    stroke: #C0C6C7;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st16 {
-    fill: none;
-    stroke: #F6F1EE;
-    stroke-width: 0;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  
-  .st17 {
-    opacity: 0;
-    fill: #F8444F;
-  }
-  
-  .st18 {
-    opacity: 0;
-  }
-  
-  .st19 {
-    fill: #F8444F;
-  }
-  
-  .st20 {
-    opacity: 0;
-    fill: #F6F1EE;
-  }
-  
-  .st21 {
-    opacity: 0.74;
-    fill: #C0C6C7;
-  }
-}
-
-#backBody {
-  margin: auto;
-  display: none;
-  height: 100%;
-
-  .st0{fill:none;}
-	.st1{fill:#F6F1EE;}
-	.st2{fill:#012C3D;}
-	.st3{fill:#345664;}
-	.st4{fill:#67808B;}
-	.st5{fill:#99ABB1;}
-	.st6{fill:#8ABEC4;}
-	.st7{fill:#A1CBD0;}
-	.st8{fill:#C0C6C7;}
-	.st9{fill:#FFFFFF;}
-	.st10{opacity:0;fill:#F8444F;}
-	.st11{opacity:0;fill:#A1CBD0;}
-	.st12{opacity:0;fill:#FFFFFF;}
-	.st13{opacity:0;}
-	.st14{fill:#F8444F;}
-	.st15{opacity:0.74;fill:#C0C6C7;}
-}
-
-$buttonHeight: 50px;
-
 #body-wrapper {
   height: 72vh;
   overflow: hidden;
 }
 
-#rotate-row, #continue-row{
+#rotate-row,
+#continue-row {
   height: 10vh;
   overflow: hidden;
   position: fixed;
   bottom: 0;
   width: 100%;
 
-  ion-grid{
+  ion-grid {
     height: 100%;
 
-    ion-row{
+    ion-row {
       height: 50%;
     }
   }
+}
+
+#rotate-row {
+  bottom: 10vh;
 }
 
 #buttons {
   opacity: 0;
   overflow-y: scroll;
   display: none;
+  position: relative;
 
-  ion-button {
-    --background: #C4C4C4;
+  .button {
+    width: 90%;
+    border: 2px solid var(--gray);
+    border-radius: 50px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0.5em 0.3em;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 1.2em;
     color: var(--dark);
+    background-color: var(--light);
+  }
+
+  .selected-subarea{
+    border-color: var(--blue);
+    background-color: var(--blue);
+    color: var(--light);
+  }
+}
+
+#buttons-wrapper{
+  position: relative;
+
+  .fade-effect {
+    position: absolute;
+    display: none;
+    height: 3em;
+    width: 100%;
+    background: rgb(246,241,238);
+    background: linear-gradient(0deg, rgba(246,241,238,1) 0%, rgba(246,241,238,0) 100%);
+    z-index: 100;
+    bottom: 0;
+    pointer-events: none;
   }
 }
 
@@ -243,38 +126,14 @@ $gapSize: 3px;
   }
 }
 
-#rotate-toggle {
-  width: 50%;
-  height: calc(100% - (2 * #{$gapSize}));
-  background-color: var(--dark);
-  color: var(--light);
-  text-align: center;
-  border-radius: 50px;
-  position: absolute;
-  left: #{$gapSize};
-  top: #{$gapSize};
-  vertical-align: middle;
 
-  div{
-    height: 100%;
-    position: relative;
-    display: flex;
-    align-items: center;
 
-    p{
-      margin: 0px;
-      width: 100%;
-    }
-  }
-}
-
-.not-selected{
+.not-selected {
   background-color: var(--light);
   color: var(--dark);
 }
 
-.selected{
+.selected {
   background-color: var(--dark);
   color: var(--light);
 }
-

@@ -1,0 +1,39 @@
+#header {
+    ion-toolbar {
+        --background: transparent;
+        ion-button {
+            --color: var(--dark)
+        }
+    }
+}
+
+
+#cont {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    padding-top: 15%;
+
+    #main {
+        height: 85%;
+        width: 90%;
+        margin: auto;
+
+        h1 {
+            margin: 20% 0%;
+            font-weight: bold;
+        }
+
+        #btnDiv {
+            position: absolute;
+            bottom: 5%;
+            width: 70%;
+            left: 50%; 
+            transform: translate(-50%);
+            .buttons {
+                position: relative;
+            }
+        }
+    }
+}

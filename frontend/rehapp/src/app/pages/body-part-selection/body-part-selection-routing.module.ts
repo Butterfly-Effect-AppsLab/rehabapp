@@ -7,10 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: BodyPartSelectionPage
-  },
-  {
-    path: 'subpart-selection',
-    loadChildren: () => import('./subpart-selection/subpart-selection.module').then( m => m.SubpartSelectionPageModule)
   }
 ];
 

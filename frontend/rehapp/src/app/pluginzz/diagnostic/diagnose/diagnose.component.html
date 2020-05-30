@@ -1,3 +1,15 @@
-<p>
-  diagnose works!
-</p>
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-button (click)="back()" slot="start" fill="clear">
+      <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+      Späť
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<div #cont id="cont">
+  <div #main id="main">
+    <h1>{{diagnose.name}}</h1>
+    <p>{{diagnose.text}}</p>
+  </div>
+</div>
