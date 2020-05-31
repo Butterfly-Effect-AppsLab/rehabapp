@@ -340,8 +340,10 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.areaSelected = true;
 
-    if (this.actualCircle != undefined)
+    if (this.actualCircle != undefined){
       this.actualCircle['style']['fill'] = "#C0C6C7";
+      this.actualCircle['style']['opacity'] = '0.74';
+    }
 
     this.actualCircle = element.target;
 
@@ -350,7 +352,8 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.stateService.actualTreeComponent.next(actualTreeComponent);
 
-    this.actualCircle['style']['fill'] = 'red';
+    this.actualCircle['style']['fill'] = '#F8444F';
+    this.actualCircle['style']['opacity'] = '0.54';
   }
 
   showSubpart(event: Event, option: Option) {

@@ -34,7 +34,14 @@ export class StateService {
   async startLoading(){
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Please wait...',
+      animated: false,
+      spinner: null,
+      message: `<div class="custom-spinner-container">
+      Počkajte prosím...
+      <div class="custom-spinner-box">
+         <img src="assets/images/loading.gif" />
+      </div>
+    </div>`
     })
     await loading.present();
     this.isLoading = true;
