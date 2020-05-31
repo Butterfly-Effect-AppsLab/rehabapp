@@ -6,7 +6,6 @@ ion-content {
 .main {
   position: absolute;
   height: 70%;
-  overflow-y: scroll; 
   top: 10%;
   left: 0;
   margin: 0px 5%;
@@ -16,8 +15,40 @@ ion-content {
     width: 90%;
     margin: 5% auto 10% auto;
   }
-}
 
+  
+
+  .fade-wrapper {
+    position: relative;
+    height: 45%;
+
+    .scrollable {
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .fade-effect {
+      position: absolute;
+      height: 3em;
+      width: 100%;
+      background: var(--blue);
+      z-index: 100;
+      
+      pointer-events: none;
+    }
+
+    .fade-top {
+      top: 0;
+      display: none;
+      background: linear-gradient(0deg, rgba(138, 190, 196, 0) 0%, rgba(138, 190, 196, 1) 100%);
+    }
+
+    .fade-bot {
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(138, 190, 196, 1) 0%, rgba(138, 190, 196, 0) 100%);
+    }
+  }
+}
 
 ion-grid {
   ion-row {
@@ -27,7 +58,7 @@ ion-grid {
       display: table-cell;
       vertical-align: middle;
 
-      ion-avatar{
+      ion-avatar {
         width: 100%;
         height: auto;
         src {
@@ -39,6 +70,10 @@ ion-grid {
         margin-top: 0;
         margin-bottom: 5px;
       }
+    }
+
+    .left-align {
+      margin-left: 25%;
     }
   }
 }

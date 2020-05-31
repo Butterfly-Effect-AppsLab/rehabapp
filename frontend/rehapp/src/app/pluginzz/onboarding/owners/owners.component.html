@@ -1,33 +1,58 @@
+<div class="main">
+  <h3>Stojí za ňou tím nerológov a fyzioterapeutov</h3>
 
-  <div class="main">
-    <h3>Stojí za ňou tím nerológov a fyzioterapeutov</h3>
-    
-    <ion-grid fixed>
-      <ion-row class="ion-align-items-center">
-        <ion-col size="3">
-          <ion-avatar>
-            <img src="https://cdn3.iconfinder.com/data/icons/women-avatars/314/2-01-512.png">
-          </ion-avatar>
-        </ion-col>
-
-        <ion-col size="9">
-          <p><b>MUDr. Alžbeta Hlucháňová</b></p>
-          <p>Neurológ</p>
-        </ion-col>
-      </ion-row>
-      
-      <ion-row class="ion-align-items-center">
-        <ion-col size="3">
+  <div class="fade-wrapper">
+    <div #fader_top class="fade-effect fade-top"></div>
+    <div #fader_bot class="fade-effect fade-bot"></div>
+    <div (scroll)="removeFader($event)" class="scrollable">
+      <ion-grid fixed>
+  
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
             <ion-avatar>
-              <img src="https://i.ya-webdesign.com/images/boy-avatar-png-7.png">
+              <img src="/assets/images/doc2.jpg">
             </ion-avatar>
-        </ion-col>
-        
-        <ion-col size="9">
-          <p><b>MUDr. Mário Lazár</b></p>
-          <p>Neurológ</p>
-        </ion-col>
-      </ion-row>
-      
-    </ion-grid>
+          </ion-col>
+          <ion-col size="9">
+            <p><b>MUDr. Mário Lazár</b></p>
+            <p>Neurológ</p>
+          </ion-col>
+        </ion-row>
+  
+        <ion-row class="ion-align-items-center">
+          <ion-col size="3">
+            <ion-avatar>
+              <img src="/assets/images/doc1.jpg">
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="9">
+            <p><b>MUDr. Alžbeta Hlucháňová</b></p>
+            <p>Neurológ</p>
+          </ion-col>
+        </ion-row>
+    
+        <ion-row class="ion-align-items-center">
+          <ion-col class="left-align">
+            <p><b>Mgr. Erika Debnárová</b></p>
+            <p>Fyzioterapeut</p>
+          </ion-col>
+        </ion-row>
+    
+        <ion-row class="ion-align-items-center">
+          <ion-col class="left-align">
+            <p><b>Mgr. Bibiána Večeřová</b></p>
+            <p>Fyzioterapeut</p>
+          </ion-col>
+        </ion-row>
+  
+        <ion-row class="ion-align-items-center">
+          <ion-col class="left-align">
+            <p><b>Bc. Adriana Peigerová</b></p>
+            <p>Fyzioterapeut</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </div>
+  
+</div>
