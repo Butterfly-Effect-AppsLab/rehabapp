@@ -11,11 +11,19 @@ export class DiagnoseComponent implements OnInit {
   @Output() onBack: EventEmitter<null> = new EventEmitter;;
 
   constructor() {}
+  area: string = "";
 
   ngOnInit() {
   }
 
   back() {
     this.onBack.emit();
+  }
+
+  setArea(area: string) {
+    if (this.area == area) 
+      this.area = "";
+    else 
+      this.area = area;
   }
 }
