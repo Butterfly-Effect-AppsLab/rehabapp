@@ -109,7 +109,7 @@ questions = [
     },
     {
         "id": "q2",
-        "text": "...je výraznejšie, ak  na bedro zboku vyvniete tlak.",
+        "text": "...je výraznejšia, ak  na bedro zboku vyvniete tlak.",
         "prepend_id": 1,
         "color_id": 2
     },
@@ -123,7 +123,7 @@ questions = [
         "id": "q4",
         "text": "...si ľahnete nabok (zdravou stranou nadol) na okraj postele a členok bolestivej nohy priložíte na "
                 "druhé koleno a následne vrchné koleno spúšťate nadol cez okraj postele, zhorší sa bolesť v bedre? ("
-                "Bolesť chrbta sa nemení)",
+                "bolesť chrbta sa nemení)",
         "prepend_id": 3,
         "color_id": 1
     },
@@ -136,14 +136,14 @@ questions = [
     {
         "id": "q6",
         "text": "...v ľahu na chrbte priložíte vonkajší členok bolestivej nohy na koleno zdravej nohy a následne "
-                "pomaly spustite koleno k podložke (smerom von), zhorší sa bolesť zozadu bedra?",
+                "pomaly spustíte koleno k podložke (smerom von), zhorší sa bolesť zozadu bedra?",
         "prepend_id": 3,
         "color_id": 2
     },
     {
         "id": "q7",
-        "text": "...v stoji podopriete chrbát a vrch zadku rukami, tak aby prsty smerovali von a  zakloníte sa, "
-                "zmierňuje sa postupnevyžarovanie bolesti do bedra zozadu? (Bolesť v chrbte môže pretrvávať.)",
+        "text": "...v stoji podopriete chrbát a vrch zadku rukami tak, aby prsty smerovali von a  zakloníte sa, "
+                "zmierňuje sa postupnevyžarovanie bolesti do bedra zozadu? (bolesť v chrbte môže pretrvávať)",
         "prepend_id": 3,
         "color_id": 1
     },
@@ -162,7 +162,7 @@ questions = [
     {
         "id": "q10",
         "text": "...v ľahu na chrbte priložíte vonkajší členok bolestivej nohy na koleno zdravej nohy a následne "
-                "pomaly spustite koleno k podložke (smerom von), zhorší sa bolesť spredu v slabine?",
+                "pomaly spustíte koleno k podložke (smerom von), zhorší sa bolesť spredu v slabine?",
         "prepend_id": 3,
         "color_id": 2
     },
@@ -174,9 +174,9 @@ questions = [
     },
     {
         "id": "q12",
-        "text": "...v stoji podopriete chrbát a vrch zadku rukami tak aby prsty smerovali von a "
-                "zakloníte sa, zmierňuje sa postupne vyžarovanie bolesti do bedra spredu? (Bolesť v chrbte môže "
-                "pretrvávať.)",
+        "text": "...v stoji podopriete chrbát a vrch zadku rukami tak, aby prsty smerovali von a "
+                "zakloníte sa, zmierňuje sa postupne vyžarovanie bolesti do bedra spredu? (bolesť v chrbte môže "
+                "pretrvávať)",
         "prepend_id": 3,
         "color_id": 3
     }

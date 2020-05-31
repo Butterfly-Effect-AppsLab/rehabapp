@@ -38,19 +38,19 @@ diagnoses = [
 questions = [
     {
         "id": "q1",
-        "text": "...sa Vám zhoršuje  pri nádychu, alebo zakašľaní.",
+        "text": "...sa Vám zhoršuje  pri nádychu alebo zakašľaní.",
         "prepend_id": 1,
         "color_id": 1
     },
     {
         "id": "q2",
-        "text": "...na vysoký krvný tlak, alebo cukrovku?",
+        "text": "...na vysoký krvný tlak alebo cukrovku?",
         "prepend_id": 5,
         "color_id": 1
     },
     {
         "id": "q3",
-        "text": "...v nedávnej dobe intenzívne námahu ,alebo zaťaženie prsného svalu, či ramena?",
+        "text": "...v nedávnej dobe intenzívne námahu alebo zaťaženie prsného svalu, či ramena?",
         "prepend_id": 10,
         "color_id": 2
     },

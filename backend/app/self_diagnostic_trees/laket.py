@@ -81,13 +81,13 @@ diagnoses = [
 questions = [
     {
         "id": "q1",
-        "text": "...opuchom, alebo začervenanímzozadu lakťa? Prípadne  prekonali ste v minulosti úraz lakťa?",
+        "text": "...opuchom alebo začervenaním zozadu lakťa? Prípadne ste v minulosti prekonali úraz lakťa?",
         "prepend_id": 5,
         "color_id": 1
     },
     {
         "id": "q2",
-        "text": "...vystretie lakeť a napnete tricepsu, Vaša bolesť sa zhorší.",
+        "text": "...vystretie lakeť a napnete triceps, Vaša bolesť sa zhorší.",
         "prepend_id": 3,
         "color_id": 3
     },
@@ -112,7 +112,7 @@ questions = [
     },
     {
         "id": "q6",
-        "text": "...sa zhorší pri rotácii predlaktia smerom palcom nadol (rotácia k telu/dnu).",
+        "text": "...sa zhorší pri rotácii predlaktia palcom smerom nadol (rotácia k telu/dnu).",
         "prepend_id": 1,
         "color_id": 1
     },
