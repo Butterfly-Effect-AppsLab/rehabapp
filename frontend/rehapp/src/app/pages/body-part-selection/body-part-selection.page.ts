@@ -9,6 +9,7 @@ import { TreeError, compileBaseDefFromMetadata } from '@angular/compiler';
 import { StateService } from 'src/app/services/state-service.service';
 import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
 import { BodyComponent } from 'src/app/pluginzz/body/body.component';
+import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 
 
 @Component({
@@ -129,6 +130,8 @@ export class BodyPartSelectionPage implements OnInit {
     this.ratio = this.bodyWrapper.nativeElement.offsetHeight / Number(this.bodies['front'].body.nativeElement.getAttribute('viewBox').split(" ")[3]);
     this.left = (this.bodyWrapper.nativeElement.offsetWidth - this.bodies['front'].body.nativeElement.getBoundingClientRect().width) / 2;
 
+    this.left = (this.bodyWrapper.nativeElement.offsetWidth - this.bodies['front'].body.nativeElement.getBoundingClientRect().width) / 2;
+
     this.bodies['front'].initSide(this.bodyWrapper);
     this.bodies['back'].initSide(this.bodyWrapper);
 
@@ -230,7 +233,6 @@ export class BodyPartSelectionPage implements OnInit {
       )[0];
 
     this.areaSelected = false;
-    
 
     var wrapperWidth = this.bodyWrapper.nativeElement.getBoundingClientRect().width;
     var wrapperHeight = this.bodyWrapper.nativeElement.getBoundingClientRect().height;
@@ -241,6 +243,15 @@ export class BodyPartSelectionPage implements OnInit {
 
     var newWrapperHeight = Number(this.selectedAreaObject.height) * this.ratio * zoom;
 
+    var notFittedX = 0;
+
+    if(newWrapperHeight > screen.height/2){
+      newWrapperHeight = screen.height/2;
+      zoom = newWrapperHeight/(Number(this.selectedAreaObject.height) * this.ratio);
+      newWrapperWidth = Number(this.selectedAreaObject.width) * this.ratio * zoom;
+      notFittedX = (((wrapperWidth-newWrapperWidth)/2)/this.ratio)/zoom;      
+    }
+
     var width = this.bodies[this.stateService.actualSide.getValue()].body.nativeElement.getBoundingClientRect().width;
     var height = this.bodies[this.stateService.actualSide.getValue()].body.nativeElement.getBoundingClientRect().height;
 
@@ -249,6 +260,8 @@ export class BodyPartSelectionPage implements OnInit {
 
     x = (x * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
     y = (y * this.ratio) + ((zoom * height - height) / 2) / zoom;
+
+    x+=notFittedX;
 
     this.bodies[this.stateService.actualSide.getValue()].hideCircles();
     if (this.opositeAreaObject != undefined)
@@ -340,8 +353,10 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.areaSelected = true;
 
-    if (this.actualCircle != undefined)
+    if (this.actualCircle != undefined){
       this.actualCircle['style']['fill'] = "#C0C6C7";
+      this.actualCircle['style']['opacity'] = '0.74';
+    }
 
     this.actualCircle = element.target;
 
@@ -350,7 +365,8 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.stateService.actualTreeComponent.next(actualTreeComponent);
 
-    this.actualCircle['style']['fill'] = 'red';
+    this.actualCircle['style']['fill'] = '#F8444F';
+    this.actualCircle['style']['opacity'] = '0.54';
   }
 
   showSubpart(event: Event, option: Option) {

@@ -24,6 +24,7 @@ export default class Body {
         Array.from(this.circles.getElementsByTagName('circle')).forEach(function (child: any) {
             child.style.display = "block";
             child.style.fill = "#C0C6C7";
+            child.style.opacity = "0.74";
         });
     }
 

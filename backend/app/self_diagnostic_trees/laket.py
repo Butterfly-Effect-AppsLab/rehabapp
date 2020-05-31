@@ -6,10 +6,10 @@ tree = {
 areas = [
     {
         "name": "circles-laket-spredu",
-        "x": 137.57935,
-        "y": 190.30805,
-        "width": 114.0921,
-        "height": 116.4871,
+        "x": 65.1776,
+        "y": 84.5374,
+        "width": 186.3968,
+        "height": 200.9996,
     },
     {
         "name": "backcircles-laket-zozadu",

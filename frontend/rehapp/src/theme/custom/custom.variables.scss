@@ -55,15 +55,31 @@ ion-header {
     }
 }
 
+.loading-wrapper.sc-ion-loading-md {
+    -webkit-box-shadow: 0 16px 20px rgba(0, 0, 0, 0);
+    box-shadow: 0 16px 20px rgba(0, 0, 0, 0);
+    max-width: 100%;
+    width: 100%;
+}
+
 .my-custom-class {
-    --background: #222;
-    --spinner-color: #fff;
-  
-    color: #fff;
+    --background: rgba(0,0,0,0);
+    box-shadow: none;
+    text-align: center;
+    color: var(--dark);
     --backdrop-opacity: 1;
+    font-size: 1.3em;
     ion-backdrop{
         background-color: var(--light);
     }
-    
+
+    .custom-spinner-container{
+        width: 100%;
+    }
+
+    .custom-spinner-box{
+        width: 80%;
+        margin: 0 auto;
+    }
   }
 

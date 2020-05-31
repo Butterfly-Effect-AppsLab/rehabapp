@@ -8,7 +8,6 @@
     "SplashScreen": {
       "launchShowDuration": 3000,
       "androidSplashResourceName": "screen",
-      "spinnerColor": "#012C3D",
       "showSpinner": true
     }
   },
