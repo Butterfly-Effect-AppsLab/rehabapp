@@ -102,7 +102,7 @@ questions = [
     },
     {
         "id": "q4",
-        "text": "...pohnete len prstami (zápästie sa nehýbe) Vaša bolesť sa zhorší.",
+        "text": "...pohnete len prstami (zápästie sa nehýbe), Vaša bolesť sa zhorší.",
         "prepend_id": 3,
         "color_id": 1
     },
@@ -114,14 +114,14 @@ questions = [
     },
     {
         "id": "q6",
-        "text": "...uchopíte palec do dlane (do tej istej ruky) pri následnom pohybe/rotovaní zápästia sa bolesť "
+        "text": "...uchopíte palec do dlane (do tej istej ruky), pri následnom pohybe/rotovaní zápästia sa bolesť "
                 "smerom k malíčku zhoršuje.",
         "prepend_id": 3,
         "color_id": 1
     },
     {
         "id": "q7",
-        "text": "...odtiahnete palec od ruky a následnej ním zatlačíte/vytvoríte tlak na dlaň druhej ruky, "
+        "text": "...odtiahnete palec od ruky a následne ním zatlačíte/vytvoríte tlak na dlaň druhej ruky, "
                 "Vaša bolesť sa zhorší.",
         "prepend_id": 3,
         "color_id": 2
@@ -146,7 +146,7 @@ questions = [
     },
     {
         "id": "q11",
-        "text": "...je prítomná aj v oblasti vnútornej strany predlaktia (vrchna časť predlaktia), a zhorší sa ak "
+        "text": "...je prítomná aj v oblasti vnútornej strany predlaktia (vrchná časť predlaktia) a zhorší sa, ak "
                 "obrátite dlaň nahor.",
         "prepend_id": 1,
         "color_id": 1

@@ -195,7 +195,7 @@ questions = [
     },
     {
         "id": "q4",
-        "text": "...vyžarovanie bolesti do lýtka a predkolenia, alebo tŕpnutie tejto oblasti?",
+        "text": "...vyžarovanie bolesti do lýtka a predkolenia alebo tŕpnutie tejto oblasti?",
         "prepend_id": 2,
         "color_id": 2
     },
@@ -232,7 +232,7 @@ questions = [
     },
     {
         "id": "q10",
-        "text": "...u Vás prítomné zasekávanie kolena (pri zohýbaní kolena, napr. v ľahu na chrbte), prípadne. mierny "
+        "text": "...u Vás prítomné zasekávanie kolena (pri zohýbaní kolena, napr. v ľahu na chrbte), prípadne mierny "
                 "opuch?",
         "prepend_id": 4,
         "color_id": 3
@@ -251,21 +251,21 @@ questions = [
     },
     {
         "id": "q13",
-        "text": "...u Vás prítomné zasekávanie kolena (pri zohýbaní kolena, napr. v ľahu na chrbte), prípadne. mierny "
+        "text": "...u Vás prítomné zasekávanie kolena (pri zohýbaní kolena, napr. v ľahu na chrbte), prípadne mierny "
                 "opuch?",
         "prepend_id": 4,
         "color_id": 3
     },
     {
         "id": "q14",
-        "text": "...u Vás prítomne vyžarovanie bolesti nahor zboku stehna, a taktiež nadol zvonku predkolenia "
+        "text": "...u Vás prítomné vyžarovanie bolesti nahor zboku stehna, a taktiež nadol zvonku predkolenia "
                 "prípadne až členku?",
         "prepend_id": 4,
         "color_id": 2
     },
     {
         "id": "q15",
-        "text": "...si ľahnite nabok (zdravou stranou nadol), s vystretými nohami uloženými na sebe a následne "
+        "text": "...si ľahnete nabok (zdravou stranou nadol) s vystretými nohami uloženými na sebe a následne "
                 "nadvihnete vrchnú nohu, ktorú ohnete v kolene a začnete ju spúšťať nadol (koleno ku kolenu), "
                 "Vaša bolesť sa zhorší, prípadne tento úkon ani neviete dokončiť.",
         "prepend_id": 3,
@@ -273,7 +273,7 @@ questions = [
     },
     {
         "id": "q16",
-        "text": "...aj bolesťami chrbta? Prípadne predchádzali Vašim bolesťiam v kolene, bolesti chrtba?",
+        "text": "...aj bolesťami chrbta? Prípadne predchádzali Vašim bolestiam v kolene, bolesti chrtba?",
         "prepend_id": 5,
         "color_id": 3
     },
@@ -286,7 +286,8 @@ questions = [
     },
     {
         "id": "q18",
-        "text": "...sedíte dlhšie Vaša bolesť za horší, ale ak vystriete nohu, tento úkon Vám prinesie čiastočnú úľavu.",
+        "text": "...dlhšie sedíte, Vaša bolesť sa zhorší, ale ak vystriete nohu, tento úkon Vám prinesie čiastočnú "
+                "úľavu.",
         "prepend_id": 3,
         "color_id": 1
     },
@@ -298,7 +299,8 @@ questions = [
     },
     {
         "id": "q20",
-        "text": "...sedíte dlhšie Vaša bolesť za horší, ale ak vystriete nohu, tento úkon Vám prinesie čiastočnú úľavu.",
+        "text": "...dlhšie sedíte, Vaša bolesť sa zhorší, ale ak vystriete nohu, tento úkon Vám prinesie čiastočnú "
+                "úľavu.",
         "prepend_id": 3,
         "color_id": 1
     },
@@ -323,7 +325,7 @@ questions = [
     },
     {
         "id": "q24",
-        "text": "...do 50 rokov, a pomerne často športujete (beh, skákanie)",
+        "text": "...menej ako 50 rokov a pomerne často športujete (beh, skákanie).",
         "prepend_id": 12,
         "color_id": 1
     },
@@ -555,12 +557,12 @@ options = [
     },
     {
         "from": "q15",
-        "text": "Áno (Bolesť sa zhoršuje, príp.pohyb nie je možné dokončiť)",
+        "text": "Áno (bolesť sa zhoršuje, príp. pohyb nie je možné dokončiť)",
         "to": "d15",
     },
     {
         "from": "q15",
-        "text": "Nie (Bolesť sa nezhošuje, pohyb prevediem)",
+        "text": "Nie (bolesť sa nezhoršuje, pohyb prevediem)",
         "to": "q16",
     },
     # SH: driek nebude v soft launch-i

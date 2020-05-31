@@ -7,7 +7,7 @@
     }
 }
 
-#cont {
+#content {
     position: absolute;
     top: 0;
     height: 100%;
@@ -21,9 +21,29 @@
         margin: auto;
 
         h1 {
-            margin: 20% 0%;
+            margin-top: 5%;
+            margin-bottom: 10%;
             font-weight: bold;
         }
 
+        .right {
+            // text-align: right;
+            text-align: left;
+        }
+
+        .area-btn {
+            margin-left: -10%;
+            --background: var(--blue);
+            --color: var(--dark);
+
+            .btn-text {
+                padding-left: 10px;
+            }
+        }
+
+        .notyet {
+            padding-left: 5%;
+            text-align: left;
+        }
     }
 }
