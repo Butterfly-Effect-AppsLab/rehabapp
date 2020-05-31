@@ -67,7 +67,7 @@ diagnoses = [
 questions = [
     {
         "id": "q1",
-        "text": "...tŕpnutie v okolí vnútorného členku , alebo necitlivosť v oblasti šľapy?",
+        "text": "...tŕpnutie v okolí vnútorného členku alebo necitlivosť v oblasti šľapy?",
         "prepend_id": 2,
         "color_id": 1
     },
@@ -92,20 +92,20 @@ questions = [
     },
     {
         "id": "q5",
-        "text": "...uchopíte svoje chodidlo do dlane tak, že do nej vložíte svoj nart a následne ho stlačíte, "
+        "text": "...uchopíte svoje chodidlo do dlane tak, že do nej vložíte svoj nárt a následne ho stlačíte, "
                 "Vaša bolesť sa zhorší.",
         "prepend_id": 3,
         "color_id": 3
     },
     {
         "id": "q6",
-        "text": "...sedite, alebo ležíte a potiahnete špičku nahor smerom k sebe, Vaša bolesť sa zhorší.",
+        "text": "...sedíte alebo ležíte a potiahnete špičku nahor smerom k sebe, Vaša bolesť sa zhorší.",
         "prepend_id": 3,
         "color_id": 1
     },
     {
         "id": "q7",
-        "text": "...je horšia ráno po zobudení, po zahriatí a počas celého dňa a zmierňuje sa až večer.",
+        "text": "...je horšia ráno po zobudení, po zahriatí a počas celého dňa, a zmierňuje sa až večer.",
         "prepend_id": 1,
         "color_id": 1
     }
@@ -211,7 +211,7 @@ options = [
     },
     {
         "from": "q7",
-        "text": "Nie (pohybom sa bolesť nemení alebo zhoršuje)",
+        "text": "Nie (pohybom sa bolesť nemení alebo sa zhoršuje)",
         "to": "d5",
     }
 ]

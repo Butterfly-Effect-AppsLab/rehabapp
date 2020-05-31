@@ -117,13 +117,13 @@ diagnoses = [
 questions = [
     {
         "id": "q1",
-        "text": "...je horšia ráno (resp. po zobudení) a po rozhýbani členku a jeho zahriatí sa zlepšuje.",
+        "text": "...je horšia ráno (resp. po zobudení) a po rozhýbaní členku a jeho zahriatí sa zlepšuje.",
         "prepend_id": 1,
         "color_id": 1
     },
     {
         "id": "q2",
-        "text": "...aj bolesť iných kĺbov (prsty na nohách/rukách), alebo opuch členku?",
+        "text": "...aj bolesť iných kĺbov (prsty na nohách/rukách) alebo opuch členku?",
         "prepend_id": 2,
         "color_id": 2
     },
@@ -148,7 +148,7 @@ questions = [
     },
     {
         "id": "q6",
-        "text": "...v nedávnej dobe úraz členku ako napríklad vyvrtnutie/potvrdnutie, alebo ste utrpeli opakované "
+        "text": "...v nedávnej dobe úraz členku, ako napríklad vyvrtnutie/potvrdnutie, alebo ste utrpeli opakované "
                 "úrazy členku tohto charakteru?",
         "prepend_id": 6,
         "color_id": 1
@@ -167,7 +167,7 @@ questions = [
     },
     {
         "id": "q9",
-        "text": "...v nedávnej dobe úraz členku ako napríklad vyvrtnutie/potvrdnutie, alebo ste utrpeli opakované "
+        "text": "...v nedávnej dobe úraz členku, ako napríklad vyvrtnutie/potvrdnutie, alebo ste utrpeli opakované "
                 "úrazy členku tohto charakteru?",
         "prepend_id": 6,
         "color_id": 1
@@ -180,7 +180,7 @@ questions = [
     },
     {
         "id": "q11",
-        "text": "...bolesť horšia ráno, po rozhýbaní a poobede sa mierni",
+        "text": "...bolesť horšia ráno, po rozhýbaní a poobede sa mierni.",
         "prepend_id": 4,
         "color_id": 3
     },
