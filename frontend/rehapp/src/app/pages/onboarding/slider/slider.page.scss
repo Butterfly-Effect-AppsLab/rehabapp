@@ -43,9 +43,20 @@
 
 .btnDiv {
     width: 70%;
+    height: 3em;
     left: 50%;
     bottom: 12%;
     transform: translate(-50%);
+
+    .begin-btn {
+        --background: var(--gray);
+        --color: var(--dark);
+        --box-shadow: none;
+        height: 100%;
+        white-space: normal;
+        font-weight: bold;
+        font-size: large;
+    }
 }
 
 .txt {
@@ -58,3 +69,4 @@
     z-index: 99;
     position: fixed;
 }
+
