@@ -27,5 +27,9 @@ export class APIService {
 
     public getTree() {
         return this.http.get<any>(API_URL + "questions");
+    }  
+
+    public updateTree(checksum: string) {
+        return this.http.get<any>(API_URL + "questions/update/" + checksum, {observe: 'response'});     // full response with body, headers and response code
     }
 }
