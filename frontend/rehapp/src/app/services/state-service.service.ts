@@ -18,6 +18,7 @@ export class StateService {
   private _opositeSide: BehaviorSubject<string> = new BehaviorSubject<string>("back");
   private isLoading = false;
   public animationInPogress = false;
+  public resetValues: boolean = false;
 
   constructor(private api: APIService, private navCtrl: NavController, private router: Router, private loadingController: LoadingController) {
     if(this.questions == undefined)

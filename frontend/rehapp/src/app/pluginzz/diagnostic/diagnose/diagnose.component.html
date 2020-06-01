@@ -12,9 +12,19 @@
     <h1>{{diagnose.name | uppercase}}</h1>
     <p>{{diagnose.text}}</p>
 
-    <b>Bližšie informácie o Vašej diagnóze, jej príznaky aj spôsob liečenia budú doplnené v neskorších verziách tejto aplikácie.</b>
+    <b>Bližšie informácie o Vašej diagnóze, jej príznakoch a spôsobe liečby budú doplnené v neskorších verziách tejto aplikácie.</b>
     <br><br>
+    
     <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
+
+    <img src="assets/images/loading.gif" />
+
+
+    <div class="bottom">
+      <ion-button (click)="redirect()" expand="block" fill="solid" shape="round" class="app-button-dark">
+        Návrat na výber bolestivej oblasti
+      </ion-button>
+    </div>
 
     <!-- <div class="right">
       <ion-button (click)="setArea('def')" class="area-btn"  fill="solid" shape="round">

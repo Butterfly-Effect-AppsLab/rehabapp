@@ -19,6 +19,14 @@ import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils
 })
 export class BodyPartSelectionPage implements OnInit {
 
+  @ViewChild('buttons', { static: false }) buttons: ElementRef;
+  @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
+  @ViewChild('fadeEffect', { static: false }) fadeEffect: ElementRef;
+
+  @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
+  @ViewChild('toggleComponent', { static: false }) toggleComponent: ToggleComponent;
+  @ViewChild('bodyComponent', { static: false }) bodyComponent: BodyComponent;
+
   actualCircle: Element;
   actualSubarea: Element;
   actualSubareaBtn: Element;
@@ -26,13 +34,6 @@ export class BodyPartSelectionPage implements OnInit {
   areaSelected: boolean = false;
   areaSubmitted: boolean = false;
   subareaSelected: boolean = false;
-  @ViewChild('buttons', { static: false }) buttons: ElementRef;
-  @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
-  @ViewChild('fadeEffect', { static: false }) fadeEffect: ElementRef;
-  
-  @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
-  @ViewChild('toggleComponent',{ static: false }) toggleComponent: ToggleComponent;
-  @ViewChild('bodyComponent',{ static: false }) bodyComponent: BodyComponent;
   rotateRowHeight = "10vh";
 
   left: number;
@@ -65,8 +66,8 @@ export class BodyPartSelectionPage implements OnInit {
 
   constructor(public loadingController: LoadingController, private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public navCtrl: NavController, private stateService: StateService) {
 
-    this.stateService.actualSide.subscribe(()=>{
-      if(this.initialized)
+    this.stateService.actualSide.subscribe(() => {
+      if (this.initialized)
         this.rotate();
     });
   }
@@ -83,10 +84,40 @@ export class BodyPartSelectionPage implements OnInit {
     });
   }
 
-  ngAfterViewInit(){
-    
-    if(this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first)
+  ngAfterViewInit() {
+
+    if (this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first)
       this.areaSubmitted = true;
+  }
+
+  async ionViewDidEnter() {
+    if (this.stateService.resetValues)
+      this.setValues();
+
+    if (!this.initialized) {
+      this.init();
+    }
+    var area = <Area>this.stateService.actualTreeComponent.getValue();
+
+    if ((area != null && area.type == "area" && !area.first) || (area != null && area.type == "area" && area.first && this.areaSubmitted)) {
+      await this.forward(0, 0);
+    }
+
+    this.stateService.stopLoading();
+  }
+
+  public setValues() {
+    this.actualCircle = undefined;
+    this.actualSubarea = undefined;
+    this.actualSubareaBtn = undefined;
+    this.areaSelected = false;
+    this.areaSubmitted = false;
+    this.subareaSelected = false;
+    this.selectedAreaObject = null;
+    this.opositeAreaObject = null;
+    this.options = [];
+    this.ref = null;
+    this.stateService.resetValues = false;
   }
 
   getOptions() {
@@ -102,13 +133,13 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   async back() {
-    if(this.stateService.animationInPogress)
+    if (this.stateService.animationInPogress)
       return;
     if (this.areaSubmitted && (<Area>this.stateService.actualTreeComponent.getValue()).first)
       this.backward();
-    else{
+    else {
       await this.stateService.back();
-      if(this.areaSubmitted)
+      if (this.areaSubmitted)
         this.reset();
     }
   }
@@ -117,7 +148,7 @@ export class BodyPartSelectionPage implements OnInit {
     location.reload();
   }
 
-  init(){
+  init() {
 
     this.bodies['front'] = new Body('front');
     this.bodies['back'] = new Body('back');
@@ -148,24 +179,10 @@ export class BodyPartSelectionPage implements OnInit {
     this.initialized = true;
   }
 
-  async ionViewDidEnter() {
-    if(!this.initialized){
-      this.init();
-    }
-
-    var area = <Area>this.stateService.actualTreeComponent.getValue();
-
-    if((area != null && area.type == "area" && !area.first) || (area != null && area.type == "area" && area.first && this.areaSubmitted)){
-      await this.forward(0,0);
-    }
-
-    this.stateService.stopLoading();
-  }
-
-  async reset(duration=0, optionsDuration=0){
+  async reset(duration = 0, optionsDuration = 0) {
 
     this.stateService.animationInPogress = true;
-    
+
     this.fadeEffect.nativeElement['style']['display'] = 'none';
 
     this.ref = null;
@@ -212,7 +229,7 @@ export class BodyPartSelectionPage implements OnInit {
     this.stateService.animationInPogress = false;
   }
 
-  async forward(duration=this.duration, optionsDuration=this.optionsDuration) {
+  async forward(duration = this.duration, optionsDuration = this.optionsDuration) {
 
     this.stateService.animationInPogress = true;
 
@@ -245,11 +262,11 @@ export class BodyPartSelectionPage implements OnInit {
 
     var notFittedX = 0;
 
-    if(newWrapperHeight > screen.height/2){
-      newWrapperHeight = screen.height/2;
-      zoom = newWrapperHeight/(Number(this.selectedAreaObject.height) * this.ratio);
+    if (newWrapperHeight > screen.height / 2) {
+      newWrapperHeight = screen.height / 2;
+      zoom = newWrapperHeight / (Number(this.selectedAreaObject.height) * this.ratio);
       newWrapperWidth = Number(this.selectedAreaObject.width) * this.ratio * zoom;
-      notFittedX = (((wrapperWidth-newWrapperWidth)/2)/this.ratio)/zoom;      
+      notFittedX = (((wrapperWidth - newWrapperWidth) / 2) / this.ratio) / zoom;
     }
 
     var width = this.bodies[this.stateService.actualSide.getValue()].body.nativeElement.getBoundingClientRect().width;
@@ -261,7 +278,7 @@ export class BodyPartSelectionPage implements OnInit {
     x = (x * this.ratio) - this.left + ((zoom * width - width) / 2) / zoom;
     y = (y * this.ratio) + ((zoom * height - height) / 2) / zoom;
 
-    x+=notFittedX;
+    x += notFittedX;
 
     this.bodies[this.stateService.actualSide.getValue()].hideCircles();
     if (this.opositeAreaObject != undefined)
@@ -353,7 +370,7 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.areaSelected = true;
 
-    if (this.actualCircle != undefined){
+    if (this.actualCircle != undefined) {
       this.actualCircle['style']['fill'] = "#C0C6C7";
       this.actualCircle['style']['opacity'] = '0.74';
     }
@@ -367,6 +384,7 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.actualCircle['style']['fill'] = '#F8444F';
     this.actualCircle['style']['opacity'] = '0.54';
+
   }
 
   showSubpart(event: Event, option: Option) {
@@ -400,7 +418,7 @@ export class BodyPartSelectionPage implements OnInit {
 
   rotate() {
 
-    if(this.stateService.animationInPogress)
+    if (this.stateService.animationInPogress)
       return;
 
     this.bodies[this.stateService.actualSide.getValue()].showBody();
@@ -411,31 +429,31 @@ export class BodyPartSelectionPage implements OnInit {
     this.areaSelected = false;
   }
 
-  getBottom(element){
+  getBottom(element) {
     return element.getBoundingClientRect().bottom;
   }
 
-  setFade(){
-    if(this.getBottom(this.buttons.nativeElement.lastElementChild)-2  > this.getBottom(this.buttons.nativeElement)){
+  setFade() {
+    if (this.getBottom(this.buttons.nativeElement.lastElementChild) - 2 > this.getBottom(this.buttons.nativeElement)) {
       this.fadeEffect.nativeElement['style']['display'] = 'block';
     }
-    else{
+    else {
       this.fadeEffect.nativeElement['style']['display'] = 'none';
     }
   }
 
-  buttonsScroll(){
+  buttonsScroll() {
     this.setFade();
   }
 
   async submit() {
-    
+
     if (!this.areaSubmitted && (<Area>this.stateService.actualTreeComponent.getValue()).first)
       this.forward()
     else {
       this.stateService.pushComponent(this.stateService.actualTreeComponent.getValue());
       this.stateService.actualTreeComponent.next(this.stateService.questions[this.ref]);
-      
+
       await this.stateService.startLoading();
       await this.reset();
       this.router.navigate(['/diagnostic'])

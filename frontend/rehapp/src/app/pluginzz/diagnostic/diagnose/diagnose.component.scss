@@ -45,5 +45,18 @@
             padding-left: 5%;
             text-align: left;
         }
+
+        img {
+            width: 60%;
+            margin: auto;
+            display: block;
+        }
+
+        .bottom {
+            position: absolute;
+            display: block;
+            width: 90%;
+            bottom: 5%;
+        }
     }
 }
