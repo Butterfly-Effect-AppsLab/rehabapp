@@ -105,6 +105,10 @@ class AuthMiddleware(object):
             exclude_paths = []
         self.exclude_paths = exclude_paths
 
+    def check_path(self, path):
+        if path.split("/")[0] in self.exclude_paths:
+            return False
+
     def authenticate(self, req):
         if not req.auth:
             raise HTTPUnauthorized(description="No token")
@@ -145,6 +149,6 @@ class AuthMiddleware(object):
                 method as keyword arguments.
         """
 
-        if req.path not in self.exclude_paths:
+        if self.check_path(req.path):
             req.context.user = self.authenticate(req)
 

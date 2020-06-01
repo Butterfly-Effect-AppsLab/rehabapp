@@ -10,18 +10,19 @@ def init_api():
             SessionMiddleware(),
             CORSMiddleware(),
             AuthMiddleware(exclude_paths=[
-                '/',
-                '/questions',
-                '/registration',
-                '/login',
-                '/forgotPassword',
-                '/resetPassword',
-                '/refresh'
+                '',
+                'questions',
+                'registration',
+                'login',
+                'forgotPassword',
+                'resetPassword',
+                'refresh'
             ])
         ]
     )
     api_tmp.add_route('/', TestResource())
     api_tmp.add_route('/questions', QuestionsResource())
+    api_tmp.add_route('/questions/update/{checksum}', UpdateQuestionsResource())
     api_tmp.add_route('/registration', RegistrationResource())
     api_tmp.add_route('/login', LoginResource())
     api_tmp.add_route('/forgotPassword', ForgotPasswordResource())

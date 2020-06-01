@@ -49,6 +49,41 @@ class QuestionsResource:
         }
 
 
+class UpdateQuestionsResource:
+    def on_get(self, req, res, checksum):
+        res.media = []
+
+        area_schema = AreaSchema()
+        question_schema = QuestionSchema()
+        diagnose_schema = DiagnoseSchema()
+
+        areas = req.context.session.query(Area)
+        questions = req.context.session.query(Question)
+        diagnoses = req.context.session.query(Diagnose)
+
+        ret = {}
+
+        for area in areas:
+            ret[area.unique_id] = area_schema.dump(area)
+
+        for question in questions:
+            ret[question.unique_id] = question_schema.dump(question)
+
+        for diagnose in diagnoses:
+            ret[diagnose.unique_id] = diagnose_schema.dump(diagnose)
+
+        m = hashlib.md5()
+        m.update(json.dumps(ret).encode())
+
+        if str(m.hexdigest()) == checksum:
+            res.status = falcon.HTTP_204
+        else:
+            res.media = {
+                'checksum': m.hexdigest(),
+                'questions': ret
+            }
+
+
 class MeResource:
     def on_get(self, req, res):
         user = req.context.user
