@@ -425,6 +425,8 @@ export class BodyPartSelectionPage implements OnInit {
     this.bodies[this.stateService.actualSide.getValue()].changeColorOfCircles('#C0C6C7');
     this.bodies[this.stateService.opositeSide.getValue()].hideBody();
 
+    this.visibleSide = this.stateService.actualSide.getValue();
+
     this.actualCircle = undefined;
     this.areaSelected = false;
   }
