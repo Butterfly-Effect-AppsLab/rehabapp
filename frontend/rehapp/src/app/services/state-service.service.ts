@@ -24,9 +24,15 @@ export class StateService {
   public resetValues: boolean = false;
 
   constructor(private api: APIService, private router: Router, private loadingController: LoadingController) {
-    if(this.questions == undefined) {
+    if (this.questions == undefined) {
       this.getObject('tree');
     }
+  }
+
+  updateTree(resp) {
+    this.questions = resp['questions'];
+    this.checksum = resp['checksum'];
+    this.setObject('tree', resp);
   }
 
   async getObject(keyToFind: string) {
@@ -34,7 +40,6 @@ export class StateService {
 
     if (ret.value != undefined) {
       console.log("Tree is loaded from storage.");
-      
 
       this.questions = JSON.parse(ret.value)['questions'];
       this.checksum = JSON.parse(ret.value)['checksum'];
@@ -43,14 +48,14 @@ export class StateService {
         (resp) => {
           if (resp.status != 204) {
             console.log("Tree is outdated.");
-            this.loadTreeFromAPI();
-          }       
+            this.updateTree(resp.body);
+          }
         }
-      ); 
+      );
     }
     else {
-      console.log("Tree is not in stored.");
-      this.loadTreeFromAPI();     
+      console.log("Tree is not in storage.");
+      this.loadTreeFromAPI();
     }
   }
 
@@ -60,21 +65,17 @@ export class StateService {
       value: JSON.stringify(objectToSave)
     });
   }
-  
+
   loadTreeFromAPI() {
-    this.api.getTree().subscribe( 
-      (resp) => { 
-        console.log(resp);
-        
-        this.questions = resp['questions'];   
-        this.checksum = resp['checksum'];
-        this.setObject('tree', resp);
+    this.api.getTree().subscribe(
+      (resp) => {
+        this.updateTree(resp);
       },
       (err) => alert("Prerusilo sa spojenie.")
     );
   }
 
-  async startLoading(){
+  async startLoading() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       animated: false,
@@ -90,14 +91,14 @@ export class StateService {
     this.isLoading = true;
   }
 
-  async stopLoading(){
+  async stopLoading() {
     this.loadingController.getTop().then(v => v ? this.loadingController.dismiss() : null);
     this.isLoading = false;
   }
 
   set actualTreeComponent(state: BehaviorSubject<TreeComponent>) {
     this._actualTreeComponent = state;
-  } 
+  }
 
   get actualTreeComponent(): BehaviorSubject<TreeComponent> {
     return this._actualTreeComponent;
@@ -114,37 +115,37 @@ export class StateService {
   public get questions() { return this._questions }
   public set questions(questions) { this._questions = questions }
 
-  public get checksum() { return this._checksum } 
+  public get checksum() { return this._checksum }
   public set checksum(checksum) { this._checksum = checksum }
 
-  public get componentStack() { return this._componentStack } 
-  
-  public pushComponent(component: TreeComponent) { 
+  public get componentStack() { return this._componentStack }
+
+  public pushComponent(component: TreeComponent) {
     this._componentStack.push(component);
-  } 
-  public popComponent():TreeComponent { 
+  }
+  public popComponent(): TreeComponent {
     return this._componentStack.pop();
   }
 
   async back() {
 
-    if(this.isLoading)
+    if (this.isLoading)
       return;
 
-    if(this.componentStack.length == 0){
+    if (this.componentStack.length == 0) {
       this.router.navigateByUrl('/onboarding');
       return;
     }
-      
+
     var oldTreeComponent = this.actualTreeComponent.getValue();
     this.actualTreeComponent.next(this.componentStack.pop());
 
-    if(oldTreeComponent.type == "area"){
+    if (oldTreeComponent.type == "area") {
       await this.startLoading();
       this.router.navigateByUrl('/diagnostic');
     }
 
-    if(this.actualTreeComponent.getValue().type == "area"){
+    if (this.actualTreeComponent.getValue().type == "area") {
       await this.startLoading();
       this.router.navigateByUrl('/selection');
     }
