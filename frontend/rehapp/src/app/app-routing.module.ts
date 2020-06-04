@@ -22,9 +22,14 @@ const routes: Routes = [
   {
     path: 'selection',
     loadChildren: () => import('./pages/body-part-selection/body-part-selection.module').then( m => m.BodyPartSelectionPageModule)
-  },  {
+  },
+  {
     path: 'registration',
     loadChildren: () => import('./pages/account/registration/registration.module').then( m => m.RegistrationPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
 
 
