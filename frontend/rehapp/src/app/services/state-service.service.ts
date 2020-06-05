@@ -5,6 +5,7 @@ import { APIService } from './apiservice.service';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import { LoadingController } from '@ionic/angular';
+import { User } from './models/User';
 
 const { Storage } = Plugins;
 
@@ -22,6 +23,8 @@ export class StateService {
   private isLoading = false;
   public animationInPogress = false;
   public resetValues: boolean = false;
+
+  private _registratingUser: User;
 
   constructor(private api: APIService, private router: Router, private loadingController: LoadingController) {
     if (this.questions == undefined) {
@@ -96,29 +99,6 @@ export class StateService {
     this.isLoading = false;
   }
 
-  set actualTreeComponent(state: BehaviorSubject<TreeComponent>) {
-    this._actualTreeComponent = state;
-  }
-
-  get actualTreeComponent(): BehaviorSubject<TreeComponent> {
-    return this._actualTreeComponent;
-  }
-
-  get actualSide(): BehaviorSubject<string> {
-    return this._actualSide;
-  }
-
-  get opositeSide(): BehaviorSubject<string> {
-    return this._opositeSide;
-  }
-
-  public get questions() { return this._questions }
-  public set questions(questions) { this._questions = questions }
-
-  public get checksum() { return this._checksum }
-  public set checksum(checksum) { this._checksum = checksum }
-
-  public get componentStack() { return this._componentStack }
 
   public pushComponent(component: TreeComponent) {
     this._componentStack.push(component);
@@ -150,4 +130,32 @@ export class StateService {
       this.router.navigateByUrl('/selection');
     }
   }
+
+  
+  set actualTreeComponent(state: BehaviorSubject<TreeComponent>) {
+    this._actualTreeComponent = state;
+  }
+
+  get actualTreeComponent(): BehaviorSubject<TreeComponent> {
+    return this._actualTreeComponent;
+  }
+
+  get actualSide(): BehaviorSubject<string> {
+    return this._actualSide;
+  }
+
+  get opositeSide(): BehaviorSubject<string> {
+    return this._opositeSide;
+  }
+
+  public get questions() { return this._questions }
+  public set questions(questions) { this._questions = questions }
+
+  public get checksum() { return this._checksum }
+  public set checksum(checksum) { this._checksum = checksum }
+
+  public get registratingUser() { return this._registratingUser }
+  public set registratingUser(user: User) { this._registratingUser = user }
+
+  public get componentStack() { return this._componentStack }
 }

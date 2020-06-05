@@ -1,0 +1,62 @@
+<ion-content>
+  <div class="main">
+    <ion-radio-group (ionChange)="valueSelected($event, 'sex')">
+      <h2 class="caption">Zadajte pohlavie</h2>
+      <div class="radio">
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="male"></ion-radio>
+            <ion-label>Muž</ion-label>
+          </ion-item>
+        </div>
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="female"></ion-radio>
+            <ion-label>Žena</ion-label>
+          </ion-item>
+        </div>
+        <div class="radio-opt">
+          <ion-item>
+            <ion-radio value="other"></ion-radio>
+            <ion-label>Yeti</ion-label>
+          </ion-item>
+        </div>
+      </div>
+    </ion-radio-group> 
+
+    <h2 class="caption">Zadajte dátum narodenia</h2>
+    <ion-item>
+      <ion-label>Vyberte dátum</ion-label>
+      <ion-datetime 
+        displayFormat="DD MMMM YYYY" 
+        placeholder="Vyberte dátum" 
+        cancelText='Zrušiť'
+        doneText='Potvrdiť'
+        [monthNames]="months"
+        (ionChange)="valueSelected($event, 'date')"></ion-datetime
+      >
+    </ion-item>
+
+
+    <h2 class="caption">Trpíte nasledujúcimi problémami?</h2>
+    <ion-item>
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Cukrovka</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Vysoký krvný tlak</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox></ion-checkbox>
+      <ion-label>Iné</ion-label>
+    </ion-item>
+    
+    <div class="buttonDiv">
+      <ion-button (click)="createUser()" expand="block" fill="solid" shape="round" strong class="app-button-dark">
+        Potvrdiť
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

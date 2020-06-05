@@ -3,7 +3,7 @@ export class User {
     private _password: string;
     private _email: string;
     private _sex: string;
-    private _birdthday: Date;
+    private _birdthday: string;
 
     constructor(username: string, email: string, password: string) {
         this._username = username;
@@ -43,11 +43,11 @@ export class User {
         this._sex = sex;
     }
 
-    public get birdthday(): Date {
+    public get birdthday(): string {
         return this._birdthday;
     }
 
-    public set birdthday(birdthday: Date) {
+    public set birdthday(birdthday: string) {
         this._birdthday = birdthday;
     }
 }

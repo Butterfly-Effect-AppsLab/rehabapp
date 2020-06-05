@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: RegistrationPage
+  },
+  {
+    path: 'demography',
+    loadChildren: () => import('./demography/demography.module').then( m => m.DemographyPageModule)
   }
 ];
 

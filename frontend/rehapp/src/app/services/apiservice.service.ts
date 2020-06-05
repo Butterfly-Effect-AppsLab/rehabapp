@@ -34,8 +34,9 @@ export class APIService {
         return this.http.get<any>(API_URL + "questions/update/" + checksum, { observe: 'response' });     // full response with body, headers and response code
     }
 
-    public registrateUser(body: object): Observable<User> {
-        return this.http.post<User>(API_URL + "registration", body, HTTP_OPTIONS)
+    public registrateUser(body: User): Observable<User> {
+        
+        return this.http.post<User>(API_URL + "registration", JSON.stringify(body), HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );

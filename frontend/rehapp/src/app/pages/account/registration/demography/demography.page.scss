@@ -1,0 +1,44 @@
+.main {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+
+    ion-item {
+        --background: "transparent";
+        --color: var(--dark);
+    }
+
+    ion-checkbox {
+        --background-checked: var(--light);
+        --border-color-checked: var(--dark);
+        --checkmark-color: var(--dark);
+        margin-right: 3%;
+    }
+    
+    .radio {
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .radio-opt {
+        float: left;
+        width: 33%;
+    
+        ion-radio {
+            --color-checked: var(--dark);
+            margin-right: 5%;
+        }
+    }
+    
+    .caption {
+        padding-top: 10%;
+    }
+
+    .buttonDiv {
+        position: absolute;
+        bottom: 2%;
+        width: 90%;
+    }
+}
+
+

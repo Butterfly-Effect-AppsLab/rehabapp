@@ -30,8 +30,20 @@ ion-content {
         --color: var(--dark);
         
         >ion-icon {
-            margin-top: 5%; 
+            height: 80%; 
             color: var(--dark);
+        }
+
+        >ion-checkbox {
+            --background-checked: var(--light);
+            --border-color-checked: var(--dark);
+            --checkmark-color: var(--dark);
+            margin-right: 2%;
+        }
+        
+        .terms {
+            white-space: normal; 
+            text-align: center;
         }
     }
 

@@ -3,6 +3,7 @@ import { User } from 'src/app/services/models/User';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-registration',
@@ -28,7 +29,7 @@ export class RegistrationPage implements OnInit {
 
   private buttonEnabled: boolean;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private APIservice: APIService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private APIservice: APIService, private stateService: StateService) { }
 
   ngOnInit() {
   }
@@ -41,20 +42,11 @@ export class RegistrationPage implements OnInit {
     if (username == "")
       username = email.split("@")[0];
     
-    let user = new User(username, email, password);
+    this.stateService.registratingUser = new User(username, email, password);
     
-    let userData = {
-      "name": user.username,
-      "email": user.email,
-      "password": user.password,
-      "sex": "male",
-      "birthday": "1968-12-06"
-    }
-    console.log(JSON.stringify(userData));
+    console.log(JSON.stringify(this.stateService.registratingUser));
 
-    this.APIservice.registrateUser(userData).subscribe(
-      response => console.log(JSON.stringify(response))
-    );
+    this.router.navigateByUrl('registration/demography'); 
   }
 
 }
