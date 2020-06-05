@@ -73,7 +73,7 @@ diagnoses = [
     },
     {
         "id": "d11",
-        "name": "Preťaźenie/natiahnutie kapsuly lakťového kĺbu",
+        "name": "Preťaženie/natiahnutie kapsuly lakťového kĺbu",
         "text": ""
     }
 ]
