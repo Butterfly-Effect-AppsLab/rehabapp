@@ -293,7 +293,7 @@ questions = [
     },
     {
         "id": "q19",
-        "text": "...pocitmi nestability kolena, prípadne škrípanímpri zohýbaní kolena?",
+        "text": "...pocitmi nestability kolena, prípadne škrípaním pri zohýbaní kolena?",
         "prepend_id": 5,
         "color_id": 2
     },

@@ -94,7 +94,7 @@ diagnoses = [
     },
     {
         "id": "d15",
-        "name": "Tentinitída Achillovej ślachy",
+        "name": "Tentinitída Achillovej šlachy",
         "text": ""
     },
     {
@@ -210,16 +210,16 @@ questions = [
     },
     {
         "id": "q16",
-        "text": "...bolesť šľapy?",
+        "text": "...zhoršenie bolesti pri chôdzi v (tesnejších) topánkach, pričom pri chôdzi bez topánok sa táto "
+                "bolesť nezhoršuje?",
         "prepend_id": 2,
         "color_id": 3
     },
     {
         "id": "q17",
-        "text": "...zhoršenie bolesti pri chôdzi v (tesnejších) topánkach, pričom pri chôdzi bez topánok sa táto "
-                "bolesť nezhoršuje?",
+        "text": "...bolesť šľapy?",
         "prepend_id": 2,
-        "color_id": 2
+        "color_id": 3
     }
 ]
 
@@ -394,7 +394,7 @@ options = [
     {
         "from": "q14",
         "text": "Áno",
-        "to": "q16",
+        "to": "q17",
     },
     {
         "from": "q14",
@@ -409,7 +409,7 @@ options = [
     {
         "from": "q15",
         "text": "Nie",
-        "to": "q17",
+        "to": "q16",
     },
     {
         "from": "q16",
