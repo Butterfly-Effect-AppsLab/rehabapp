@@ -12,7 +12,7 @@ export class DemographyPage implements OnInit {
 
   private months: Array<string> = ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"]
   private gender: string = ""
-  private birdth: Date;
+  private birth: Date;
 
   constructor(private APIservice: APIService, private stateService: StateService) { }
 
@@ -24,7 +24,7 @@ export class DemographyPage implements OnInit {
     if (source == "sex")
       this.gender = event.detail.value;
     else if (source == "date")
-      this.birdth = new Date(event.detail.value);
+      this.birth = new Date(event.detail.value);
     else 
       alert("Zla volba");
       
@@ -37,12 +37,17 @@ export class DemographyPage implements OnInit {
       user = new User("NAME","EMAIL","PSSWD");
     }
     user.sex = this.gender;
-    user.birdthday = `${this.birdth.getFullYear()}-${this.birdth.getMonth()}-${this.birdth.getDate()}`;
 
-    console.log(user);  
+    if (this.birth == undefined) this.birth = new Date()
+    user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth()+1}-${this.birth.getDate()}`;
+
+    console.log(user.toJSON());  
 
     this.APIservice.registrateUser(user).subscribe(
-      response => console.log(JSON.stringify(response))
+      response => {
+        console.log("status code: ", response.status);
+        console.log("response: ", response.body);
+      }
     );
   }
 

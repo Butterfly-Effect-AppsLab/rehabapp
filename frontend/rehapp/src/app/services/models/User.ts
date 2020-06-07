@@ -3,12 +3,22 @@ export class User {
     private _password: string;
     private _email: string;
     private _sex: string;
-    private _birdthday: string;
+    private _birthday: string;
 
     constructor(username: string, email: string, password: string) {
         this._username = username;
         this._email = email;
         this._password = password;
+    }
+
+    public toJSON(): object {
+        return {
+            'name': this._username,
+            'password': this._password,
+            'email': this._email,
+            'sex': this._sex,
+            'birthday': this._birthday
+        }
     }
 
     public get username(): string {
@@ -43,11 +53,11 @@ export class User {
         this._sex = sex;
     }
 
-    public get birdthday(): string {
-        return this._birdthday;
+    public get birthday(): string {
+        return this._birthday;
     }
 
-    public set birdthday(birdthday: string) {
-        this._birdthday = birdthday;
+    public set birthday(birthday: string) {
+        this._birthday = birthday;
     }
 }

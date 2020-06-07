@@ -8,10 +8,11 @@ import { catchError } from 'rxjs/operators';
 
 
 const HTTP_OPTIONS = {
-    headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'jwt-token'
-    })
+    // headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'jwt-token'
+    // }),
+    observe: 'response' as const,
 };
 
 @Injectable({
@@ -34,12 +35,20 @@ export class APIService {
         return this.http.get<any>(API_URL + "questions/update/" + checksum, { observe: 'response' });     // full response with body, headers and response code
     }
 
-    public registrateUser(body: User): Observable<User> {
-        
-        return this.http.post<User>(API_URL + "registration", JSON.stringify(body), HTTP_OPTIONS)
+    public registrateUser(user: User) {
+
+        return this.http.post<User>(API_URL + "registration", user.toJSON(), HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );
+    }
+
+    public loginUser(user: User) {
+        const body = {
+            "email": user.email,
+            "password": user.password
+        }
+        return this.http.post<User>(API_URL + "login", body, HTTP_OPTIONS);
     }
 
     private handleError(error: HttpErrorResponse) {
