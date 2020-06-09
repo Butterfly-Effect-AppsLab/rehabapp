@@ -105,9 +105,10 @@ class AuthMiddleware(object):
             exclude_paths = []
         self.exclude_paths = exclude_paths
 
-    def check_path(self, path):
-        if path.split("/")[0] in self.exclude_paths:
+    def require_auth(self, path):
+        if path.split("/")[1] in self.exclude_paths:
             return False
+        return True
 
     def authenticate(self, req):
         if not req.auth:
@@ -149,6 +150,6 @@ class AuthMiddleware(object):
                 method as keyword arguments.
         """
 
-        if self.check_path(req.path):
+        if self.require_auth(req.path):
             req.context.user = self.authenticate(req)
 
