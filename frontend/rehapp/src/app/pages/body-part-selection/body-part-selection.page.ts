@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow, NavController, LoadingController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
+import { TreeError, compileBaseDefFromMetadata } from '@angular/compiler';
+import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 
 import { APIService } from 'src/app/services/apiservice.service';
-import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow, NavController, LoadingController } from '@ionic/angular';
-import Body from 'src/app/services/models/Body';
 import { TreeComponent, Area, Option } from 'src/app/services/models/Tree';
-import { TreeError, compileBaseDefFromMetadata } from '@angular/compiler';
 import { StateService } from 'src/app/services/state-service.service';
 import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
 import { BodyComponent } from 'src/app/pluginzz/body/body.component';
-import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 
+import Body from 'src/app/services/models/Body';
 
 @Component({
   selector: 'app-body-part-selection',

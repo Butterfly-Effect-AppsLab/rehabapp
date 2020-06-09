@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { APIService } from 'src/app/services/apiservice.service';
 import { StateService } from 'src/app/services/state-service.service';
+import { AccountService } from 'src/app/services/account-service.service';
 
 @Component({
   selector: 'app-registration',
@@ -29,7 +30,7 @@ export class RegistrationPage implements OnInit {
 
   private buttonEnabled: boolean;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private APIservice: APIService, private stateService: StateService) { }
+  constructor(private formBuilder: FormBuilder, private router: Router, private accountService: AccountService) { }
 
   ngOnInit() {
   }
@@ -42,9 +43,9 @@ export class RegistrationPage implements OnInit {
     if (username == "")
       username = email.split("@")[0];
     
-    this.stateService.registratingUser = new User(username, email, password);
+    this.accountService.registratingUser = new User(username, email, password);
     
-    console.log(JSON.stringify(this.stateService.registratingUser));
+    console.log(JSON.stringify(this.accountService.registratingUser));
 
     this.router.navigateByUrl('registration/demography'); 
   }

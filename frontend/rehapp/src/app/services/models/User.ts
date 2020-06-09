@@ -5,10 +5,12 @@ export class User {
     private _sex: string;
     private _birthday: string;
 
-    constructor(username: string, email: string, password: string) {
+    constructor(username: string, email?: string, password?: string, sex?: string, birthday?: string) {
         this._username = username;
         this._email = email;
         this._password = password;
+        this._sex = sex;
+        this._birthday = birthday;
     }
 
     public toJSON(): object {

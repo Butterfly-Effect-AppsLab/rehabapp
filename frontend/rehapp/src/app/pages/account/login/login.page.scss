@@ -86,3 +86,7 @@ ion-content {
     font-weight: bold;
     text-align: left;
 }
+
+.my-custom-class {
+    --background: var(--light);
+  }

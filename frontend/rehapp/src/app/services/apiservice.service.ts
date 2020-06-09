@@ -48,7 +48,10 @@ export class APIService {
             "email": user.email,
             "password": user.password
         }
-        return this.http.post<User>(API_URL + "login", body, HTTP_OPTIONS);
+        return this.http.post<User>(API_URL + "login", body, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
     }
 
     private handleError(error: HttpErrorResponse) {
@@ -64,6 +67,6 @@ export class APIService {
         }
         // return an observable with a user-facing error message
         return throwError(
-            'Something bad happened; please try again later.');
+            error);
     };
 }

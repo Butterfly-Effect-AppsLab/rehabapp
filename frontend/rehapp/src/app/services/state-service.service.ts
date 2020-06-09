@@ -22,9 +22,7 @@ export class StateService {
   private _opositeSide: BehaviorSubject<string> = new BehaviorSubject<string>("back");
   private isLoading = false;
   public animationInPogress = false;
-  public resetValues: boolean = false;
-
-  private _registratingUser: User;
+  public resetValues: boolean = false; 
 
   constructor(private api: APIService, private router: Router, private loadingController: LoadingController) {
     if (this.questions == undefined) {
@@ -152,10 +150,7 @@ export class StateService {
   public set questions(questions) { this._questions = questions }
 
   public get checksum() { return this._checksum }
-  public set checksum(checksum) { this._checksum = checksum }
-
-  public get registratingUser() { return this._registratingUser }
-  public set registratingUser(user: User) { this._registratingUser = user }
+  public set checksum(checksum: string) { this._checksum = checksum }
 
   public get componentStack() { return this._componentStack }
 }
