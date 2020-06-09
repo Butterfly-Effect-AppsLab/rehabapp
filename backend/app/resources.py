@@ -101,6 +101,7 @@ class RegistrationResource:
 
         if exist_user:
             res.media = "User with email already exists"
+            res.status = falcon.HTTP_400
         else:
             user_schema = UserSchema()
 
@@ -119,6 +120,7 @@ class RegistrationResource:
 
             except ValidationError as err:
                 res.media = err.messages
+                res.status = falcon.HTTP_400
 
 
 class LoginResource:
