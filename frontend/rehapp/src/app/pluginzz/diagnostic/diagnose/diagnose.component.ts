@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateService } from 'src/app/services/state-service.service';
+import { Diagnose } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-diagnose',
@@ -9,13 +10,24 @@ import { StateService } from 'src/app/services/state-service.service';
 })
 export class DiagnoseComponent implements OnInit {
 
-  @Input() diagnose: object;
-  @Output() onBack: EventEmitter<null> = new EventEmitter;;
+  @Input() diagnose: Diagnose;
+  @Output() onBack: EventEmitter<null> = new EventEmitter;
+  @ViewChild('fader_top', {static: true}) topFader: ElementRef;
+  @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
 
   constructor(private router: Router, private stateService: StateService) { }
   area: string = "";
+  areaClicked = false;
+  h1Size: number;
 
   ngOnInit() {
+    if (this.diagnose.name.length < 40) 
+      this.h1Size = 165;
+    else if (this.diagnose.name.length < 60)
+      this.h1Size = 130;
+    else 
+      this.h1Size = 100;
+
   }
 
   back() {
@@ -37,5 +49,20 @@ export class DiagnoseComponent implements OnInit {
       this.stateService.componentStack.pop();
 
     this.router.navigate(['/selection']);
+  }
+
+  @HostListener('scroll', ['$event'])
+  removeFader(event){
+    // visible height + pixel scrolled >= total height 
+    if (event.target.scrollTop == 0) 
+      this.topFader.nativeElement.style['display'] = "none";
+    else
+      this.topFader.nativeElement.style['display'] = "block";
+
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
+      this.botFader.nativeElement.style['display'] = "none";
+    else 
+      this.botFader.nativeElement.style['display'] = "block";
+    
   }
 }
