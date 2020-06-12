@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Option, Question } from 'src/app/services/models/Tree';
+import { StateService } from 'src/app/services/state-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-question',
@@ -15,7 +17,7 @@ export class QuestionComponent implements OnInit {
 
   options: Option[];
 
-  constructor() {}
+  constructor(private stateService: StateService, private router: Router) {}
 
   ngOnInit() {
   }
@@ -31,5 +33,15 @@ export class QuestionComponent implements OnInit {
 
   back() {
     this.onBack.emit();
+  }
+
+  redirect() {
+    this.stateService.actualTreeComponent.next(null);
+    this.stateService.resetValues = true;
+
+    while (this.stateService.componentStack.length > 0)
+      this.stateService.componentStack.pop();
+
+    this.router.navigate(['/selection']);
   }
 }
