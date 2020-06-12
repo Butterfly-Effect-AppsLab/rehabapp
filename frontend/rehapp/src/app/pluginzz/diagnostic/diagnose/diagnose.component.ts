@@ -21,6 +21,12 @@ export class DiagnoseComponent implements OnInit {
   h1Size: number;
 
   ngOnInit() {
+    if (this.diagnose.definition == undefined) {
+      let newDiagnose: Diagnose = new Diagnose();
+      newDiagnose.name = this.diagnose.name;
+      newDiagnose.type = this.diagnose.type;
+      this.diagnose = newDiagnose;
+    }
     if (this.diagnose.name.length < 40) 
       this.h1Size = 165;
     else if (this.diagnose.name.length < 60)
@@ -51,6 +57,10 @@ export class DiagnoseComponent implements OnInit {
     this.router.navigate(['/selection']);
   }
 
+  continue() {
+    this.router.navigateByUrl('/home');
+  }
+
   @HostListener('scroll', ['$event'])
   removeFader(event){
     // visible height + pixel scrolled >= total height 
@@ -63,6 +73,5 @@ export class DiagnoseComponent implements OnInit {
       this.botFader.nativeElement.style['display'] = "none";
     else 
       this.botFader.nativeElement.style['display'] = "block";
-    
   }
 }

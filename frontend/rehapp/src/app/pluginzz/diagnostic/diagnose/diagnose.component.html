@@ -27,14 +27,7 @@
           <ion-icon *ngIf="area == 'def'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'def'">
-          <!-- {{diagnose.definition}} -->
-          Ide o myofasciálnu bolesť, ktorá je spôsobená svalovým
-          preťažením následkom stresu, nesprávneho preťažovania svalu nevhodným cvičením, zlými
-          pohybovými návykmi, key prirodzenou reakciou svalu je že dochádza k jeho trvalej
-          kontrakcii, ak je daná kontrakcia chronická vznikajú svalové spazmy až tzv. trigger pointy –
-          bolestivé body, ktoré následne dráždia jednotlivé drobné nervové zakončenia, čím spôsobujú
-          rôzne vyžarovanie bolesti do končaín, hlavy, tváre, svalovú slabosť, až neurologické príznaky
-          a imitujú tak iné príčiny bolesti hlavy, či iné syndrómy.
+          {{diagnose.definition}}
         </p>
 
         <ion-item button (click)="setArea('symptom')" class="item-text" lines="none"
@@ -46,10 +39,7 @@
           <ion-icon *ngIf="area == 'symptom'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'symptom'">
-          Svalová stuhnutosť, obmedzená hybnosť v krčnej chrbtici, palpačné bolestivosť
-          stuhnutých svalov, prítomnosť spazmov, bolestivých bodov, vyžarovanie bolesti do rúk,
-          hlavy, ucha, oka, sánky, čela. Bolesti sa zhoršujú vplyvom stresu, nesprávnym pohybom a
-          preťažovaním
+          {{diagnose.symptoms}}
         </p>
 
         <ion-item button (click)="setArea('cause')" class="item-text" lines="none"
@@ -61,8 +51,7 @@
           <ion-icon *ngIf="area == 'cause'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'cause'">
-          stres, nervozita, nesprávne zaťažovanie nevhodnou technikou cvičenia, kancelárska
-          práca
+          {{diagnose.cause}}
         </p>
 
         <ion-item button (click)="setArea('diagnostic')" class="item-text" lines="none"
@@ -74,7 +63,7 @@
           <ion-icon *ngIf="area == 'diagnostic'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'diagnostic'">
-          anamnéza, typické príznaky, rehabilitačné vyšetrenie, neruologické vyšetrenie
+          {{diagnose.diagnostic}}
         </p>
 
         <ion-item button (click)="setArea('cure')" class="item-text" lines="none"
@@ -86,8 +75,7 @@
           <ion-icon *ngIf="area == 'cure'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'cure'">
-          vyhýbať sa stresu, správne cvičenie, rehabilitácia, uvoľnovacie techniky, masáže,
-          akupunktúra, lávové kamene, suché teplo, nahrievanie biolampou
+          {{diagnose.cure}}
         </p>
 
         <ion-item button (click)="setArea('prevention')" class="item-text" lines="none"
@@ -99,14 +87,13 @@
           <ion-icon *ngIf="area == 'prevention'" name="chevron-up-outline" slot="end"></ion-icon>
         </ion-item>
         <p *ngIf="area == 'prevention'">
-          vyhýbať sa vyvolávajúcim faktorom, preventívne rehabilitovať, praktizovať
-          uvoľňovacie techniky
+          {{diagnose.prevention}}
         </p>
       </div>
     </div>
 
     <div class="bottom">
-      <ion-button (click)="redirect()" expand="block" fill="solid" shape="round" class="app-button-dark" size="large">
+      <ion-button (click)="continue()" expand="block" fill="solid" shape="round" class="app-button-dark" size="large">
         Pokračovať
       </ion-button>
     </div>
