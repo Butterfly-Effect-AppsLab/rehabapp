@@ -1,0 +1,92 @@
+ion-content {
+    --background: var(--app-background);
+    --color: var(--app-font-color);
+}
+
+.main {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    
+    .heading {
+        text-align: center;
+    
+        width: 90%;
+        margin: auto;
+        padding: 20% 0;
+    
+        h1 {
+            font-size: 40px;
+            font-weight: bolder;
+        }
+    }
+
+    .item_div {
+        padding-bottom: 3%;
+    
+        >ion-item {
+            --background: "transparent";
+            --color: var(--dark);
+            
+            >ion-button {
+                height: 100%;
+                margin: 0%;
+
+                >ion-icon {
+                    height: 100%; 
+                    color: var(--dark);
+                }
+            }
+    
+            >ion-checkbox {
+                --background-checked: var(--light);
+                --border-color-checked: var(--dark);
+                --checkmark-color: var(--dark);
+                margin-right: 2%;
+            }
+            
+            .terms {
+                white-space: normal; 
+                text-align: center;
+            }
+        }
+    
+    }
+    
+    .list {
+        &__item {
+            height: 100vh;
+            &--small {
+                color: var(--ion-color-primary);
+            }
+        }
+    }
+}
+
+
+
+.input_item {
+    border: 1px solid var(--dark);
+    font-size: 18px;
+}
+
+.login_btn {
+    padding-top: 2%;
+    padding-bottom: 5%;
+
+    ion-button {
+        --color: var(--dark);
+        --background: var(--light); 
+    }
+}
+
+.error_msg {
+    color: red;
+    font-size: small;
+    font-weight: bold;
+    text-align: left;
+}
+
+.my-custom-class {
+    --background: var(--light);
+  }

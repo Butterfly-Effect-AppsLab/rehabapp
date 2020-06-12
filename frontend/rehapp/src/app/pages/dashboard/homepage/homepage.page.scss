@@ -20,12 +20,20 @@
             font-size: 44px;
             line-height: 60px;
         }
+    }
 
-        ion-progress-bar {
-            --background: #012C3D;
-            --progress-background: #8ABEC4;
-            height: 30px;
-            border-radius: 20px;
+    .login_btn {
+        position: absolute;
+        bottom: 5%;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    
+        ion-button {
+            --color: var(--dark);
+            --background: var(--light); 
         }
     }
 }
