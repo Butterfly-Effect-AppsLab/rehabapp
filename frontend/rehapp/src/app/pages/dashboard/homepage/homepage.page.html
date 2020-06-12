@@ -1,0 +1,16 @@
+<ion-content>
+<div *ngIf="user != undefined" class="main">
+  <div class="main_icon">
+    <img src="../../../assets/images/logo.svg" alt="fitcoregym">
+  </div>
+  <div class="main_div">
+    <h1>Vitajte <br/> {{user.username}}</h1>
+  </div>
+
+  <div *ngIf="loggedIn" class="login_btn">
+    <ion-button (click)="logout()" expand="block" fill="solid" shape="round" strong>
+      Odhlásiť sa
+    </ion-button>
+  </div>
+</div>
+</ion-content>
