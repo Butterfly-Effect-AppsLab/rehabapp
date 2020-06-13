@@ -1,3 +1,13 @@
+#header {
+    ion-toolbar {
+        --background: var(--app-background);
+
+        ion-button {
+            --color: var(--dark);
+        }
+    }
+}
+
 ion-content {
     --background: var(--app-background);
     --color: var(--app-font-color);
@@ -7,70 +17,69 @@ ion-content {
     width: 90%;
     margin: auto;
     text-align: center;
-}
 
-.heading {
-    text-align: center;
-
-    width: 90%;
-    margin: auto;
-    padding: 20% 0;
-
-    h1 {
-        font-size: 40px;
-        font-weight: bolder;
-    }
-}
-
-.item_div {
-    padding-bottom: 3%;
-
-    >ion-item {
-        --background: "transparent";
-        --color: var(--dark);
-        
-        >ion-icon {
-            height: 80%; 
-            color: var(--dark);
-        }
-
-        >ion-checkbox {
-            --background-checked: var(--light);
-            --border-color-checked: var(--dark);
-            --checkmark-color: var(--dark);
-            margin-right: 2%;
-        }
-        
-        .terms {
-            white-space: normal; 
-            text-align: center;
-        }
+    .logo {
+        position: fixed;
+        width: 50px;
+        top: 2%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        z-index: 90;
     }
 
-}
+    .form-inputs {
+        position: absolute;
+        top: 20%;
+        left: 7%;
+        right: 7%;
 
-.list {
-    &__item {
-        height: 100vh;
-        &--small {
-            color: var(--ion-color-primary);
+        .item_div {
+            padding-bottom: 3%;
+
+            .highlight-dark {
+                border-bottom: 2px solid var(--dark);
+            }
+            .highlight-red {
+                border-bottom: 2px solid var(--red);
+            }
+            .highlight-gray {
+                border-bottom: 2px solid var(--gray);
+            }
+
+            > ion-item {
+                --background: "transparent";
+                --color: var(--dark);
+
+                >ion-input {
+                    font-family: poppins;
+                }
+
+                > ion-checkbox {
+                    --background-checked: var(--light);
+                    --border-color-checked: var(--dark);
+                    --checkmark-color: var(--dark);
+                    margin-right: 2%;
+                }
+
+                .terms {
+                    white-space: normal;
+                    text-align: center;
+                }
+            }
         }
     }
-}
 
-.input_item {
-    border: 1px solid var(--dark);
-    font-size: 18px;
-}
+    .form-buttons {
+        position: absolute;
+        bottom: 2%;
+        left: 7%;
+        right: 7%;
 
-.login_btn {
-    padding-top: 2%;
-    padding-bottom: 5%;
-
-    ion-button {
-        --color: var(--dark);
-        --background: var(--light); 
+        .btn-div {
+            height: 2.5em;
+        }
     }
+
 }
 
 .error_msg {

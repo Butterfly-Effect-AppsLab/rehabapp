@@ -48,14 +48,8 @@
     bottom: 12%;
     transform: translate(-50%);
 
-    .begin-btn {
-        --background: var(--gray);
-        --color: var(--dark);
-        --box-shadow: none;
+    .bigBtn {
         height: 100%;
-        white-space: normal;
-        font-weight: bold;
-        font-size: large;
     }
 }
 

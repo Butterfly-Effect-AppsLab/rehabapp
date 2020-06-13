@@ -1,42 +1,77 @@
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Späť" icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-
   <div class="main">
-    <div class="heading">
-      <h1>Prihlásenie</h1>
+    <div class="logo">
+      <img class="inside_img" src="assets/images/logo.svg">
     </div>
 
-    <div class="item_div">
-      <ion-item class="input_item">
-        <ion-label position="floating">Email</ion-label>
-        <ion-input [(ngModel)]="usermail" autofocus="on"></ion-input>
-      </ion-item>
+    <div class="form-inputs">
+      <div class="item_div">
+        <ion-item class="input_item" lines="none" [ngClass]="emailHighlighter">
+          <ion-input 
+              [(ngModel)]="usermail" 
+              (ionFocus)="emailHighlighter = setHighlight('focus', 'email')" 
+              (ionBlur)="emailHighlighter = setHighlight('blur', 'email')" 
+              (ionChange)="checkValidation()"
+              autofocus="on" 
+              placeholder="Zadajte e-mail"
+              inputmode="email"
+              maxlength=40
+              required
+              ></ion-input>
+        </ion-item>
+      </div>
+  
+      <div class="item_div">
+        <ion-item class="input_item" lines="none" [ngClass]="passHighlighter">
+          <ion-button (click)="showPass = !showPass" class="eye" slot="end" fill="clear">
+            <ion-icon name="eye" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-input
+              [(ngModel)]="password" 
+              (ionFocus)="passHighlighter = setHighlight('focus', 'pass')" 
+              (ionBlur)="passHighlighter = setHighlight('blur', 'pass')"
+              (ionChange)="checkValidation()"
+              [type]="showPass ? 'text' : 'password'" 
+              placeholder="Zadajte heslo"
+              maxlength=40
+              required
+              ></ion-input>
+        </ion-item>
+      </div>
+      
+      <!-- <div class="item_div">
+        <ion-item>
+          <ion-checkbox (ionChange)="rememberLogin = !remeberLogin"></ion-checkbox>
+          <ion-label class="terms">
+            Zapamätať prihlásenie
+          </ion-label>
+        </ion-item>
+      </div> -->
     </div>
 
-    <div class="item_div">
-      <ion-item class="input_item">
-        <ion-label position="floating">Heslo</ion-label>
-        <ion-button (click)="showPass = !showPass" slot="end" fill="clear">
-          <ion-icon name="eye" slot="icon-only"></ion-icon>
+    <div class="form-buttons">
+      <div class="btn-div">
+        <ion-button (click)="login()" expand="block" [fill]="valid ? 'solid' : 'outline'" shape="round" class="app-big-btn" [ngClass]="valid ? 'app-button-dark' : 'app-button-light'">
+          Prihlásiť sa
         </ion-button>
-        <ion-input [(ngModel)]="password" [type]="showPass ? 'text' : 'password'"></ion-input>
-      </ion-item>
+      </div>
+      <div class="btn-div">
+        <ion-button [routerLink]="['/registration']" expand="block" fill="solid" shape="round" class="app-button-gray app-big-btn">
+          Registrovať sa
+        </ion-button>
+      </div>
+      <hr>
+      <b>Zabudnuté heslo</b>
     </div>
 
-    <div class="item_div">
-      <ion-item>
-        <ion-checkbox (ionChange)="rememberLogin = !remeberLogin"></ion-checkbox>
-        <ion-label class="terms">
-          Zapamätať prihlásenie
-        </ion-label>
-      </ion-item>
-    </div>
-
-    <div class="login_btn">
-      <ion-button (click)="login()" expand="block" fill="solid" shape="round" strong>
-        Prihlásiť sa
-      </ion-button>
-    </div>
-
-    <p>Nemáte ešte účet? <u [routerLink]="['/registration']">ZAREGISTRUJTE SA!</u></p>
   </div>
 </ion-content>
