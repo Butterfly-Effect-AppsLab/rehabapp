@@ -4,95 +4,99 @@
       <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
       Späť
     </ion-button>
+    <ion-button (click)="redirect()" slot="end" fill="clear">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<div #cont id="content">
-  <div #main id="main">
-    <h1>{{diagnose.name | uppercase}}</h1>
-    <p>{{diagnose.text}}</p>
+<div id="content">
+  <div id="main">
+    <h1 [style.fontSize.%]="h1Size">{{diagnose.name | uppercase}}</h1>
 
-    <p>
-      Bližšie informácie o Vašej diagnóze, jej príznakoch a spôsobe liečby budú doplnené v neskorších verziách tejto aplikácie.
-    
-    <br><br>
-    
-    <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-  </p>
+    <div id="options">
+      <div #fader_top class="fade-effect fade-top"></div>
+      <div #fader_bot class="fade-effect fade-bot"></div>
+      <div (scroll)="removeFader($event)" class="scrollable">
+        <ion-item button (click)="setArea('def')" class="item-text" lines="none"
+        [ngClass]="area == 'def' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Definícia
+          </ion-label>
+          <ion-icon *ngIf="area != 'def'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'def'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'def'">
+          {{diagnose.definition}}
+        </p>
 
-    <img src="assets/images/loading.gif" />
+        <ion-item button (click)="setArea('symptom')" class="item-text" lines="none"
+        [ngClass]="area == 'symptom' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Príznaky
+          </ion-label>
+          <ion-icon *ngIf="area != 'symptom'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'symptom'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'symptom'">
+          {{diagnose.symptoms}}
+        </p>
 
+        <ion-item button (click)="setArea('cause')" class="item-text" lines="none"
+        [ngClass]="area == 'cause' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Príčiny
+          </ion-label>
+          <ion-icon *ngIf="area != 'cause'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'cause'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'cause'">
+          {{diagnose.cause}}
+        </p>
+
+        <ion-item button (click)="setArea('diagnostic')" class="item-text" lines="none"
+        [ngClass]="area == 'diagnostic' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Diagnostika
+          </ion-label>
+          <ion-icon *ngIf="area != 'diagnostic'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'diagnostic'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'diagnostic'">
+          {{diagnose.diagnostic}}
+        </p>
+
+        <ion-item button (click)="setArea('cure')" class="item-text" lines="none"
+          [ngClass]="area == 'cure' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Liečba
+          </ion-label>
+          <ion-icon *ngIf="area != 'cure'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'cure'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'cure'">
+          {{diagnose.cure}}
+        </p>
+
+        <ion-item button (click)="setArea('prevention')" class="item-text" lines="none"
+        [ngClass]="area == 'prevention' ? 'border-red' : 'border-blue'">
+          <ion-label>
+            Prevencia
+          </ion-label>
+          <ion-icon *ngIf="area != 'prevention'" name="chevron-down-outline" slot="end"></ion-icon>
+          <ion-icon *ngIf="area == 'prevention'" name="chevron-up-outline" slot="end"></ion-icon>
+        </ion-item>
+        <p *ngIf="area == 'prevention'">
+          {{diagnose.prevention}}
+        </p>
+      </div>
+    </div>
 
     <div class="bottom">
-      <ion-button (click)="redirect()" expand="block" fill="solid" shape="round" class="app-button-dark">
-        Návrat na výber bolestivej oblasti
+      <ion-button (click)="continue()" expand="block" fill="solid" shape="round" class="app-button-dark" size="large">
+        Pokračovať
       </ion-button>
     </div>
 
-    <!-- <div class="right">
-      <ion-button (click)="setArea('def')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Definícia</b>
-      </ion-button>
-      <div *ngIf="this.area == 'def'" class="notyet">
-        <b>Bližšie informácie o Vašej diagnóze budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div>
-    
-    <div class="right">
-      <ion-button (click)="setArea('sympt')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Príznaky</b>
-      </ion-button>
-      <div *ngIf="this.area == 'sympt'" class="notyet">
-        <b>Bližšie informácie o symptómoch, ktoré sprevádzajú Vašu diagnózu budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div>
-
-    <div class="right">
-      <ion-button (click)="setArea('cause')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Príčiny</b>
-      </ion-button>
-      <div *ngIf="this.area == 'cause'" class="notyet">
-        <b>Bližšie informácie o príčinách, ktoré spôsobujú Vašu diagnózu budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div>
-
-    <div class="right">
-      <ion-button (click)="setArea('diag')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Diagnostika</b>
-      </ion-button>
-      <div *ngIf="this.area == 'diag'" class="notyet">
-        <b>Bližšie informácie o možnej diagnostike Vašej diagnózy budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div>
-
-    <div class="right">
-      <ion-button (click)="setArea('cure')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Liečba</b>
-      </ion-button>
-      <div *ngIf="this.area == 'cure'" class="notyet">
-        <b>Bližšie informácie o spôsobe liečenia Vašej diagnózy budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div>
-
-    <div class="right">
-      <ion-button (click)="setArea('prevent')" class="area-btn"  fill="solid" shape="round">
-        <b class="btn-text">Prevencia</b>
-      </ion-button>
-      <div *ngIf="this.area == 'prevent'" class="notyet">
-        <b>Bližšie informácie o prevencii voči Vašej diagnóze budú doplnené v neskorších verziách tejto aplikácie.</b>
-        <br><br>
-        <b>Ďakujeme Vám, že sa podieľate na jej testovaní.</b>
-      </div>
-    </div> -->
   </div>
 </div>

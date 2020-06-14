@@ -2,7 +2,10 @@
     ion-toolbar {
         --background: transparent;
         ion-button {
-            --color: var(--dark)
+            --color: var(--dark);
+        }
+        ion-icon {
+            font-size: 28px;
         }
     }
 }
@@ -20,40 +23,65 @@
         width: 90%;
         margin: auto;
 
-        p{
-            font-size: 1em !important;
-        }
-
         h1 {
             margin-top: 5%;
-            margin-bottom: 10%;
+            margin-bottom: 5%;
             font-weight: bold;
         }
 
-        .right {
-            // text-align: right;
-            text-align: left;
-        }
+        #options {
+            position: relative;
+            height: 70%;
 
-        .area-btn {
-            margin-left: -10%;
-            --background: var(--blue);
-            --color: var(--dark);
-
-            .btn-text {
-                padding-left: 10px;
+            .scrollable {
+                height: 100%;
+                overflow: scroll;
             }
-        }
 
-        .notyet {
-            padding-left: 5%;
-            text-align: left;
-        }
+            .fade-effect {
+                position: absolute;
+                height: 3em;
+                width: 100%;
+                background: var(--blue);
+                z-index: 100;
 
-        img {
-            width: 60%;
-            margin: auto;
-            display: block;
+                pointer-events: none;
+            }
+
+            .fade-top {
+                top: 0;
+                display: none;
+                background: linear-gradient(0deg, rgba(246, 241, 238, 0) 0%, rgba(246, 241, 238, 1) 100%);
+            }
+
+            .fade-bot {
+                bottom: 0;
+                background: linear-gradient(0deg, rgba(246, 241, 238, 1) 0%, rgba(246, 241, 238, 0) 100%);
+            }
+
+            .item-text {
+                --background: var(--light);
+                --color: var(--dark);
+                font-weight: bold;
+                
+
+                ion-icon {
+                    color: var(--dark);
+                    font-size: 1.5em;
+                }
+            }
+
+            .border-blue {
+                border-bottom: 2px solid var(--blue);
+            }
+
+            .border-red {
+                border-bottom: 2px solid var(--red);
+            }
+
+            p {
+                padding-left: 5%;
+            }
         }
 
         .bottom {
