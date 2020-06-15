@@ -1,10 +1,5 @@
-import falcon
-
-from config_dev import GOOGLE_CLIENT_ID
 from middlewares import SessionMiddleware, CORSMiddleware, AuthMiddleware
 from resources import *
-from oauthlib.oauth2 import WebApplicationClient
-import requests
 
 
 def init_api():
@@ -29,9 +24,9 @@ def init_api():
     api_tmp.add_route('/registration', RegistrationResource())
     api_tmp.add_route('/login', LoginResource())
     api_tmp.add_route('/login/oauth/google', OauthGoogleResource())
-    api_tmp.add_route('/login/oauth/fb', OauthFbResource())
+    # api_tmp.add_route('/login/oauth/fb', OauthFbResource())
     api_tmp.add_route('/login/oauth/google/callback', OauthGoogleCallbackResource())
-    api_tmp.add_route('/login/oauth/fb/callback', OauthFbCallbackResource())
+    # api_tmp.add_route('/login/oauth/fb/callback', OauthFbCallbackResource())
     api_tmp.add_route('/forgotPassword', ForgotPasswordResource())
     api_tmp.add_route('/resetPassword', ResetPasswordResource())
     api_tmp.add_route('/refresh', RefreshTokenResource())

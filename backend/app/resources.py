@@ -8,7 +8,7 @@ from marshmallow import ValidationError
 from oauthlib.oauth2 import WebApplicationClient
 
 from config import KEY
-from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, FB_APP_ID, FB_APP_SECRET
+from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 from models import *
 from oauth import get_google_provider_cfg
 from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema
@@ -16,6 +16,7 @@ from send_email import send_email
 import hashlib
 import json
 import os
+
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
@@ -187,18 +188,8 @@ class OauthGoogleResource:
         }
 
 
-class OauthFbResource:
-    def on_get(self, req, res):
-        res.media = f"https://www.facebook.com/v7.0/dialog/oauth?" \
-                    f"client_id={FB_APP_ID}" \
-                    f"&redirect_uri=http://localhost:8000/login/oauth/fb/callback" \
-                    f"&response_type=code"\
-                    f"&scope=email"
-
-
 class OauthGoogleCallbackResource:
     def on_get(self, req, res):
-
         base_url = f"{req.prefix}{req.path}"
 
         code = req.params['code']
@@ -220,64 +211,89 @@ class OauthGoogleCallbackResource:
         )
 
         # Parse the tokens!
-        client.parse_request_body_response(json.dumps(token_response.json()))
+        tokens = client.parse_request_body_response(json.dumps(token_response.json()))
 
-        res.media = {
-            'req': req.params,
-            'res':json.dumps(token_response.json())
-        }
+        # userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
+        # uri, headers, body = client.add_token(userinfo_endpoint)
+        # userinfo_response = requests.get(uri, headers=headers, data=body)
+
+        refresh_response = requests.post(
+            'https://oauth2.googleapis.com/token',
+            data={
+                'client_id': GOOGLE_CLIENT_ID,
+                'client_secret': GOOGLE_CLIENT_SECRET,
+                'refresh_token': tokens['refresh_token'],
+                'grant_type': 'refresh_token'
+            }
+        )
+
+        # tokens = client.parse_request_body_response(json.dumps(token_response.json()))
 
         userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
         uri, headers, body = client.add_token(userinfo_endpoint)
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
-        # res.media = json.dumps(userinfo_response.json())
+        res.media = {
+            'req': req.params,
+            'res': json.dumps(token_response.json()),
+            'user': json.dumps(userinfo_response.json()),
+            'refresh': json.dumps(refresh_response.json())
+        }
 
 
-class OauthFbCallbackResource:
-    def on_get(self, req, res):
-
-        ret = {}
-
-        code = req.get_param('code')
-
-        token_response = requests.get(
-            f'https://graph.facebook.com/v7.0/oauth/access_token?'
-            f'client_id={FB_APP_ID}'
-            f'&redirect_uri=http://localhost:8000/login/oauth/fb/callback'
-            f'&client_secret={FB_APP_SECRET}'
-            f'&code={code}'
-        )
-
-        ret['token_response'] = token_response.json()
-
-        access_token = requests.get(f"https://graph.facebook.com/oauth/access_token"
-                                    f"?client_id={FB_APP_ID}"
-                                    f"&client_secret={FB_APP_SECRET}"
-                                    f"&grant_type=client_credentials")
-
-        ret['access_token'] = access_token.json()
-
-        resp = requests.get(
-            f"https://graph.facebook.com/debug_token?"
-            f"input_token={token_response.json()['access_token']}"
-            f"&access_token={access_token.json()['access_token']}"
-        )
-
-        ret['resp'] = resp.json()
-
-        user = requests.get(
-            f"https://graph.facebook.com/{resp.json()['data']['user_id']}?"
-            f"fields=email,name"
-            f"&access_token={token_response.json()['access_token']}"
-        )
-
-        # print("**************************************************",resp.json())
-
-        # res.media = json.dumps(token_response.json()['access_token'])
-        ret['user'] = user.json()
-
-        res.media = ret
+# class OauthFbResource:
+#     def on_get(self, req, res):
+#         res.media = f"https://www.facebook.com/v7.0/dialog/oauth?" \
+#                     f"client_id={FB_APP_ID}" \
+#                     f"&redirect_uri=http://localhost:8000/login/oauth/fb/callback" \
+#                     f"&response_type=code"\
+#                     f"&scope=email"
+#
+#
+# class OauthFbCallbackResource:
+#     def on_get(self, req, res):
+#
+#         ret = {}
+#
+#         code = req.get_param('code')
+#
+#         token_response = requests.get(
+#             f'https://graph.facebook.com/v7.0/oauth/access_token?'
+#             f'client_id={FB_APP_ID}'
+#             f'&redirect_uri=http://localhost:8000/login/oauth/fb/callback'
+#             f'&client_secret={FB_APP_SECRET}'
+#             f'&code={code}'
+#         )
+#
+#         ret['token_response'] = token_response.json()
+#
+#         access_token = requests.get(f"https://graph.facebook.com/oauth/access_token"
+#                                     f"?client_id={FB_APP_ID}"
+#                                     f"&client_secret={FB_APP_SECRET}"
+#                                     f"&grant_type=client_credentials")
+#
+#         ret['access_token'] = access_token.json()
+#
+#         resp = requests.get(
+#             f"https://graph.facebook.com/debug_token?"
+#             f"input_token={token_response.json()['access_token']}"
+#             f"&access_token={access_token.json()['access_token']}"
+#         )
+#
+#         ret['resp'] = resp.json()
+#
+#         user = requests.get(
+#             f"https://graph.facebook.com/{resp.json()['data']['user_id']}?"
+#             f"fields=email,name"
+#             f"&access_token={token_response.json()['access_token']}"
+#         )
+#
+#         # print("**************************************************",resp.json())
+#
+#         # res.media = json.dumps(token_response.json()['access_token'])
+#         ret['user'] = user.json()
+#
+#         res.media = ret
 
 
 class RefreshTokenResource:
