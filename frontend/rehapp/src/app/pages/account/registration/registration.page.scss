@@ -39,18 +39,21 @@ ion-content {
             .highlight-dark {
                 border-bottom: 2px solid var(--dark);
             }
+            .highlight-gray {
+                border-bottom: 2px solid var(--gray);
+            }
             .highlight-red {
                 border-bottom: 2px solid var(--red);
             }
-            .highlight-gray {
-                border-bottom: 2px solid var(--gray);
+            .highlight-blue {
+                border-bottom: 2px solid var(--blue);
             }
 
             > ion-item {
                 --background: "transparent";
                 --color: var(--dark);
 
-                >ion-input {
+                > ion-input {
                     font-family: poppins;
                 }
 
@@ -79,12 +82,11 @@ ion-content {
             height: 2.5em;
         }
     }
-
 }
 
 .error_msg {
-    color: red;
+    color: var(--dark);
     font-size: small;
-    font-weight: bold;
     text-align: left;
+    padding-left: 15px;
 }

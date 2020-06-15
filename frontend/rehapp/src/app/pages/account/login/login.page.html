@@ -21,11 +21,11 @@
               (ionFocus)="emailHighlighter = setHighlight('focus', 'email')" 
               (ionBlur)="emailHighlighter = setHighlight('blur', 'email')" 
               (ionChange)="checkValidation()"
-              autofocus="on" 
               placeholder="Zadajte e-mail"
               inputmode="email"
               maxlength=40
-              required
+              autofocus="true"
+              required="true"
               ></ion-input>
         </ion-item>
       </div>
@@ -43,7 +43,7 @@
               [type]="showPass ? 'text' : 'password'" 
               placeholder="Zadajte heslo"
               maxlength=40
-              required
+              required="true"
               ></ion-input>
         </ion-item>
       </div>

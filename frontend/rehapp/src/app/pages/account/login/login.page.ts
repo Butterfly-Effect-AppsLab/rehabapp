@@ -61,7 +61,7 @@ export class LoginPage implements OnInit {
 
   setHighlight(event: string, tagret: string): string {
     if (event == "focus") 
-      return "highlight-red";
+      return "highlight-blue";
     else if (event == "blur") {
       if (tagret == "email") {
         if (this.usermail.length > 0) 

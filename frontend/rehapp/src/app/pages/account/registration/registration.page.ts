@@ -17,7 +17,7 @@ export class RegistrationPage implements OnInit {
       '', 
       [ 
         Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
       ]
     ], 
     password: [
@@ -30,7 +30,7 @@ export class RegistrationPage implements OnInit {
     reppassword: [
       '',
     ],
-    termsOfUse: [false, Validators.requiredTrue],
+    // termsOfUse: [false, Validators.requiredTrue],
   }, {validator: this.checkPasswords})
 
   emailHighlighter: string = "highlight-gray";
@@ -42,32 +42,13 @@ export class RegistrationPage implements OnInit {
   ngOnInit() {
   }
 
-  async presentAlert(errorMessage: string) {
-    const alert = await this.alertController.create({
-      cssClass: 'app-alert',
-      header: 'Chyba ...',
-      message: "..." + errorMessage,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
   createUser() {
     if (!this.regForm.valid) {
-      if (!this.regForm.get('email').valid) 
-        this.presentAlert("Email nespĺňa požadovaný formát.")        
-      else if (!this.regForm.get('password').valid) 
-        this.presentAlert("Heslo musí byť dlhé aspoň 8 znakov a musí obsahovať aspoň 1 malé a veľké písmeno a číslo.")
-      else if (!this.regForm.get('termsOfUse').valid)
-        this.presentAlert("Je potrebné vyjadriť Váš súhlas s podmienkami používania.")
-      else 
-        this.presentAlert("Zadané heslá sa nezhodujú.")
       return;
     }
 
-    let email: string = this.regForm.get('email').value;
-    let password: string = this.regForm.get('password').value;
+    let email: string = this.email.value;
+    let password: string = this.password.value;
     
     this.accountService.registratingUser = new User("", email, password);
     
@@ -76,17 +57,11 @@ export class RegistrationPage implements OnInit {
     this.router.navigateByUrl('registration/demography'); 
   }
 
-  setHighlight(event: string): string {
-    if (event == "focus") 
-      return "highlight-red";
-    else if (event == "blur") 
-          return "highlight-dark";
-    else {
-      return "";
-    }
-  }
-
   checkPasswords(control: FormGroup) {
     return control.get('password').value === control.get('reppassword').value ? null : {'confirmation' : true}    
   }
+
+  get email() { return this.regForm.get('email'); }
+  get password() { return this.regForm.get('password'); }
+  get repPass() { return this.regForm.get('reppassword'); }
 }
