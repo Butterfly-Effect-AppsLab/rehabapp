@@ -37,7 +37,13 @@ class Diagnose(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
-    text = Column(Text)
+    svk = Column(String)
+    definition = Column(Text, nullable=True)
+    symptoms = Column(Text, nullable=True)
+    cause = Column(Text, nullable=True)
+    diagnostic = Column(Text, nullable=True)
+    cure = Column(Text, nullable=True)
+    prevention = Column(Text, nullable=True)
 
     options = relationship(
         'Option',

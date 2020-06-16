@@ -17,67 +17,67 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Tendinitída",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šľachy"
     },
     {
         "id": "d2",
         "name": "Tendosinovitída - Poškodenie šliach a ich obalov",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šlachy aj s jej obalom"
     },
     {
         "id": "d3",
         "name": "Gangliová cysta",
-        "text": ""
+        "svk": "Dutina v šľache vyplnená tekutinou alebo zhrubnutá šlacha vytvárajúca drobný guľovitý útvar"
     },
     {
         "id": "d4",
         "name": "Útlak nervu n. radialis - Syndŕom radiálneho tunela",
-        "text": ""
+        "svk": "útlak vretenného nervu v oblasti paže, vonkajšieho lakťa alebo zvrchu zápästia"
     },
     {
         "id": "d5",
         "name": "Reumatoidná artritída",
-        "text": ""
+        "svk": "Reuma - zápalové ochorenie kĺbov spôsobené nerovnováhou vlastného imunitného systému"
     },
     {
         "id": "d6",
         "name": "Dna",
-        "text": ""
+        "svk": "arthritis uratica – ukladanie kyseliny močovej do kĺbov pri jej nadbytku"
     },
     {
         "id": "d7",
         "name": "De Quervainova choroba",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šliach svalov palca"
     },
     {
         "id": "d8",
         "name": "Poľovnícky palec - Poškodenie vnútornej kolaterálnej šľachy palca",
-        "text": ""
+        "svk": "poškodenie šlachy v oblasti vnútornej strany posledného článku prsta, na palci"
     },
     {
         "id": "d9",
         "name": "Artróza palca",
-        "text": ""
+        "svk": "Poškodenie a opotrebenie kĺbu palca"
     },
     {
         "id": "d10",
         "name": "Útlak lunárneho nervu v oblasti zápästia",
-        "text": ""
+        "svk": "útlak nervu v oblasti vnútornej strany lakťa alebo v oblasti malíčkovej hrany zápästia"
     },
     {
         "id": "d11",
         "name": "Pronátorový syndróm",
-        "text": ""
+        "svk": "útlak mediánneho nervu (Nervus medianus) v oblasti vnútornej strany predlaktia"
     },
     {
         "id": "d12",
         "name": "Syndróm karpálneho tunela",
-        "text": ""
+        "svk": "útlak mediánneho nervu (nervus medianus) v oblasti z vnútornej strany zápästia"
     },
     {
         "id": "d13",
         "name": "Preťaženie/poškodenie šliach ohýbačov prstov (Tendosynovitída/tendinitída)",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šliach svalov v oblasti dlane a dlaňovej strany prstov"
     }
 ]
 

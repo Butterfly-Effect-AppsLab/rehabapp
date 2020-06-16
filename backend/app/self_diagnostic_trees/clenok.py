@@ -24,93 +24,92 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Reumatoiná Artritída",
-        "text": ""
+        "svk": "Reuma - zápalové ochorenie kĺbov spôsobené nerovnováhou vlastného imunitného systému"
     },
-    # SH: mozno sa bude menit nazov
     {
         "id": "d2",
         "name": "Myofasciálny syndróm m. peroneus",
-        "text": ""
+        "svk": "bolesť svalového pôvodu pri poškodení/preťažení svalu nacvhádzajúceho sa zvonku predkolenia"
     },
     {
         "id": "d3",
         "name": "Kompartment syndróm (chronický aj v miernej forme)",
-        "text": ""
+        "svk": "opuch svalstva predkolenia, môže byť aj dlhodobý, spôsobujúci bolesť v oblasti predkolenia alebo členku"
     },
     {
         "id": "d4",
         "name": "Stresová fraktúra kosti nártu",
-        "text": ""
+        "svk": "zlomenina kostí nártu v dôsledku chronického púreťažovania"
     },
     {
         "id": "d5",
         "name": "Syndróm tibiálnej hrany (Shin splits)",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d6",
         "name": "Laterálny impingement členku",
-        "text": ""
+        "svk": "útlak šliach (úponov svalov) v oblasti vonkajšieho členku"
     },
     {
         "id": "d7",
         "name": "Subluxáca šľachy peroneálneho svalu",
-        "text": ""
+        "svk": "zmena polohy šľachy (úponu) svalu v oblasti vonkajšieho členku"
     },
     {
         "id": "d8",
         "name": "Vyvrtnutý/podvrtnutý členok",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d9",
         "name": "Artróza",
-        "text": ""
+        "svk": "ochorenie kĺbu vznikajúce v dôsledku opotrebenia či nesprávneho zaťažovania kĺbu"
     },
     {
         "id": "d10",
         "name": "Vyvrtnutý/podvrtnutý členok",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d11",
         "name": "Mediálny impingement členku",
-        "text": ""
+        "svk": "útlak šliach (úponov) svalov v pohladiť vnútorného členku"
     },
     {
         "id": "d12",
         "name": "Syndróm tarzálneho tunela",
-        "text": ""
+        "svk": "útlak holenného nervu v oblasti vnútorného členku"
     },
     {
         "id": "d13",
         "name": "Tendinitída tiabiálneho svalu (m. tibialis ant.)",
-        "text": ""
+        "svk": "zápal alebo stav po zápale úponu holenného svalu"
     },
     {
         "id": "d14",
         "name": "Plantárna fascitída",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šľachy na chodidle"
     },
     {
         "id": "d15",
         "name": "Tentinitída Achillovej šlachy",
-        "text": ""
+        "svk": "zápal alebo stav po zápale úponu lýtkového svalu"
     },
     {
         "id": "d16",
         "name": "Retrocalcaneárna bursitída",
-        "text": ""
+        "svk": "zápal vačku mažúceho členkový kĺb, v oblasti zozadu členku"
     },
     {
         "id": "d17",
         "name": "Ostroh (Calcar calcanei)",
-        "text": ""
+        "svk": "výstarok na pätovej kosti"
     },
     {
         "id": "d18",
         "name": "Tendinitída lýtkového svalu",
-        "text": ""
+        "svk": ""
     }
 ]
 

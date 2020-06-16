@@ -17,22 +17,22 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Blok stavcov hrudnej chrbtice (Interkostálna neuralgia)",
-        "text": ""
+        "svk": "bolesť medzi rebrami"
     },
     {
         "id": "d2",
         "name": "Myofasciálny syndróm v oblasti lopatkového svalstva a svalstva hrudnej chrbtice",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d3",
         "name": "Možné ochorenie srdcového svalu",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d4",
         "name": "Tendinopatia prsného svalu",
-        "text": ""
+        "svk": "Zápal alebo stav po zápale šľachy prsného svalu, po jej poškodení alebo opakovanom (chronickom) preťažovaní"
     }
 ]
 questions = [

@@ -21,7 +21,14 @@ class UserSchema(Schema):
 
 class DiagnoseSchema(Schema):
     name = fields.Str()
-    text = fields.Str(default='')
+    svk = fields.Str(default='')
+    definition = fields.Str(default=None)
+    symptoms = fields.Str(default=None)
+    cause = fields.Str(default=None)
+    diagnostic = fields.Str(default=None)
+    cure = fields.Str(default=None)
+    prevention = fields.Str(default=None)
+
     type = fields.String(default='diagnose', dump_only=True)
 
     @post_load
