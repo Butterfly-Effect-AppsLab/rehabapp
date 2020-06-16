@@ -18,11 +18,14 @@ export class DemographyPage implements OnInit {
   private gender: string = ""
   private birth: Date;
   private nameHighlighter: string = "highlight-gray";
+  private actualDate: string = "";
 
 
   constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
 
   ngOnInit() {
+    let date = new Date();
+    this.actualDate = `${date.getDate()} ${this.months[date.getMonth()]} ${date.getFullYear()} `;
   }
 
   async presentAlert(error: object) {

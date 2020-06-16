@@ -74,9 +74,14 @@
 
     .date-picker {
         margin-top: 10%;
-        --background: transparent;
+        border-radius: 3em;
+        font-size: 1.2em;
+        --background: var(--gray);
         --color: var(--dark);
 
+        .icon {
+            color: var(--dark);
+        }
     }
     
     .buttonDiv {
@@ -88,5 +93,12 @@
 
 ::ng-deep .picker-wrapper {
     background: var(--gray) !important;
-    color: var(--dark);
+    color: #67808B;
+
+    .picker-opt-selected {
+        color: var(--dark);
+    }
+    .picker-button {
+        color: var(--dark);
+    }
 }

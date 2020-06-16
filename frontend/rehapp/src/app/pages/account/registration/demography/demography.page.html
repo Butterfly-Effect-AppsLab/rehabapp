@@ -57,11 +57,11 @@
     <div class="text_div left">
       <h5>...a dátum narodenia</h5>
     </div>
-    <ion-item class="date-picker">
-      <ion-label>Vyberte dátum</ion-label>
+    <ion-item class="date-picker" lines="none">
+      <ion-icon name="caret-down-outline" slot="end" class="icon"></ion-icon>
       <ion-datetime 
         displayFormat="DD MMMM YYYY" 
-        placeholder="Vyberte dátum" 
+        [placeholder]="actualDate" 
         cancelText='Zrušiť'
         doneText='Potvrdiť'
         [monthNames]="months"

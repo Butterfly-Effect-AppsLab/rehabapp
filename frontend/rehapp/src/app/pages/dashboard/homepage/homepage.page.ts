@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Plugins } from '@capacitor/core'
+import { Plugins } from '@capacitor/core';
 import { StateService } from 'src/app/services/state-service.service';
 import { User } from 'src/app/services/models/User';
 import { AccountService } from 'src/app/services/account-service.service';
@@ -19,7 +19,15 @@ export class HomepagePage implements OnInit {
   loggedIn: boolean = false;
 
   constructor(private accountService: AccountService, private router: Router) {
+  }
+
+  ngOnInit() {
+  }
+  
+  ionViewWillEnter() {
     this.loggedIn = true;
+    console.log(this.accountService.userLoggedIn);
+    
     this.getUser().then((item) => {
       if (item == null) {
         if(this.accountService.userLoggedIn != undefined) {
@@ -28,7 +36,10 @@ export class HomepagePage implements OnInit {
           this.setItem("access_token", this.accountService.accessToken);
           this.setItem("refresh_token", this.accountService.refreshToken);
         }
-        else this.logout();
+        else {
+          alert("Neprihlaseny pouzivatel")
+          this.logout();
+        }
       }
       else {
         this.user = new User(item['name'], item['email'], null);
@@ -36,15 +47,13 @@ export class HomepagePage implements OnInit {
     })
   }
 
-  ngOnInit() {
-  }
-  
   logout() {
     this.removeItem("user");
     this.removeItem("access_token");
     this.removeItem("refresh_token");
-    this.user = new User("User#"+Math.floor(Math.random() * Math.floor(8192)));
     this.loggedIn = false;
+    this.accountService.userLoggedIn = undefined;
+    this.router.navigateByUrl('/')
   }
 
   login() {

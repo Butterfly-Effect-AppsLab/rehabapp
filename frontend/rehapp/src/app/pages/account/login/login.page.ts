@@ -4,6 +4,10 @@ import { User } from 'src/app/services/models/User';
 import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account-service.service';
+import { Plugins } from '@capacitor/core';
+
+const { Storage } = Plugins;
+
 
 @Component({
   selector: 'app-login',
@@ -18,11 +22,20 @@ export class LoginPage implements OnInit {
   passHighlighter: string = "highlight-gray";
   valid: boolean;
 
-
-  constructor(private APIservice: APIService, private accountService: AccountService, private router: Router, private alertController: AlertController) { }
+  constructor(private APIservice: APIService, private accountService: AccountService, 
+    private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
     this.checkValidation();
+  }
+
+  ionViewWillEnter() {
+    this.getUser().then(
+      (user) => {
+        if (user != null)
+          this.router.navigateByUrl('/home');
+      }
+    )
   }
 
   async presentAlert() {
@@ -84,5 +97,10 @@ export class LoginPage implements OnInit {
       this.valid = true;
     else
       this.valid = false;
+  }
+
+  async getUser() {
+    const ret = await Storage.get({ key: 'user' });
+    return JSON.parse(ret.value);
   }
 }
