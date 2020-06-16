@@ -21,82 +21,83 @@ areas = [
 ]
 
 diagnoses = [
-    # SH: mozno sa bude menit nazov
     {
         "id": "d1",
         "name": "Meralgia paresthetica",
-        "text": ""
+        "svk": "tŕpnutie a bolesť v oblasti bedra a vonkajšieho stehna, spôsobená útlakom nervu pri jeho prechode cez svalovým kanálik"
     },
     {
         "id": "d2",
         "name": "Burzitída bedrového kĺbu",
-        "text": ""
+        "svk": "zápal vášmu mažúceho bedrový kĺb"
     },
     {
         "id": "d3",
         "name": "Syndróm m. prirformis",
-        "text": ""
+        "svk": "preťaženie, poškodenie alebo reflexné stuhnutie hruškového svalu v oblasti bedra"
     },
     {
         "id": "d4",
         "name": "Poškodenie medzistavcovej platničky L4/L5",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d5",
         "name": "Poškodenie/preťaženie iliotibiálneho traktu",
-        "text": ""
+        "svk": "bolesť v oblasti vonkajšieho stehna spôsobená preťažením sľiach svalov vonkajšej (bočnej) skupiny "
+               "svalov stehna "
     },
     {
         "id": "d6",
         "name": "Blok alebo zápal sakroiliakálneho skĺbenia",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d7",
         "name": "Syndróm m. pirifomis a súčasne s vysokoo pravdepodobnosťou aj dolný skrížený syndróm",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d8",
         "name": "Hernia medzistavcovej platničky L5/S1",
-        "text": ""
+        "svk": "poškodenie medzistavcovej platnicky, kedy sa gélových obsah platničky dostáva mimo okraj platničky a "
+               "môže tlačiť na nerv "
     },
     {
         "id": "d9",
         "name": "Koxartróza až avaskulárna nekróza bedra",
-        "text": ""
+        "svk": "ochorenie bedrového kĺbu vznikajúce v dôsledku opotrebenia či nesprávneho zaťažovania bedrového kĺbu, "
+               "avaskulôárna nekróza – úplná deštrukcia hlavice stehennej kosti "
     },
     {
         "id": "d10",
         "name": "Útlak nervu v oblasti panvy (ilioingvinálneho či obturátorového)",
-        "text": ""
+        "svk": "útlak nervu pri jeho prechode svalom v oblasti panvy"
     },
-    # SH: mozno sa bude menit nazov
     {
         "id": "d11",
         "name": "Tendinitída alebo poškodenie (natiahnutie) m. iliopsoas",
-        "text": ""
+        "svk": "bolesť v oblasti driekovej chrbtice a slabiny pripadne aj prednej strany stehna, svalového pôvodu"
     },
     {
         "id": "d12",
         "name": "Lumboichialgický syndróm pri dráždení koreňa L4",
-        "text": ""
+        "svk": "Bolesť v oblasti driekovej chrbtice s vyžarovaním na stehno po prednej strane stehna"
     },
     {
         "id": "d13",
         "name": "Poškodenie kĺbovej jamky bedra",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d14",
         "name": "Dolný skrížený syndróm",
-        "text": ""
+        "svk": "svalová nerovnováha svalov brucha chrbta a bedra"
     },
     {
         "id": "d15",
         "name": "Lumboichialgický syndróm pri dráždení koreňa L4",
-        "text": ""
+        "svk": "Bolesť v oblasti driekovej chrbtice s vyžarovaním na stehno po prednej strane stehna"
     }
 ]
 

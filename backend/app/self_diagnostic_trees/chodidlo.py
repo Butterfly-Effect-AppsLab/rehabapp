@@ -24,43 +24,42 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Plantárna fasciitída",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šľachy na chodidle"
     },
     {
         "id": "d2",
         "name": "Syndróm tarzálneho tunela",
-        "text": ""
+        "svk": "útlak holenného nervu v oblasti vnútorného členku"
     },
     {
         "id": "d3",
         "name": "Reumatoidná artritída",
-        "text": ""
+        "svk": "Reuma - zápalové ochorenie kĺbov spôsobené nerovnováhou vlastného imunitného systému"
     },
     {
         "id": "d4",
         "name": "Mortonov neuróm",
-        "text": ""
+        "svk": "tekutinová kolekcia alebo zhrubnuté tkanivo obvykle v oblasti medzi 3. a 4. Prstom nohy"
     },
     {
         "id": "d5",
         "name": "Dna",
-        "text": ""
+        "svk": "arthritis uratica – ukladanie kyseliny močovej do kĺbov pri jej nadbytku"
     },
     {
         "id": "d6",
         "name": "Burzitída",
-        "text": ""
+        "svk": "zápal váčku mažúceho kĺb"
     },
-    # SH: mozno sa bude menit nazov
     {
         "id": "d7",
         "name": "Tendinopatia m. tibialis",
-        "text": ""
+        "svk": "zápal alebo stav po zápale úponu vretenného svalu predkolenia"
     },
     {
         "id": "d8",
         "name": "Syndróm hrany holennej kosti",
-        "text": ""
+        "svk": ""
     }
 ]
 
