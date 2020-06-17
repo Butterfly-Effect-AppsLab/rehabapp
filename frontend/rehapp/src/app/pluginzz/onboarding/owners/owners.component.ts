@@ -27,12 +27,4 @@ export class OwnersComponent implements OnInit {
       this.botFader.nativeElement.style['display'] = "block";
     
   }
-
-  @HostListener('scroll', ['$event'])
-  removeFaderTop(event){
-    // visible height + pixel scrolled >= total height 
-    console.log(event.target.offsetHeight, event.target.scrollTop, event.target.scrollHeight)
-    // if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
-      
-  }
 }

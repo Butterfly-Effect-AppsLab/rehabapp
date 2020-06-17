@@ -22,8 +22,9 @@
     --light: #f6f1ee;
     --blue: #8ABEC4;
     --gray: #C0C6C7;
+    --red: #EA5050;
     --app-background: var(--light);
-    --app-font-color-default: var(--dark);
+    --app-font-color: var(--dark);
     
     .app-button-light {    
         --border-color: var(--dark);
@@ -43,13 +44,13 @@
 
 ion-content {
     --background: var(--app-background);
-    --color: var(--app-font-color-default);
+    --color: var(--app-font-color);
 }
 
 ion-header {
     ion-toolbar {
         --background: var(--app-background);
-        --color: var(--app-font-color-default);
+        --color: var(--app-font-color);
         text-align: center;
         text-transform: uppercase;
     }

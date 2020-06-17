@@ -17,33 +17,50 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Interkostálna neuralgia",
-        "text": ""
+        "svk": "Bolesť medzirebrového priestoru pri funkčnej poruche chrbtice"
     },
     {
         "id": "d2",
         "name": "Blok stavcov hrudnej chrbtice",
-        "text": ""
+        "svk": "Obmedzenie pohybu dvoch susedných stavcov (patrí medzi funkčné poruchy chrbtice)"
     },
     {
         "id": "d3",
         "name": "Myofasciálny syndróm hrudnej chrbtice",
-        "text": ""
+        "svk": "Bolesť svalového pôvodu, skupiny svalov lopatky a okolia hrudnej chrbtice"
     },
-    # SH: mozno sa bude menit nazov
     {
         "id": "d4",
         "name": "Myofasciálny syndróm - mm. rhomboidei",
-        "text": ""
+        "svk": "Bolesť svalového pôvodu skupiny svalov lopatky"
     },
     {
         "id": "d5",
         "name": "Kvadrantový syndŕom",
-        "text": ""
+        "svk": "Cerviko kraniálny a Cerviko brachiálny sy zároveň – Bolesť hlavy a ramena spôsobená ochorením alebo "
+               "funkčnou poruchou krčnej chrbtice "
     },
     {
         "id": "d6",
         "name": "Horný skrížený syndróm",
-        "text": ""
+        "svk": "Svalová nerovnováha svalstva krku, vrchnej časti chrbta a hrudníka",
+        "definition": "Horný skrížený syndróm, alebo tzv. guľatý chrbát znamená svalovú dysbalanciu v oblasti svalov "
+                      "krku a hornej časti trupu. Svalová nerovnováha v týchto oblastiach je spôsobená nerovováhou "
+                      "medzi svalmi – ohýbačmi krku v prednej oblasti krčnej chrbtice a hlbokými šijovými svami na "
+                      "zadnej strane krčnej chrbtice, dalej sú skrátené horné časti trapézového svalu, čo vedie k "
+                      "zvýrazneniu prehnutia v krčnej oblasti, tea k predsunu hlavy, čím sa zvýrazní ohnutie krčnej "
+                      "chrbtice, tzv. lordózy, to vedie k bolestiam oblasti krčnej chrbtice, dalej ide o svalovú "
+                      "nerovnováhu v hornej časti trupu, čo sa prejavuje ako skrátenie prsných svalov a naopak "
+                      "ochabnutie chrbtových svalov – dolná a stredná časť trapézového svalu, dolná časť svalov "
+                      "mezilopatkových a pílovitého svalu, čí sa zvýrazňuje zase ohnutie hrudnej časti chrbtice, "
+                      "tzv. kyfóza a to práve spôsobuje obraz guľatého chrbta.",
+        "symptoms": "nerovnováha svalov, čo vedie k nefyziologickému postavenie vyššie spomínaných svalov, "
+                    "určité svaly sa skracujú, iné ochabujú, čo vedie k postoju s obrazom predsunutej hlavy, "
+                    "predsunutých ramien a vyhrbeného zaguľateného chrbta, odstávajúce spodné uhly lopatiek",
+        "cause": "zlé držanie tela, málo pohybu, zlé pohybové stereotypy, sedavá práca",
+        "diagnostic": "vyšetrenie",
+        "cure": "rehabilitácia",
+        "prevention": "správne držanie tela, obmedzenie sedavej činnosti"
     }
 ]
 

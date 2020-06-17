@@ -19,8 +19,13 @@ export class Area implements TreeComponent {
 
 export class Diagnose implements TreeComponent {
     name: string
-    text: string
     type: string
+    definition: string = "Informácie budú doplnené neskôr"
+    symptoms: string = "Informácie budú doplnené neskôr"
+    cause: string = "Informácie budú doplnené neskôr"
+    diagnostic: String = "Informácie budú doplnené neskôr"
+    cure: string = "Informácie budú doplnené neskôr"
+    prevention: string = "Informácie budú doplnené neskôr"
 }
 
 export class Question implements TreeComponent {

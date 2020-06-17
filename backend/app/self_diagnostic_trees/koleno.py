@@ -24,152 +24,154 @@ diagnoses = [
     {
         "id": "d1",
         "name": "Artróza kolena",
-        "text": ""
+        "svk": "zmeny vznikajúce opotrebením a nesprávnym zaťažením kĺbu kolena"
     },
     {
         "id": "d2",
         "name": "Dna",
-        "text": ""
+        "svk": "arthritis uratica – ukladanie kyseliny močovej do kĺbov pri jej nadbytku"
     },
     {
         "id": "d3",
         "name": "Reumatoidná artritída",
-        "text": ""
+        "svk": "zápal kĺbov spôsobený vlastnou obranyschopnosťou (imunitou)"
     },
     {
         "id": "d4",
         "name": "Tendinitída m biceps femoris",
-        "text": ""
+        "svk": "zápal alebo stav po zápale dvojhlavého svalu stehna"
     },
     {
         "id": "d5",
         "name": "Tendinitída hamstringov (m biceps femoris)",
-        "text": ""
+        "svk": "zápal alebo stav po zápale dvojhlavého svalu stehna"
     },
     {
         "id": "d6",
         "name": "Myofasciálny syndróm svalov skupiny zadnej strany stehna",
-        "text": ""
+        "svk": "bolesť svalového pôvodu v oblasti zadnej svalovej skupiny stehna"
     },
     {
         "id": "d7",
         "name": "Bakerova cysta",
-        "text": ""
+        "svk": "tekutinou vyplnená dutinka v oblasti zozadu kolena"
     },
     {
         "id": "d8",
         "name": "Poškodenie zadného skríženého väzu",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d9",
         "name": "Tendinitída popliteálneho svalu",
-        "text": ""
+        "svk": "zápal alebo stav po zápale malého svalu v oblasti zákolenia"
     },
     {
         "id": "d10",
         "name": "Patello-femorálny syndróm",
-        "text": ""
+        "svk": "bolesť v oblasti pod kolenom spôsobená poškodením alebo preťažením štvorhlavého svalmi stehna"
     },
     {
         "id": "d11",
         "name": "Myofasciálny syndróm skupiny svalov vnútornej časti stehna",
-        "text": ""
+        "svk": "bolesť svalového pôvodu svalov vnútornej strany stehna"
     },
     {
         "id": "d12",
         "name": "Poškodenie vnútorného kolaterálneho väzu kolena",
-        "text": ""
+        "svk": "poškodenie väzu spevňujúceho koleno, zvnútra kolena"
     },
     {
         "id": "d13",
         "name": "Poškodenie vnútorného (mediálneho) menisku",
-        "text": ""
+        "svk": ""
     },
     {
         "id": "d14",
         "name": "Myofasciálny syndróm vonkajšej časti štvorhlavého svalu",
-        "text": ""
+        "svk": "bolesť svalového pôvodu zvonka stehna"
     },
     {
         "id": "d15",
         "name": "Syndróm iliotibiálneho traktu",
-        "text": ""
+        "svk": "preťaženie, zápal alebo stav po zápale šľachy v oblasti zboku stehna a bedra"
     },
     {
         "id": "d16",
         "name": "Poškodenie vonkajšieho kolaterálneho väzu kolena",
-        "text": ""
+        "svk": "natiahnutie/natrhnutie úplnú svalu bočnej skupiny svalov stehna"
     },
     {
         "id": "d17",
         "name": "Poškodenie vonkajšieho (laterálneho) menisku",
-        "text": ""
+        "svk": "Poškodenie vonkajšej kolennej chrupavky"
     },
     {
         "id": "d18",
         "name": "Syndróm tibiálnej hrany",
-        "text": ""
+        "svk": "drobné poškodenie hornej hrany holennej kosti/poškodenie úponov svalov upínajucich sa na hranu holennej kosti"
     },
     {
         "id": "d19",
-        "name": "Patelofemorálny syndróm",
-        "text": ""
+        "name": "Patello-femorálny syndróm",
+        "svk": "bolesť v oblasti pod kolenom spôsobená poškodením alebo preťažením štvorhlavého svalmi stehna"
     },
     {
         "id": "d20",
         "name": "Poškodenie menisku",
-        "text": ""
+        "svk": "poškodenie chrupavky kolena"
     },
     {
         "id": "d21",
         "name": "Artróza kolena",
-        "text": ""
+        "svk": "chronické zmeny kolenného kĺbu vznikajúce nespravným zaťažovaním"
     },
     {
         "id": "d22",
-        "name": "Patelofemorálny syndróm",
-        "text": ""
+        "name": "Patello-femorálny syndróm",
+        "svk": "bolesť v oblasti pod kolenom spôsobená poškodením alebo preťažením štvorhlavého svalmi stehna"
     },
     {
         "id": "d23",
         "name": "Chondromalácia kolena",
-        "text": ""
+        "svk": "opotrebenie chrupavky kolena"
     },
     {
         "id": "d24",
         "name": "Artróza kolena",
-        "text": ""
+        "svk": "chronické zmeny kolenného kĺbu vznikajúce nespravným zaťažovaním"
     },
     {
         "id": "d25",
         "name": "Patellárna burzitída",
-        "text": ""
+        "svk": "zápal kolenného vačku mžúceho kolenný kĺb"
     },
     {
         "id": "d26",
         "name": "Poškodenie predného skríženého väzu",
-        "text": ""
+        "svk": "poškodenie väzu, ktorý stabilizuje kollený kĺb spredu"
     },
     {
         "id": "d27",
         "name": "Myofasciálny syndróm svalov prednej strany stehna",
-        "text": ""
+        "svk": "bolesť svalového pôvodu z oblasti skupiny svalstva prednej strany stehna"
     },
     {
         "id": "d28",
         "name": "Iliopsoas syndróm",
-        "text": ""
+        "svk": "Bolesť chrbta a slabiny svalového pôvodu, vzniká pri preťažení, či nesprávnom zaťažení svalov ktoré "
+               "ohýbajú bedro (zdvíhajú nohu v bedre) "
     },
     {
         "id": "d29",
         "name": "Patelárna tendinitída (Tendinitída štvorhlavého svalu stehna)",
-        "text": ""
+        "svk": "zápal alebo stav po zápale šľachy štvorhlavého svalu, ktorá sa upína v oblasti pod kolenom (pod "
+               "jabĺčkom) "
     },
     {
         "id": "d30",
-        "name": "Patelárna bursitída",
-        "text": ""
+        "name": "Patellárna burzitída",
+        "svk": "zápal kolenného vačku mžúceho kolenný kĺb"
     }
 ]
 
