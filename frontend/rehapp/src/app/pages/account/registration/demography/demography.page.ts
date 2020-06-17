@@ -13,14 +13,19 @@ import { AlertController } from '@ionic/angular';
 })
 export class DemographyPage implements OnInit {
 
-  private months: Array<string> = ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"]
-  private gender: string = ""
-  private birth: Date;
-  
+  private months: Array<string> = ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"]
+  private name: string = ""
+  private gender: string = "male"
+  private birth: Date = new Date();
+  private nameHighlighter: string = "highlight-gray";
+  private actualDate: string = "";
+
 
   constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
 
   ngOnInit() {
+    let date = new Date();
+    this.actualDate = `${date.getDate()} ${this.months[date.getMonth()]} ${date.getFullYear()} `;
   }
 
   async presentAlert(error: object) {
@@ -35,41 +40,53 @@ export class DemographyPage implements OnInit {
   }
 
   valueSelected(event: CustomEvent, source: string) {
-    if (source == "sex")
+    if (source == "sex"){
       this.gender = event.detail.value;
+    }
     else if (source == "date")
       this.birth = new Date(event.detail.value);
-    else 
+    else
       alert("Zla volba");
-      
+
   }
 
   createUser() {
     let user: User = this.accountService.registratingUser;
     if (user == undefined) {
       console.log("UNDEFINED");
-      user = new User("NAME","EMAIL","PSSWD");
+      user = new User("NAME", "EMAIL", "PSSWD");
     }
     user.sex = this.gender;
 
     if (this.birth == undefined) this.birth = new Date()
-    user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth()+1}-${this.birth.getDate()}`;
-
-    console.log(user.toJSON());  
+    user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth() + 1}-${this.birth.getDate()}`;
 
     this.APIservice.registrateUser(user).subscribe(
       response => {
         console.log("status code: ", response.status);
         console.log("response: ", response.body);
-        if(response.status == 201) 
+        if (response.status == 201)
           this.router.navigateByUrl('/login');
-      }, 
+      },
       error => {
         this.presentAlert(error.error);
-        
+
       }
 
     );
   }
 
+  setHighlight(event: string): string {
+    if (event == "focus")
+      return "highlight-blue";
+    else if (event == "blur") {
+      if (this.name.length > 0)
+        return "highlight-dark";
+      return "highlight-gray";
+    }
+    else {
+      return "";
+    }
+
+  }
 }

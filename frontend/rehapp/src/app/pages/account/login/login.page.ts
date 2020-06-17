@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { APIService } from 'src/app/services/apiservice.service';
 import { User } from 'src/app/services/models/User';
 import { Router } from '@angular/router';
-import { StateService } from 'src/app/services/state-service.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account-service.service';
+import { Plugins } from '@capacitor/core';
+
+const { Storage } = Plugins;
+
 
 @Component({
   selector: 'app-login',
@@ -14,19 +16,31 @@ import { AccountService } from 'src/app/services/account-service.service';
 })
 export class LoginPage implements OnInit {
 
-  private usermail: string = "admin@admin.sk";
-  private password: string = "Heslo123";
-  private rememberLogin: boolean = false;
-  private showPass: boolean = false;
+  private usermail: string = "";
+  private password: string = "";
+  emailHighlighter: string = "highlight-gray";
+  passHighlighter: string = "highlight-gray";
+  valid: boolean;
 
-  constructor(private APIservice: APIService, private accountService: AccountService, private router: Router, private alertController: AlertController) { }
+  constructor(private APIservice: APIService, private accountService: AccountService, 
+    private router: Router, private alertController: AlertController) { }
 
   ngOnInit() {
+    this.checkValidation();
+  }
+
+  ionViewWillEnter() {
+    this.getUser().then(
+      (user) => {
+        if (user != null)
+          this.router.navigateByUrl('/home');
+      }
+    )
   }
 
   async presentAlert() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
+      cssClass: 'app-alert',
       header: 'Chyba ...',
       message: '...Váš e-mail, alebo heslo neboli zadané správne.',
       buttons: ['OK']
@@ -34,7 +48,6 @@ export class LoginPage implements OnInit {
 
     await alert.present();
   }
-
 
   login() {
 
@@ -53,9 +66,41 @@ export class LoginPage implements OnInit {
           this.router.navigateByUrl('/home');
         }
       },  
-      error => {
+      () => {
         this.presentAlert();
       }  
     );
+  }
+
+  setHighlight(event: string, tagret: string): string {
+    if (event == "focus") 
+      return "highlight-blue";
+    else if (event == "blur") {
+      if (tagret == "email") {
+        if (this.usermail.length > 0) 
+          return "highlight-dark";
+      }
+      else if (tagret == "pass") {
+        if (this.password.length > 0) 
+          return "highlight-dark";
+      }
+      return "highlight-gray";
+    }
+    else {
+      return "";
+    }
+
+  }
+
+  checkValidation() {
+    if (this.usermail.length > 0 && this.password.length > 0)
+      this.valid = true;
+    else
+      this.valid = false;
+  }
+
+  async getUser() {
+    const ret = await Storage.get({ key: 'user' });
+    return JSON.parse(ret.value);
   }
 }
