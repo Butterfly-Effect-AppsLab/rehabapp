@@ -1,0 +1,7 @@
+<div *ngFor="let option of options">
+  <div (click)="optionClicked($event, option)" class="button">
+    <img src="./assets/images/not_selected.png" alt="" id="not-selected" class="icon">
+    <img src="./assets/images/selected.png" alt="" id="selected" class="icon">
+    {{option.text}}
+  </div>
+</div>

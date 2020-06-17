@@ -27,7 +27,6 @@ export class SliderPage implements OnInit {
   constructor(private router: Router) {  
     this.getItem().then((item) => {
       if (item != null) {
-        console.log(item);        
         this.router.navigateByUrl('/home');
       }
     })
