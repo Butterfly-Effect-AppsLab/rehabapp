@@ -31,7 +31,11 @@
           <ion-item class="radio" lines="none">
             <div>
               <ion-radio value="male"></ion-radio>
-              <ion-label>Muž</ion-label>
+              <div [ngClass]="{'selected-radio': gender == 'male'}">
+                <img src="./assets/images/selected_radio.png" alt="" class="selected">
+                <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
+              </div>
+              <ion-label>muž</ion-label>
             </div>
           </ion-item>
         </div>
@@ -39,15 +43,23 @@
           <ion-item class="radio" lines="none">
             <div>
               <ion-radio value="female"></ion-radio>
-              <ion-label>Žena</ion-label>
+              <div [ngClass]="{'selected-radio': gender == 'female'}">
+                <img src="./assets/images/selected_radio.png" alt="" class="selected">
+                <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
+            </div>
+              <ion-label>žena</ion-label>
             </div>
           </ion-item>
         </div>
         <div class="radio-opt">
           <ion-item class="radio" lines="none">
             <div>
-              <ion-radio value="other" mark></ion-radio>
-              <ion-label>Yeti</ion-label>
+              <ion-radio value="other"></ion-radio>
+              <div [ngClass]="{'selected-radio': gender == 'other'}">
+              <img src="./assets/images/selected_radio.png" alt="" class="selected">
+              <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
+            </div>
+              <ion-label>iné</ion-label>
             </div>
           </ion-item>
         </div>
@@ -61,7 +73,7 @@
       <ion-icon name="caret-down-outline" slot="end" class="icon"></ion-icon>
       <ion-datetime 
         displayFormat="DD MMMM YYYY" 
-        [placeholder]="actualDate" 
+        value={{birth}}
         cancelText='Zrušiť'
         doneText='Potvrdiť'
         [monthNames]="months"

@@ -15,8 +15,8 @@ export class DemographyPage implements OnInit {
 
   private months: Array<string> = ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"]
   private name: string = ""
-  private gender: string = ""
-  private birth: Date;
+  private gender: string = "male"
+  private birth: Date = new Date();
   private nameHighlighter: string = "highlight-gray";
   private actualDate: string = "";
 
@@ -40,8 +40,9 @@ export class DemographyPage implements OnInit {
   }
 
   valueSelected(event: CustomEvent, source: string) {
-    if (source == "sex")
+    if (source == "sex"){
       this.gender = event.detail.value;
+    }
     else if (source == "date")
       this.birth = new Date(event.detail.value);
     else
@@ -59,8 +60,6 @@ export class DemographyPage implements OnInit {
 
     if (this.birth == undefined) this.birth = new Date()
     user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth() + 1}-${this.birth.getDate()}`;
-
-    console.log(user.toJSON());
 
     this.APIservice.registrateUser(user).subscribe(
       response => {

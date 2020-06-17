@@ -59,14 +59,28 @@
                     width: 100%;
                 }
 
-                ion-radio {
-                    --color: var(--gray);
-                    --color-checked: var(--blue);
-                    --border-width: 12px;
-                    width: 1.5em;
-                    height: 1.5em;
-                    margin-left: 50%;
-                    transform: translate(-50%, 0%);
+                ion-radio{
+                    width: 0px;
+                    height: 0px;
+                    --border-width: 0px;
+                }
+
+                .selected{
+                    display: none;
+                }
+
+                .not-selected{
+                    display: inline;
+                }
+
+                .selected-radio{
+                    .selected{
+                        display: inline;
+                    }
+    
+                    .not-selected{
+                        display: none;
+                    }
                 }
             }
         }
@@ -78,6 +92,8 @@
         font-size: 1.2em;
         --background: var(--gray);
         --color: var(--dark);
+        --padding-end: 5%;
+        --padding-start: 5%;
 
         .icon {
             color: var(--dark);
@@ -94,11 +110,24 @@
 ::ng-deep .picker-wrapper {
     background: var(--gray) !important;
     color: #67808B;
+    color: var(--dark);
 
     .picker-opt-selected {
         color: var(--dark);
     }
     .picker-button {
         color: var(--dark);
+    }
+
+    .picker-col{
+        min-width: 50% !important;
+    }
+
+    .picker-opts-right{
+        min-width: 25% !important;
+    }
+
+    .picker-opts-left{
+        min-width: 25% !important;
     }
 }
