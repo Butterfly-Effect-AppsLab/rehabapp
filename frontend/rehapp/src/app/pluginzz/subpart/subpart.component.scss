@@ -1,0 +1,41 @@
+.button {
+    width: 90%;
+    border: 2px solid var(--gray);
+    border-radius: 15px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0.5em 0.3em;
+    margin-top: 5px;
+    font-size: 1.2em;
+    color: var(--dark);
+    background-color: var(--light);
+    display: flex;
+    align-items: center;
+
+    .icon{
+        pointer-events: none;
+        margin: 0 5%;
+    }
+}
+
+#selected{
+    display: none;
+}
+
+#not-selected{
+    display: inline;
+}
+
+.selected-subarea {
+    border-color: var(--blue);
+    background-color: var(--blue);
+    color: var(--light);
+
+    #selected{
+        display: inline;
+    }
+
+    #not-selected{
+        display: none;
+    }
+}

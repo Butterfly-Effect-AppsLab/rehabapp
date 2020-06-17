@@ -9,6 +9,7 @@ import { BodyPartSelectionPageRoutingModule } from './body-part-selection-routin
 import { BodyPartSelectionPage } from './body-part-selection.page';
 import { DiagnosticModule } from 'src/app/pluginzz/diagnostic/diagnostic.module';
 
+
 @NgModule({
   imports: [
     CommonModule,
