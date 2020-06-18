@@ -114,9 +114,10 @@
 
 ::ng-deep .picker-wrapper {
     background: var(--gray) !important;
-    color: #67808B;
-    color: var(--dark);
-
+    
+    .picker-opt {
+        color: #67808B;
+    }
     .picker-opt-selected {
         color: var(--dark);
     }

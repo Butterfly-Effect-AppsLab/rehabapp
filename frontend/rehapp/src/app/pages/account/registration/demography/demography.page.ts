@@ -16,18 +16,14 @@ export class DemographyPage implements OnInit {
   private months: Array<string> = ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"]
   private name: string = ""
   private validName: boolean = false;
-  private gender: string = "male"
-  private birth: Date = new Date();
+  private gender: string = "female"
+  private birth: Date = new Date("1990-01-01");
   private nameHighlighter: string = "highlight-gray";
-  private actualDate: string = "";
 
 
   constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
 
-  ngOnInit() {
-    let date = new Date();
-    this.actualDate = `${date.getDate()} ${this.months[date.getMonth()]} ${date.getFullYear()} `;
-  }
+  ngOnInit() {}
 
   async presentAlert(error?: object, message?: string) {
     const alert = await this.alertController.create({
