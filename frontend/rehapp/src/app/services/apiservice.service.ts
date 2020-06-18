@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
 
-import { API_URL } from './api.config'
+import { environment } from '../../environments/environment'
 import { Observable, throwError } from 'rxjs';
 import { User } from './models/User';
 import { catchError } from 'rxjs/operators';
@@ -24,20 +24,20 @@ export class APIService {
     }
 
     public checkConnection() {
-        return this.http.get(API_URL)
+        return this.http.get(environment.API_URL)
     }
 
     public getTree() {
-        return this.http.get<any>(API_URL + "questions");
+        return this.http.get<any>(environment.API_URL + "questions");
     }
 
     public updateTree(checksum: string) {
-        return this.http.get<any>(API_URL + "questions/update/" + checksum, { observe: 'response' });     // full response with body, headers and response code
+        return this.http.get<any>(environment.API_URL + "questions/update/" + checksum, { observe: 'response' });     // full response with body, headers and response code
     }
 
     public registrateUser(user: User) {
 
-        return this.http.post<User>(API_URL + "registration", user.toJSON(), HTTP_OPTIONS)
+        return this.http.post<User>(environment.API_URL + "registration", user.toJSON(), HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );
@@ -48,7 +48,7 @@ export class APIService {
             "email": user.email,
             "password": user.password
         }
-        return this.http.post<User>(API_URL + "login", body, HTTP_OPTIONS)
+        return this.http.post<User>(environment.API_URL + "login", body, HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );

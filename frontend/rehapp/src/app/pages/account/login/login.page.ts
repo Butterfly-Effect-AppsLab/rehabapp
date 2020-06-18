@@ -16,8 +16,8 @@ const { Storage } = Plugins;
 })
 export class LoginPage implements OnInit {
 
-  private usermail: string = "";
-  private password: string = "";
+  private usermail: string = "jkucerak1@gmail.com";
+  private password: string = "Heslo123";
   emailHighlighter: string = "highlight-gray";
   passHighlighter: string = "highlight-gray";
   valid: boolean;
@@ -27,15 +27,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.checkValidation();
-  }
-
-  ionViewWillEnter() {
-    this.getUser().then(
-      (user) => {
-        if (user != null)
-          this.router.navigateByUrl('/home');
-      }
-    )
   }
 
   async presentAlert() {
@@ -57,13 +48,8 @@ export class LoginPage implements OnInit {
         console.log("response: ", response.body);
 
         if (response.status == 200) {
-          this.accountService.userLoggedIn = new User(
-              response.body['user'].name, response.body['user'].email, null, response.body['user'].sex, response.body['user'].birthday
-            );
-          this.accountService.accessToken = response.body['access_token'];
-          this.accountService.refreshToken = response.body['refresh_token'];
-
-          this.router.navigateByUrl('/home');
+          this.accountService.login(response.body);
+          this.router.navigateByUrl('/dashboard');
         }
       },  
       () => {
@@ -93,14 +79,6 @@ export class LoginPage implements OnInit {
   }
 
   checkValidation() {
-    if (this.usermail.length > 0 && this.password.length > 0)
-      this.valid = true;
-    else
-      this.valid = false;
-  }
-
-  async getUser() {
-    const ret = await Storage.get({ key: 'user' });
-    return JSON.parse(ret.value);
+    this.valid = (this.usermail.length > 0 && this.password.length > 0)
   }
 }

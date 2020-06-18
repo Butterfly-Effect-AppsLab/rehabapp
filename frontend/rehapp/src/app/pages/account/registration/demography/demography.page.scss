@@ -100,10 +100,15 @@
         }
     }
     
-    .buttonDiv {
+    .form-buttons {
         position: absolute;
         bottom: 2%;
-        width: 90%;
+        left: 7%;
+        right: 7%;
+
+        .btn-div {
+            height: 2.5em;
+        }
     }
 }
 
