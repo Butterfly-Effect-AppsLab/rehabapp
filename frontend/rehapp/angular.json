@@ -66,6 +66,22 @@
                 }
               ]
             },
+            "local": { 
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
+            },
+            "docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ]
+            },
             "ci": {
               "progress": false
             }
@@ -79,6 +95,12 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "local": {
+              "browserTarget": "app:build:local"
+            },
+            "docker": {
+              "browserTarget": "app:build:docker"
             },
             "ci": {
               "progress": false
