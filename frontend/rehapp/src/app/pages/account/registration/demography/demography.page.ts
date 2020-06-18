@@ -15,24 +15,21 @@ export class DemographyPage implements OnInit {
 
   private months: Array<string> = ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"]
   private name: string = ""
-  private gender: string = "male"
-  private birth: Date = new Date();
+  private validName: boolean = false;
+  private gender: string = "female"
+  private birth: Date = new Date("1990-01-01");
   private nameHighlighter: string = "highlight-gray";
-  private actualDate: string = "";
 
 
   constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
 
-  ngOnInit() {
-    let date = new Date();
-    this.actualDate = `${date.getDate()} ${this.months[date.getMonth()]} ${date.getFullYear()} `;
-  }
+  ngOnInit() {}
 
-  async presentAlert(error: object) {
+  async presentAlert(error?: object, message?: string) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Error',
-      message: JSON.stringify(error),
+      cssClass: 'app-alert',
+      header: error == null ? 'Chyba...' : 'Error',
+      message: error == null ? message : JSON.stringify(error),
       buttons: ['OK']
     });
 
@@ -47,10 +44,14 @@ export class DemographyPage implements OnInit {
       this.birth = new Date(event.detail.value);
     else
       alert("Zla volba");
-
   }
 
   createUser() {
+    if (!this.validName) {
+      this.presentAlert(null, "...je potrebné zadať meno.")
+      return
+    }
+
     let user: User = this.accountService.registratingUser;
     if (user == undefined) {
       console.log("UNDEFINED");
@@ -67,6 +68,9 @@ export class DemographyPage implements OnInit {
         console.log("response: ", response.body);
         if (response.status == 201)
           this.router.navigateByUrl('/login');
+        else {
+          this.presentAlert(response.body)
+        }
       },
       error => {
         this.presentAlert(error.error);
@@ -87,6 +91,12 @@ export class DemographyPage implements OnInit {
     else {
       return "";
     }
+  }
 
+  nameChanged() {
+    if (this.name.length > 0)
+      this.validName = true;
+    else 
+      this.validName = false;
   }
 }

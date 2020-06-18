@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import { Plugins } from '@capacitor/core'
-
-const { Storage } = Plugins;
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-slider',
@@ -24,20 +22,15 @@ export class SliderPage implements OnInit {
 
   buttonText: string = "Pokračovať";
 
-  constructor(private router: Router) {  
-    this.getItem().then((item) => {
-      if (item != null) {
-        this.router.navigateByUrl('/home');
-      }
-    })
+  constructor(private storageService:StorageService, private router: Router) {  
+    this.storageService.getUser().then( 
+      (user) => {
+        if (user != null)
+          this.router.navigateByUrl('/dashboard')
+      })
   }
 
   ngOnInit() {        
-  }
-
-  async getItem() {
-    const { value } = await Storage.get({ key: 'user' });
-    return value;
   }
 
   skip() {

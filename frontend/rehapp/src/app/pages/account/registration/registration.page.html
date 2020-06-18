@@ -60,9 +60,9 @@
           <ion-item class="input_item" lines="none" 
             [ngClass]="{
               'highlight-blue' : repFocused,
-              'highlight-gray' : password.untouched,
-              'highlight-red' : password.touched && password.value !== repPass.value,
-              'highlight-dark' : password.touched && password.value === repPass.value
+              'highlight-gray' : repPass.untouched,
+              'highlight-red' : repPass.touched && password.value !== repPass.value,
+              'highlight-dark' : repPass.touched && password.value === repPass.value
             }">
             <ion-input 
                 formControlName="reppassword" 
