@@ -1,50 +1,99 @@
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Späť" icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
 
   <div class="main">
-    <div class="heading">
-      <h1>Registrácia</h1>
+    <div class="logo">
+      <img class="inside_img" src="assets/images/logo.svg">
     </div>
   
-    <form [formGroup]="regForm" (ngSubmit)="submit()">
-      <div class="item_div">
-        <ion-item class="input_item">
-          <ion-label position="floating">Meno</ion-label>
-          <ion-input formControlName="username" autofocus="on"></ion-input>
-        </ion-item>
-      </div>
-    
-      <div class="item_div">
-        <ion-item class="input_item">
-          <ion-label position="floating">Email</ion-label>
-          <ion-input formControlName="email" inputmode="email"></ion-input>
-        </ion-item>
-      </div>
+    <div class="form-inputs">
+      <form [formGroup]="regForm" (ngSubmit)="submit()">
       
-      <div class="item_div">
-        <ion-item class="input_item">
-          <ion-label position="floating">Heslo</ion-label>
-          <ion-icon name="eye" slot="end"></ion-icon>
-          <ion-input formControlName="password" type="password"></ion-input>
-        </ion-item>
-        <p *ngIf="!regForm.get('password').valid" class="error_msg">
+        <div class="item_div">
+          <ion-item class="input_item" lines="none" 
+            [ngClass]="{
+              'highlight-blue' : emailFocused,
+              'highlight-gray' : email.untouched,
+              'highlight-red' : email.touched && email.invalid,
+              'highlight-dark' : email.touched && email.valid
+            }">
+            <ion-input formControlName="email"
+              inputmode="email" 
+              placeholder="Zadajte e-mail"
+              (ionFocus)="emailFocused = true"
+              (ionBlur)="emailFocused = false"
+              maxlength=40
+              autofocus
+              ></ion-input>
+          </ion-item>
+        </div>
+        
+        <div class="item_div">
+          <ion-item class="input_item" lines="none" 
+            [ngClass]="{
+              'highlight-blue' : passFocused,
+              'highlight-gray' : password.untouched,
+              'highlight-red' : password.touched && password.invalid,
+              'highlight-dark' : password.touched && password.valid
+            }">
+            <ion-input 
+              formControlName="password" 
+              type="password" 
+              clearOnEdit="false"
+              placeholder="Zadajte heslo"
+              (ionFocus)="passFocused = true"
+              (ionBlur)="passFocused = false"
+              maxlength=40
+              ></ion-input>
+          </ion-item>
+        </div>
+        
+        <div class="item_div">
+          <ion-item class="input_item" lines="none" 
+            [ngClass]="{
+              'highlight-blue' : repFocused,
+              'highlight-gray' : repPass.untouched,
+              'highlight-red' : repPass.touched && password.value !== repPass.value,
+              'highlight-dark' : repPass.touched && password.value === repPass.value
+            }">
+            <ion-input 
+                formControlName="reppassword" 
+                type="password" 
+                clearOnEdit="false"
+                placeholder="Zopakujte heslo"
+                (ionFocus)="repFocused = true" 
+                (ionBlur)="repFocused = false"
+                maxlength=40
+              ></ion-input>
+          </ion-item>
+        </div>
+        <p *ngIf="email.invalid && email.touched" class="error_msg">
+          Neplatná emailová adresa
+        </p>
+        <p *ngIf="password.invalid" class="error_msg">
           Heslo musí byť dlhé aspoň 8 znakov a musí obsahovať aspoň 1 malé a veľké písmeno a číslo.
         </p>
-      </div>
+        <p *ngIf="password.value !== repPass.value" class="error_msg">
+          Heslá sa nezhodujú
+        </p>
 
-      <div class="item_div">
-        <ion-item>
-          <ion-checkbox formControlName="termsOfUse"></ion-checkbox>
-          <ion-label class="terms">
-            Týmto potvrdzujem, že som si prečítal/a podmienky používania 
-          </ion-label>
-        </ion-item>
-      </div>
-    </form>
+      </form>
+    </div>
       
-    <div class="login_btn">
-      <ion-button [disabled]="!regForm.valid" (click)="createUser()" expand="block" fill="solid" shape="round" strong>
-        Vytvoriť účet
-      </ion-button>
+    <div class="form-buttons">
+      <div class="btn-div">
+        <ion-button (click)="createUser()" expand="block" [fill]="regForm.valid ? 'solid' : 'outline'" shape="round" class="app-big-btn" [ngClass]="regForm.valid ? 'app-button-dark' : 'app-button-light'">
+          Registrovať sa
+        </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>

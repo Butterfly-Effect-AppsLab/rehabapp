@@ -19,13 +19,10 @@
   </div>  
 
   <div id="buttons-wrapper">
-    <div class="fade-effect" #fadeEffect></div>
-    <div id="buttons" #buttons (scroll)="buttonsScroll()">
-      <div *ngFor="let option of options">
-        <div (click)="showSubpart($event, option)" class="button">
-          {{option.text}}
-        </div>
-      </div>
+    <div #fader_top class="fade-effect fade-top"></div>
+    <div #fader_bot class="fade-effect fade-bot"></div>
+    <div id="buttons" #buttons (scroll)="removeFader($event)">
+      <app-subpart [options]="options" (onOptionSelected)="showSubpart($event)" [(actualBtn)]="actualSubareaBtn"></app-subpart>
     </div>
   </div>
   

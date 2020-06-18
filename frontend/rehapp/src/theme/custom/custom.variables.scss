@@ -31,14 +31,52 @@
         --border-width: 3px;
         --color: var(--dark);
         white-space: normal;
-        font-weight: 500;
+        font-weight: bold;
+        font-size: large;
     }
-
+    
     .app-button-dark {
         --background: var(--dark);
         --color: var(--light);
         white-space: normal;
         font-weight: 500;
+        font-size: large;
+    }
+
+    .app-button-gray {
+        --background: var(--gray);
+        --color: var(--dark);
+        --box-shadow: none;
+        white-space: normal;
+        font-weight: bold;
+        font-size: large;
+    }
+
+    .app-big-btn {
+        height: 100%;
+    }
+
+    .app-alert {
+        --background: var(--gray);
+        --backdrop-opacity: 0.2;
+
+        .alert-wrapper {
+            border-radius: 25px;
+            
+            .alert-title {
+                color: var(--dark);
+                font-weight: bold;
+                font-size: xx-large;
+            }
+            .alert-message {
+                color: var(--dark);
+                font-size: large;
+            }    
+            .alert-button {
+                color: var(--dark);
+            }
+        }
+
     }
 }
 
@@ -83,4 +121,3 @@ ion-header {
         margin: 0 auto;
     }
   }
-

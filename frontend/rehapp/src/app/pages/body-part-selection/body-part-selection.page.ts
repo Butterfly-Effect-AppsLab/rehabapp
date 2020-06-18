@@ -21,7 +21,8 @@ export class BodyPartSelectionPage implements OnInit {
 
   @ViewChild('buttons', { static: false }) buttons: ElementRef;
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
-  @ViewChild('fadeEffect', { static: false }) fadeEffect: ElementRef;
+  @ViewChild('fader_top', {static: true}) topFader: ElementRef;
+  @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
 
   @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
   @ViewChild('toggleComponent', { static: false }) toggleComponent: ToggleComponent;
@@ -29,7 +30,7 @@ export class BodyPartSelectionPage implements OnInit {
 
   actualCircle: Element;
   actualSubarea: Element;
-  actualSubareaBtn: Element;
+  actualSubareaBtn:Element = undefined;
   visibleSide: string = 'front';
   areaSelected: boolean = false;
   areaSubmitted: boolean = false;
@@ -181,9 +182,12 @@ export class BodyPartSelectionPage implements OnInit {
 
   async reset(duration = 0, optionsDuration = 0) {
 
+    this.buttons.nativeElement.scrollTop = 0;
+
     this.stateService.animationInPogress = true;
 
-    this.fadeEffect.nativeElement['style']['display'] = 'none';
+    this.topFader.nativeElement.style['display'] = "none";
+    this.botFader.nativeElement.style['display'] = "none";
 
     this.ref = null;
 
@@ -319,7 +323,9 @@ export class BodyPartSelectionPage implements OnInit {
 
     this.buttons.nativeElement.style.display = "block";
 
-    this.setFade();
+    if (this.buttons.nativeElement.lastElementChild.getBoundingClientRect().bottom - 2 > this.buttons.nativeElement.getBoundingClientRect().bottom) {
+      this.botFader.nativeElement.style['display'] = 'block';
+    }
 
     this.showOptions = this.animationCtrl.create()
       .direction('normal')
@@ -387,7 +393,7 @@ export class BodyPartSelectionPage implements OnInit {
 
   }
 
-  showSubpart(event: Event, option: Option) {
+  showSubpart(option: Option) {
 
     this.ref = option.ref;
 
@@ -411,9 +417,7 @@ export class BodyPartSelectionPage implements OnInit {
     }
 
     this.actualSubarea = document.getElementById(option.label);
-    this.actualSubareaBtn = <Element>event.target;
     this.changeSubAreaOpacity(0.54);
-    (<Element>event.target).classList.add('selected-subarea');
   }
 
   rotate() {
@@ -431,21 +435,18 @@ export class BodyPartSelectionPage implements OnInit {
     this.areaSelected = false;
   }
 
-  getBottom(element) {
-    return element.getBoundingClientRect().bottom;
-  }
+  removeFader(event){
+    // visible height + pixel scrolled >= total height 
+    if (event.target.scrollTop == 0) 
+      this.topFader.nativeElement.style['display'] = "none";
+    else
+      this.topFader.nativeElement.style['display'] = "block";
 
-  setFade() {
-    if (this.getBottom(this.buttons.nativeElement.lastElementChild) - 2 > this.getBottom(this.buttons.nativeElement)) {
-      this.fadeEffect.nativeElement['style']['display'] = 'block';
-    }
-    else {
-      this.fadeEffect.nativeElement['style']['display'] = 'none';
-    }
-  }
-
-  buttonsScroll() {
-    this.setFade();
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
+      this.botFader.nativeElement.style['display'] = "none";
+    else 
+      this.botFader.nativeElement.style['display'] = "block";
+    
   }
 
   async submit() {

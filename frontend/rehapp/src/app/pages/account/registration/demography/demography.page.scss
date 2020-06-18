@@ -3,42 +3,137 @@
     margin: auto;
     text-align: center;
 
-    ion-item {
-        --background: "transparent";
-        --color: var(--dark);
+    .text_div {
+        color: var(--dark);
+        h5 {
+            margin-bottom: 0;
+        }
     }
 
-    ion-checkbox {
-        --background-checked: var(--light);
-        --border-color-checked: var(--dark);
-        --checkmark-color: var(--dark);
-        margin-right: 3%;
+    .left {
+        text-align: left;
+        margin-top: 5%;
     }
-    
-    .radio {
+
+    .item_div {
+        padding-bottom: 3%;
+
+        .highlight-dark {
+            border-bottom: 2px solid var(--dark);
+        }
+        .highlight-blue {
+            border-bottom: 2px solid var(--blue);
+        }
+        .highlight-gray {
+            border-bottom: 2px solid var(--gray);
+        }
+
+        > ion-item {
+            --background: "transparent";
+            --color: var(--dark);
+            border: none;
+
+            > ion-input {
+                font-family: poppins;
+            }
+        }
+    }
+
+    .radio-group {
         display: inline-block;
         width: 100%;
+        margin: 10% 0%;
+
+        .radio-opt {
+            float: left;
+            width: 33%;
+            display: block;
+
+            .radio {
+                --background: transparent;
+                --color: var(--dark);
+                border: none;
+
+                div {
+                    text-align: center;
+                    width: 100%;
+                }
+
+                ion-radio{
+                    width: 0px;
+                    height: 0px;
+                    --border-width: 0px;
+                }
+
+                .selected{
+                    display: none;
+                }
+
+                .not-selected{
+                    display: inline;
+                }
+
+                .selected-radio{
+                    .selected{
+                        display: inline;
+                    }
+    
+                    .not-selected{
+                        display: none;
+                    }
+                }
+            }
+        }
     }
-    
-    .radio-opt {
-        float: left;
-        width: 33%;
-    
-        ion-radio {
-            --color-checked: var(--dark);
-            margin-right: 5%;
+
+    .date-picker {
+        margin-top: 10%;
+        border-radius: 3em;
+        font-size: 1.2em;
+        --background: var(--gray);
+        --color: var(--dark);
+        --padding-end: 5%;
+        --padding-start: 5%;
+
+        .icon {
+            color: var(--dark);
         }
     }
     
-    .caption {
-        padding-top: 10%;
-    }
-
-    .buttonDiv {
+    .form-buttons {
         position: absolute;
         bottom: 2%;
-        width: 90%;
+        left: 7%;
+        right: 7%;
+
+        .btn-div {
+            height: 2.5em;
+        }
     }
 }
 
+::ng-deep .picker-wrapper {
+    background: var(--gray) !important;
+    
+    .picker-opt {
+        color: #67808B;
+    }
+    .picker-opt-selected {
+        color: var(--dark);
+    }
+    .picker-button {
+        color: var(--dark);
+    }
 
+    .picker-col{
+        min-width: 50% !important;
+    }
+
+    .picker-opts-right{
+        min-width: 25% !important;
+    }
+
+    .picker-opts-left{
+        min-width: 25% !important;
+    }
+}
