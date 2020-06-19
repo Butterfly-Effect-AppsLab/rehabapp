@@ -177,7 +177,8 @@ class OauthGoogleResource:
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
             authorization_endpoint,
-            redirect_uri="http://192.168.99.102.xip.io:8000/login/oauth/google/callback",
+            # redirect_uri="http://192.168.99.102.xip.io:8000/login/oauth/google/callback",
+            redirect_uri="http://localhost:8100/login",
             scope=["openid", "email", "profile"],
             access_type='offline',
             prompt='consent'

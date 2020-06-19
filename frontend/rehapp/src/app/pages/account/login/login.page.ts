@@ -58,6 +58,19 @@ export class LoginPage implements OnInit {
     );
   }
 
+  loginGoogle() {
+
+    this.APIservice.loginGoogle().subscribe(
+      response => {
+        window.location.href = response.body['request_uri'];
+        console.log("response: ", response.body);
+      },  
+      () => {
+        this.presentAlert();
+      }  
+    );
+  }
+
   setHighlight(event: string, tagret: string): string {
     if (event == "focus") 
       return "highlight-blue";

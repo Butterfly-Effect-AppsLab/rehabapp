@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http'
 
 import { environment } from '../../environments/environment'
 import { Observable, throwError } from 'rxjs';
@@ -49,6 +49,13 @@ export class APIService {
             "password": user.password
         }
         return this.http.post<User>(environment.API_URL + "login", body, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    public loginGoogle() {
+        return this.http.get<any>(environment.API_URL + "login/oauth/google", HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );
