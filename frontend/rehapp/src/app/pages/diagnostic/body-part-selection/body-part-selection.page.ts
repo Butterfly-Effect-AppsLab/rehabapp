@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Animation, AnimationController, Platform, IonRouterOutlet, IonRow, NavController, LoadingController } from '@ionic/angular';
-import { Router, NavigationExtras } from '@angular/router';
-import { TreeError, compileBaseDefFromMetadata } from '@angular/compiler';
-import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Animation, AnimationController, Platform, NavController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import { APIService } from 'src/app/services/apiservice.service';
-import { TreeComponent, Area, Option } from 'src/app/services/models/Tree';
+import { Area, Option } from 'src/app/services/models/Tree';
 import { StateService } from 'src/app/services/state-service.service';
 import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
-import { BodyComponent } from 'src/app/pluginzz/body/body.component';
+import { BodyComponent } from 'src/app/pluginzz/diagnostic/body/body.component';
 
 import Body from 'src/app/services/models/Body';
 
@@ -65,7 +63,7 @@ export class BodyPartSelectionPage implements OnInit {
   duration: number = 1500;
   optionsDuration: number = 500;
 
-  constructor(public loadingController: LoadingController, private router: Router, private api: APIService, private animationCtrl: AnimationController, public platform: Platform, public navCtrl: NavController, private stateService: StateService) {
+  constructor(public loadingController: LoadingController, private router: Router, private animationCtrl: AnimationController, public platform: Platform, public navCtrl: NavController, private stateService: StateService) {
 
     this.stateService.actualSide.subscribe(() => {
       if (this.initialized)

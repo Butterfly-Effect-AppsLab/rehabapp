@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 import { StorageService } from 'src/app/services/storage.service';
@@ -22,7 +22,7 @@ export class SliderPage implements OnInit {
 
   buttonText: string = "Pokračovať";
 
-  constructor(private storageService:StorageService, private router: Router) {  
+  constructor(private storageService:StorageService, private router: Router, private alertController: AlertController) {  
     this.storageService.getUser().then( 
       (user) => {
         if (user != null)
@@ -33,8 +33,27 @@ export class SliderPage implements OnInit {
   ngOnInit() {        
   }
 
-  skip() {
-    this.router.navigateByUrl('/selection'); 
+  async presentYesNoAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      header: 'Poznáte svoju diagnózu?',
+      buttons: [
+        {
+          text: 'Áno',
+          handler: () => { this.router.navigateByUrl('/diagnostic/search') }
+        }, 
+        {
+          text: 'Nie',
+          handler: () => { this.router.navigateByUrl('/diagnostic/selection') }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async skip() {
+    await this.presentYesNoAlert();
   }
 
   sliderClicked(event: MouseEvent) {

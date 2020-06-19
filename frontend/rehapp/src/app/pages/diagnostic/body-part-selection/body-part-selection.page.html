@@ -22,7 +22,7 @@
     <div #fader_top class="fade-effect fade-top"></div>
     <div #fader_bot class="fade-effect fade-bot"></div>
     <div id="buttons" #buttons (scroll)="removeFader($event)">
-      <app-subpart [options]="options" (onOptionSelected)="showSubpart($event)" [(actualBtn)]="actualSubareaBtn"></app-subpart>
+      <app-radiolist [options]="options" (onOptionSelected)="showSubpart($event)" [(actualBtn)]="actualSubareaBtn"></app-radiolist>
     </div>
   </div>
   
