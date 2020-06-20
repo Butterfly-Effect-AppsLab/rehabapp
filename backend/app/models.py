@@ -15,23 +15,6 @@ tree_references = Table('tree_references', Base.metadata,
                         )
 
 
-class SelfDiagnosticSequence(Base):
-    __tablename__ = 'sequences'
-    id = Column(Integer, primary_key=True)
-    next_id = Column(Integer, ForeignKey('sequences.id'), nullable=True)
-    option_id = Column(
-        Integer,
-        ForeignKey(
-            'options.id',
-            ondelete='CASCADE',
-            onupdate='CASCADE'
-        ), nullable=False
-    )
-
-    next = relationship("SelfDiagnosticSequence", cascade="delete")
-    option = relationship("Option")
-
-
 class Diagnose(Base):
     __tablename__ = "diagnoses"
 
@@ -59,23 +42,10 @@ class UserDiagnose(Base):
 
     id = Column(Integer, primary_key=True)
 
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
     diagnose_id = Column(Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
-    sequence_id = Column(Integer, ForeignKey('sequences.id', ondelete='CASCADE'))
 
     diagnose = relationship("Diagnose", cascade="delete")
-    seq = relationship("SelfDiagnosticSequence", cascade="delete")
-
-    def gen_sequence(self, seq, arr):
-        arr.append(seq.id)
-        if seq.next is None:
-            return arr
-        arr = self.gen_sequence(seq.next, arr)
-        return arr
-
-    @property
-    def sequence(self):
-        return self.gen_sequence(self.seq, [])
 
 
 class Color(Base):
@@ -316,7 +286,7 @@ class User(Base):
     sex = Column(String)
     birthday = Column(Date)
 
-    diagnoses = relationship("UserDiagnose", cascade="delete")
+    diagnoses = relationship('Diagnose', secondary="user_diagnoses")
 
     def generate_password(self, pwd):
         return hashpw(pwd.encode(), gensalt()).decode()

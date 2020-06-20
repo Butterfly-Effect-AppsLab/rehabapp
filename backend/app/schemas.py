@@ -20,6 +20,7 @@ class UserSchema(Schema):
 
 
 class DiagnoseSchema(Schema):
+    id = fields.Int(dump_only=True)
     name = fields.Str()
     svk = fields.Str(default='')
     definition = fields.Str(default=None)
