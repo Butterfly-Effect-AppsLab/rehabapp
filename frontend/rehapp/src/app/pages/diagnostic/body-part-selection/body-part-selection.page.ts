@@ -84,8 +84,7 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   ngAfterViewInit() {
-
-    if (this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first)
+    if (this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first) 
       this.areaSubmitted = true;
   }
 
@@ -457,7 +456,7 @@ export class BodyPartSelectionPage implements OnInit {
 
       await this.stateService.startLoading();
       await this.reset();
-      this.router.navigate(['/diagnostic'])
+      this.router.navigate(['/diagnostic/self-diagnostic'])
     }
   }
 }
