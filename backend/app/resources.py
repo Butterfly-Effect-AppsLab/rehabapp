@@ -123,6 +123,20 @@ class RegistrationResource:
                 res.status = falcon.HTTP_400
 
 
+class CheckEmailResource:
+    def on_post(self, req, res):
+
+        session = req.context.session
+
+        exist_user = session.query(User).filter(User.email == req.media['email']).first()
+
+        if exist_user:
+            res.media = "User with email already exists"
+            res.status = falcon.HTTP_400
+        else:
+            res.status = falcon.HTTP_NO_CONTENT
+
+
 class LoginResource:
     def on_post(self, req, res):
 
