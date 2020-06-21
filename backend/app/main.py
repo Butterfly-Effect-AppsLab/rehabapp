@@ -31,7 +31,7 @@ def init_api():
     api_tmp.add_route('/refresh', RefreshTokenResource())
     api_tmp.add_route('/users/me', MeResource())
     api_tmp.add_route('/checkEmail', CheckEmailResource())
-    # api_tmp.add_route('/users/diagnoses/{diagnose_id:int}', UserDiagnosesResource())
+    api_tmp.add_route('/collectDiagnoses', CollectDiagnosesResource())
     return api_tmp
 
 

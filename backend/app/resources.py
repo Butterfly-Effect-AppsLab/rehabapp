@@ -195,25 +195,48 @@ class RefreshTokenResource:
         }
 
 
-class UserDiagnosesResource:
-    def on_put(self, req, res, diagnose_id):
+class CollectDiagnosesResource:
+    def on_post(self, req, res):
 
         session = req.context.session
 
-        user = req.context.user
-
-        diagnose = session.query(Diagnose).filter(Diagnose.id == diagnose_id).first()
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
 
         if not diagnose:
             res.media = "Diagnose doesn't exist"
             res.status = falcon.HTTP_404
-        else:
-            user.diagnoses.append(diagnose)
+            return
 
-            session.add(user)
+        if req.context.user:
+
+            user = req.context.user
+
+            if diagnose in user.diagnoses:
+                res.media = "User already has diagnose"
+                res.status = falcon.HTTP_400
+            else:
+                user.diagnoses.append(diagnose)
+
+                session.add(user)
+                session.flush()
+
+                res.status = falcon.HTTP_200
+                res.media = {
+                    'diagnoses': [d.unique_id for d in user.diagnoses]
+                }
+
+        else:
+            collect = UserDiagnose()
+            collect.diagnose = diagnose
+
+            session.add(collect)
             session.flush()
 
-            res.status = falcon.HTTP_204
+            res.status = falcon.HTTP_201
+            res.media = {
+                'collected_id': collect.id
+            }
+
 
 
 class ForgotPasswordResource:

@@ -18,6 +18,7 @@ export class Area implements TreeComponent {
 }
 
 export class Diagnose implements TreeComponent {
+    id: number
     name: string
     type: string
     definition: string = "Informácie budú doplnené neskôr"
