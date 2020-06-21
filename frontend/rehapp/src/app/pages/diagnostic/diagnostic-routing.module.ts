@@ -8,7 +8,7 @@ const routes: Routes = [
     redirectTo: 'selection'
   },
   {
-    path: 'diagnostic',
+    path: 'self-diagnostic',
     loadChildren: () => import('./self-diagnostic/self-diagnostic.module').then(m => m.SelfDiagnosticPageModule)
   },
   {
@@ -19,6 +19,11 @@ const routes: Routes = [
     path: 'search',
     loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
   },
+  {
+    path: 'choice',
+    loadChildren: () => import('./prediagnostic-choice/prediagnostic-choice.module').then( m => m.PrediagnosticChoicePageModule)
+  },
+
 ]; 
 
 @NgModule({

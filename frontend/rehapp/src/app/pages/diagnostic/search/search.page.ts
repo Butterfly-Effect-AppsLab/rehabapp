@@ -41,8 +41,7 @@ export class SearchPage implements OnInit {
           if (property.startsWith("d_"))
           this.allOptions.push({text: value.name});
         }
-        
-        this.options = this.allOptions;
+        this.options = this.allOptions.sort((a,b) => (a['text'] > b['text'] ? 1 : -1))
       }    
     }, 1000);    
   }
@@ -80,6 +79,7 @@ export class SearchPage implements OnInit {
   }
   
   submit() {
-    this.router.navigateByUrl('/login');
+    if (this.selected != "")
+      this.router.navigateByUrl('/login');
   }
 }

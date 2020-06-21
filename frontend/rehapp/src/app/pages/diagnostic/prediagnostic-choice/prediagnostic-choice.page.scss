@@ -1,6 +1,6 @@
 #header {
     ion-toolbar {
-        --background: transparent;
+        --background: var(--light);
         
         ion-button {
             --color: var(--dark);

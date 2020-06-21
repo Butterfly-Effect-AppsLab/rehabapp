@@ -33,27 +33,8 @@ export class SliderPage implements OnInit {
   ngOnInit() {        
   }
 
-  async presentYesNoAlert() {
-    const alert = await this.alertController.create({
-      cssClass: 'app-alert',
-      header: 'Poznáte svoju diagnózu?',
-      buttons: [
-        {
-          text: 'Áno',
-          handler: () => { this.router.navigateByUrl('/diagnostic/search') }
-        }, 
-        {
-          text: 'Nie',
-          handler: () => { this.router.navigateByUrl('/diagnostic/selection') }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
   async skip() {
-    await this.presentYesNoAlert();
+    await this.router.navigateByUrl('diagnostic/choice');
   }
 
   sliderClicked(event: MouseEvent) {
