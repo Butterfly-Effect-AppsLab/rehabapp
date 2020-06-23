@@ -15,15 +15,11 @@ const routes: Routes = [
   },
   {
     path: 'onboarding',
-    loadChildren: () => import('./pages/onboarding/onboarding-routing.module').then(m => m.OnboardingPageRoutingModule)
+    loadChildren: () => import('./pages/onboarding/onboarding-routing.module').then(m => m.OnboardingRoutingModule)
   },
   {
     path: 'diagnostic',
-    loadChildren: () => import('./pages/self-diagnostic/self-diagnostic.module').then(m => m.SelfDiagnosticPageModule)
-  },
-  {
-    path: 'selection',
-    loadChildren: () => import('./pages/body-part-selection/body-part-selection.module').then(m => m.BodyPartSelectionPageModule)
+    loadChildren: () => import('./pages/diagnostic/diagnostic-routing.module').then(m => m.DiagnosticRoutingModule)
   },
   {
     path: 'registration', canActivate: [LoginGuard],
@@ -34,13 +30,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/account/login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'video',
-    loadChildren: () => import('./pages/video/video.module').then( m => m.VideoPageModule)
-  },  {
-    path: 'chart',
-    loadChildren: () => import('./pages/chart/chart.module').then( m => m.ChartPageModule)
+    path: 'chart', 
+    loadChildren: () => import('./pages/chart/chart.module').then(m => m.ChartPageModule)
   },
-
+  {
+    path: 'video',
+    loadChildren: () => import('./pages/video/video.module').then(m => m.VideoPageModule)
+  },
 
 ];
 

@@ -1,19 +1,20 @@
-<ion-content>
-  <div id="header">
-    <ion-button *ngIf="areaSubmitted" (click)="back()" slot="start" fill="clear" style="--color: var(--dark)">
-      <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
-    </ion-button>
-    <ion-button *ngIf="!areaSubmitted" (click)="refresh()" slot="start" fill="clear" style="--color: var(--dark)">
-      <ion-icon name="refresh-outline"></ion-icon>
-    </ion-button>
-    <p *ngIf="!areaSelected" style="margin-left: -10%;">
-      Vyberte bolestivú oblasť
-    </p>
-    <p *ngIf="areaSelected && this.stateService.actualTreeComponent.getValue().type=='area'" style="margin-left: -10%;">
-      {{this.stateService.actualTreeComponent.getValue().tree.text}}
-    </p>
-  </div>
+<ion-header id="header" class="ion-no-border">
+  <ion-button (click)="back()" slot="start" fill="clear" class="icon left">
+    <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+    <p *ngIf="!areaSubmitted && !areaSelected">Späť</p>
+  </ion-button>
+  <p *ngIf="!areaSelected" class="title">
+    Vyberte bolestivú oblasť
+  </p>
+  <p *ngIf="areaSelected && this.stateService.actualTreeComponent.getValue().type=='area'" class="title">
+    {{this.stateService.actualTreeComponent.getValue().tree.text}}
+  </p>
+  <ion-button *ngIf="!areaSubmitted" (click)="refresh()" slot="end" fill="clear" class="icon right">
+    <ion-icon name="refresh-outline"></ion-icon>
+  </ion-button>
+</ion-header>
 
+<ion-content>
   <div id="body-wrapper" #bodyWrapper>
     <app-body #bodyComponent></app-body>
   </div>  
@@ -22,7 +23,7 @@
     <div #fader_top class="fade-effect fade-top"></div>
     <div #fader_bot class="fade-effect fade-bot"></div>
     <div id="buttons" #buttons (scroll)="removeFader($event)">
-      <app-subpart [options]="options" (onOptionSelected)="showSubpart($event)" [(actualBtn)]="actualSubareaBtn"></app-subpart>
+      <app-radiolist [options]="options" (onOptionSelected)="showSubpart($event)" [(actualBtn)]="actualSubareaBtn"></app-radiolist>
     </div>
   </div>
   

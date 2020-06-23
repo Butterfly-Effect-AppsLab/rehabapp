@@ -1,15 +1,3 @@
-<ion-header id="header" class="ion-no-border">
-  <ion-toolbar>
-    <ion-button (click)="back()" slot="start" fill="clear">
-      <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
-      Späť
-    </ion-button>
-    <ion-button (click)="redirect()" slot="end" fill="clear">
-      <ion-icon name="close-outline"></ion-icon>
-    </ion-button>
-  </ion-toolbar>
-</ion-header>
-
 <div id="content">
   <div id="main">
     <h1 [style.fontSize.%]="h1Size">{{diagnose.name | uppercase}}</h1>

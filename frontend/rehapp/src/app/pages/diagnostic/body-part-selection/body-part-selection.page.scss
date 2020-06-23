@@ -1,27 +1,42 @@
-#main-grid {
-  padding: 0px;
+#header {
+  background: var(--light);
+  color: var(--dark);
+  padding: 2%;
+  height: 8vh;
 
-  >ion-row {
-    padding: 0px;
+  .title {
+    position: absolute;
+    text-align: center;
+    width: 60%;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%);
+  }
 
-    >ion-col {
-      padding: 0px;
-    }
+  .icon {
+    --color: var(--dark);
+    position: absolute;
+    top: 7px;
+    display: block !important;    
+  }
+  .right {
+    right: 0%;
+  }
+
+  .left {
+    left: 0%;
   }
 }
 
-#header {
-  height: 8vh;
-  position: relative;
-  padding: 2%;
-  width: 100%;
-  display: flex;
-  align-items: center;
+#main-grid {
+  padding: 0px;
 
-  p {
-    margin: 0px;
-    text-align: center;
-    width: 100%;
+  > ion-row {
+    padding: 0px;
+
+    > ion-col {
+      padding: 0px;
+    }
   }
 }
 
@@ -58,7 +73,7 @@
   position: relative;
 }
 
-#buttons-wrapper{
+#buttons-wrapper {
   position: relative;
 
   .fade-effect {
@@ -68,18 +83,18 @@
     width: 100%;
     z-index: 100;
     pointer-events: none;
-    background: rgb(246,241,238);
+    background: rgb(246, 241, 238);
   }
 
   .fade-top {
     top: 0;
     display: none;
-    background: linear-gradient(0deg, rgba(138, 190, 196, 0) 0%, rgba(246,241,238,1) 100%);
+    background: linear-gradient(0deg, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 100%);
   }
 
   .fade-bot {
     bottom: 0;
-    background: linear-gradient(0deg, rgba(246,241,238,1) 0%, rgba(246,241,238,0) 100%);
+    background: linear-gradient(0deg, rgba(229, 229, 229, 1) 0%, rgba(229, 229, 229, 0) 100%);
   }
 }
 
@@ -87,7 +102,7 @@ $gapSize: 3px;
 
 .custom-btn {
   width: 80%;
-  border: 2px solid #012C3D;
+  border: 2px solid #012c3d;
   border-radius: 50px;
   margin: 0 auto;
   position: relative;
@@ -114,8 +129,6 @@ $gapSize: 3px;
     }
   }
 }
-
-
 
 .not-selected {
   background-color: var(--light);

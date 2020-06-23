@@ -1,0 +1,63 @@
+.title {
+    text-transform: none;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.searchbar {
+    width: 90%;
+    margin: auto;
+    --background: #dfe3e3;
+    --color: var(--dark);
+    --border-radius: 15px;
+    --box-shadow: none;
+
+    ion-icon {
+        color: #67808B;
+    }
+}
+
+.fade-wrapper {
+    position: absolute;
+    height: 70%;
+    width: 95%;
+    margin: auto;
+    left: 0;
+    right: 0;
+
+    .scrollable {
+        height: 100%;
+        overflow: scroll;
+    }
+
+    .fade-effect {
+        position: absolute;
+        height: 3em;
+        width: 100%;
+        background: var(--blue);
+        z-index: 100;
+
+        pointer-events: none;
+    }
+
+    .fade-top {
+        top: 0;
+        display: none;
+        background: linear-gradient(0deg, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 100%);
+    }
+
+    .fade-bot {
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(229, 229, 229, 1) 0%, rgba(229, 229, 229, 0) 100%);
+    }
+}
+
+.btn-div {
+    position: absolute;
+    bottom: 2%;
+    left: 7%;
+    right: 7%;
+    height: 2.5em;
+}

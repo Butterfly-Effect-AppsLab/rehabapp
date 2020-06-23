@@ -30,18 +30,4 @@ export class QuestionComponent implements OnInit {
     this.options = this.question.options;       
     this.background.nativeElement['style']['backgroundColor'] = this.question.style["background-color"];
   }
-
-  back() {
-    this.onBack.emit();
-  }
-
-  redirect() {
-    this.stateService.actualTreeComponent.next(null);
-    this.stateService.resetValues = true;
-
-    while (this.stateService.componentStack.length > 0)
-      this.stateService.componentStack.pop();
-
-    this.router.navigate(['/selection']);
-  }
 }

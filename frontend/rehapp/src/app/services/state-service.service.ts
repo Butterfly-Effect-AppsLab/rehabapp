@@ -131,7 +131,7 @@ export class StateService {
 
     if (this.actualTreeComponent.getValue().type == "area") {
       await this.startLoading();
-      this.router.navigateByUrl('/selection');
+      this.router.navigateByUrl('/diagnostic');
     }
   }
 
