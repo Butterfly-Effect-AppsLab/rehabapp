@@ -8,6 +8,9 @@ import { BodyPartSelectionPageRoutingModule } from './body-part-selection-routin
 
 import { BodyPartSelectionPage } from './body-part-selection.page';
 import { DiagnosticModule } from 'src/app/pluginzz/diagnostic/diagnostic.module';
+import { RadioListComponent } from 'src/app/pluginzz/radiolist/radiolist.component';
+import { BodyModule } from 'src/app/pluginzz/diagnostic/body.module';
+import { RadioListModule } from 'src/app/pluginzz/radiolist/radiolist.module';
 
 
 @NgModule({
@@ -16,8 +19,10 @@ import { DiagnosticModule } from 'src/app/pluginzz/diagnostic/diagnostic.module'
     FormsModule,
     IonicModule,
     BodyPartSelectionPageRoutingModule,
-    DiagnosticModule
+    DiagnosticModule,
+    BodyModule,
+    RadioListModule
   ],
-  declarations: [BodyPartSelectionPage]
+  declarations: [BodyPartSelectionPage],
 })
 export class BodyPartSelectionPageModule {}

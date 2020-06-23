@@ -1,0 +1,32 @@
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Späť" icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-label class="title">Zvoľte svoju diagnózu</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar #searchbar animated placeholder="Vyhľadať diagnózu" class="searchbar"></ion-searchbar>
+
+  <div class="fade-wrapper">
+    <div #fader_top class="fade-effect fade-top"></div>
+    <div #fader_bot class="fade-effect fade-bot"></div>
+    <div (scroll)="removeFader($event)" class="scrollable">
+      <app-radiolist [options]="options" enableUnselect="true" (onOptionSelected)="optionSelected($event)"
+        [(actualBtn)]="selectedOption">
+      </app-radiolist>
+    </div>
+  </div>
+
+  <div class="form-buttons">
+    <div class="btn-div">
+      <ion-button (click)="submit()" expand="block" [fill]="selected != '' ? 'solid' : 'outline'" shape="round"
+        class="app-big-btn" [ngClass]="selected != '' ? 'app-button-dark' : 'app-button-light'">
+        Pokračovať
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
