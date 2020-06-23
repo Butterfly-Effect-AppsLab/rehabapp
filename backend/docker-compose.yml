@@ -5,7 +5,7 @@ services:
     build: .
     command: >
       bash -c "alembic upgrade head
-      && gunicorn main:api -b :8080 --reload"
+      && gunicorn main:api -b :8080 -k gevent --reload"
     volumes:
       - ./app:/usr/src/app/app
     ports:

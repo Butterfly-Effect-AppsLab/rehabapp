@@ -60,6 +60,12 @@ export class StateService {
     }
   }
 
+  async getVideoObject(keyToFind: string) {
+    const ret = await Storage.get({ key: keyToFind });
+
+    return ret
+  }
+
   async setObject(keyToSave: string, objectToSave: object) {
     await Storage.set({
       key: keyToSave,

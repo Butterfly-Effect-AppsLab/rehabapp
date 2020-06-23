@@ -24,7 +24,7 @@ export class APIService {
     }
 
     public checkConnection() {
-        return this.http.get(environment.API_URL)
+        return this.http.get<any>(environment.API_URL, )
     }
 
     public getTree() {

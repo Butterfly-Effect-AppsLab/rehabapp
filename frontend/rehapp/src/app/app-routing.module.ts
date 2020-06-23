@@ -33,6 +33,15 @@ const routes: Routes = [
     path: 'login', canActivate: [LoginGuard],
     loadChildren: () => import('./pages/account/login/login.module').then(m => m.LoginPageModule)
   },
+  {
+    path: 'video',
+    loadChildren: () => import('./pages/video/video.module').then( m => m.VideoPageModule)
+  },  {
+    path: 'chart',
+    loadChildren: () => import('./pages/chart/chart.module').then( m => m.ChartPageModule)
+  },
+
+
 ];
 
 @NgModule({

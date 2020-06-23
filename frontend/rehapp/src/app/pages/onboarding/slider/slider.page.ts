@@ -22,7 +22,10 @@ export class SliderPage implements OnInit {
 
   buttonText: string = "Pokračovať";
 
-  constructor(private storageService:StorageService, private router: Router) {  
+  constructor(
+    private storageService:StorageService, 
+    private router: Router,
+    ) {  
     this.storageService.getUser().then( 
       (user) => {
         if (user != null)

@@ -1,7 +1,10 @@
 import sys
 from datetime import datetime, timedelta
+
+import cv2
 import falcon
 import jwt
+import msgpack
 from jwt import InvalidSignatureError, DecodeError, InvalidTokenError, ExpiredSignatureError
 from marshmallow import ValidationError
 from config import KEY
@@ -10,11 +13,37 @@ from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema
 from send_email import send_email
 import hashlib
 import json
+import base64
+
+
+def gen():
+    video = cv2.VideoCapture('Rehappka.mp4')
+    i = 0
+    success = True
+    while success:
+        success, image = video.read()
+        i+=1
+        print(i)
+        ret, jpeg = cv2.imencode('.jpg', image)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
 
 
 class TestResource:
     def on_get(self, req, res):
-        res.media = "Saying HI from RehabApp API :)"
+        # res.media = "Saying HI from RehabApp API :)"
+        # labeled_frame = gen()
+        # res.content_type = 'multipart/x-mixed-replace; boundary=frame'
+        # res.stream = labeled_frame
+        # res.content_type = 'application/octet-stream'
+        # print(open('Rehappka.mp4', 'rb').read())
+        # res.data = open('Rehappka.mp4', 'rb').read()
+        video = open('Rehappka.mp4', 'rb').read()
+
+        res.media = {
+            'video': base64.b64encode(video).decode('utf-8'),
+            # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
+        }
 
 
 class QuestionsResource:
