@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { APIService } from 'src/app/services/apiservice.service';
 import { Area, Option } from 'src/app/services/models/Tree';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
 import { BodyComponent } from 'src/app/pluginzz/diagnostic/body/body.component';
 

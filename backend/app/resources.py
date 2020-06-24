@@ -163,7 +163,7 @@ class LoginResource:
                     "access_token": jwt.encode({
                         "email": user.email,
                         "iat": datetime.utcnow(),
-                        "exp": datetime.utcnow() + timedelta(minutes=15)
+                        "exp": datetime.utcnow() + timedelta(minutes=1)
                     }, KEY, algorithm='HS256').decode('utf-8'),
                     "refresh_token": user.refresh_token
                 }
@@ -190,7 +190,7 @@ class RefreshTokenResource:
         res.media = {
             "access_token": jwt.encode({
                 "email": user.email,
-                "exp": datetime.utcnow() + timedelta(minutes=15)
+                "exp": datetime.utcnow() + timedelta(minutes=1)
             }, KEY, algorithm='HS256').decode('utf-8'),
         }
 

@@ -35,6 +35,25 @@ export class APIService {
         return this.http.get<any>(environment.API_URL + "questions/update/" + checksum, { observe: 'response' });     // full response with body, headers and response code
     }
 
+    public identify() {
+        return this.http.get<any>(environment.API_URL + "users/me")
+    }
+
+    public refresh(token: {"refresh_token": string}) {
+        return this.http.post<any>(environment.API_URL + "refresh", token, HTTP_OPTIONS)
+    }
+
+    public collect() {
+        return this.http.post<any>(environment.API_URL + "collectDiagnoses", {"diagnose_id" : 78}, HTTP_OPTIONS)
+    }
+
+    public checkEmail(email: object) {
+        return this.http.post<string>(environment.API_URL + "checkEmail", email, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
     public registrateUser(user: User) {
 
         return this.http.post<User>(environment.API_URL + "registration", user.toJSON(), HTTP_OPTIONS)

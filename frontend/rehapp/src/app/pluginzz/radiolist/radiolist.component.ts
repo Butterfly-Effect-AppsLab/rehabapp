@@ -30,8 +30,12 @@ export class RadioListComponent implements OnInit {
     }
 
     if (this.enableUnselect) {
-      if (this.actualBtn == (<Element>event.target)) 
-        this.actualBtn.classList.remove('selected-option');
+      if (this.actualBtn == (<Element>event.target)) {
+        if (this.actualBtn.classList.contains('selected-option'))
+          this.actualBtn.classList.remove('selected-option');
+        else 
+          this.actualBtn.classList.add('selected-option');
+      }
       else {
         this.actualBtn = (<Element>event.target);
         this.actualBtn.classList.add('selected-option');
