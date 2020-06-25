@@ -1,0 +1,17 @@
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Späť" icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<div id="componentDiv">
+  <app-question [question]="choice" (onAnswer)="childAnswered($event)" (onBack)="back()"></app-question>
+</div>
+
+
+</ion-content>

@@ -105,13 +105,19 @@ class AuthMiddleware(object):
             exclude_paths = []
         self.exclude_paths = exclude_paths
 
+    def get_path(self, path):
+        return path.split("/")[1]
+
     def require_auth(self, path):
-        if path.split("/")[1] in self.exclude_paths:
+        path = self.get_path(path)
+        if path in self.exclude_paths:
             return False
         return True
 
     def authenticate(self, req):
         if not req.auth:
+            if self.get_path(req.path) == 'collectDiagnoses':
+                return None
             raise HTTPUnauthorized(description="No token")
         token = req.auth.split(" ")[1]
         try:

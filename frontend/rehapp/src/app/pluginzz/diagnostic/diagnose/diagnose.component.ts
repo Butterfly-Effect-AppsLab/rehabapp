@@ -36,10 +36,6 @@ export class DiagnoseComponent implements OnInit {
 
   }
 
-  back() {
-    this.onBack.emit();
-  }
-
   setArea(area: string) {
     if (this.area == area)
       this.area = "";
@@ -47,18 +43,8 @@ export class DiagnoseComponent implements OnInit {
       this.area = area;
   }
 
-  redirect() {
-    this.stateService.actualTreeComponent.next(null);
-    this.stateService.resetValues = true;
-
-    while (this.stateService.componentStack.length > 0)
-      this.stateService.componentStack.pop();
-
-    this.router.navigate(['/selection']);
-  }
-
   continue() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/dashboard');
   }
 
   @HostListener('scroll', ['$event'])
