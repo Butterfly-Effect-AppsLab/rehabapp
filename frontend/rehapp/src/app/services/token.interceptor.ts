@@ -13,13 +13,14 @@ export class TokenInterceptor implements HttpInterceptor {
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
-    private apiService: APIService  ) { }
+    private apiService: APIService, private storage: StorageService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: any) => {
         if (error.status === 401) {
-          return this.handle401Error(request, next);
+          if (error.error['description'] === "Token has expired")
+            return this.handle401Error(request, next);
         }
         return throwError(error);
       })
