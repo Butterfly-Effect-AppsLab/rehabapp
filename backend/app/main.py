@@ -1,5 +1,3 @@
-import falcon
-
 from middlewares import SessionMiddleware, CORSMiddleware, AuthMiddleware
 from resources import *
 

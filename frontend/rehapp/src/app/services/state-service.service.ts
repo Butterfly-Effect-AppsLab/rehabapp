@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import { LoadingController } from '@ionic/angular';
 import { User } from './models/User';
+import { encode } from 'punycode';
+import {Md5} from 'ts-md5/dist/md5';
 
 const { Storage } = Plugins;
 
@@ -33,6 +35,7 @@ export class StateService {
   updateTree(resp) {
     this.questions = resp['questions'];
     this.checksum = resp['checksum'];
+    console.log(this.questions);
     this.setObject('tree', resp);
   }
 
@@ -63,7 +66,7 @@ export class StateService {
   async getVideoObject(keyToFind: string) {
     const ret = await Storage.get({ key: keyToFind });
 
-    return ret
+    return JSON.parse(ret.value);
   }
 
   async setObject(keyToSave: string, objectToSave: object) {

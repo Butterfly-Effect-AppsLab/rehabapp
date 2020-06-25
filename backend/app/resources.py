@@ -35,15 +35,15 @@ class TestResource:
         # labeled_frame = gen()
         # res.content_type = 'multipart/x-mixed-replace; boundary=frame'
         # res.stream = labeled_frame
-        # res.content_type = 'application/octet-stream'
+        res.content_type = 'video/mp4'
         # print(open('Rehappka.mp4', 'rb').read())
-        # res.data = open('Rehappka.mp4', 'rb').read()
-        video = open('Rehappka.mp4', 'rb').read()
+        res.data = open('Rehappka.mp4', 'rb').read()
+        # video = open('Rehappka.mp4', 'rb').read()
 
-        res.media = {
-            'video': base64.b64encode(video).decode('utf-8'),
-            # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
-        }
+        # res.media = {
+        #     'video': base64.b64encode(video).decode('utf-8'),
+        #     # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
+        # }
 
 
 class QuestionsResource:

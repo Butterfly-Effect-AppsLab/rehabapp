@@ -8,10 +8,9 @@ import { catchError } from 'rxjs/operators';
 
 
 const HTTP_OPTIONS = {
-    // headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'jwt-token'
-    // }),
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+    }),
     observe: 'response' as const,
 };
 
@@ -24,7 +23,7 @@ export class APIService {
     }
 
     public checkConnection() {
-        return this.http.get<any>(environment.API_URL, )
+        return this.http.get<any>(environment.API_URL, {responseType: 'blob' as 'json'})
     }
 
     public getTree() {

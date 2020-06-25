@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from 'chart.js';
+import { StateService } from 'src/app/services/state-service.service';
+import { APIService } from 'src/app/services/apiservice.service';
 
 @Component({
   selector: 'app-chart',
@@ -10,9 +12,15 @@ export class ChartPage implements OnInit {
 
   @ViewChild('chart', { static: false }) chart: ElementRef;
 
-  constructor() { }
+  constructor(
+    private stateService: StateService,
+    private apiService: APIService
+  ) { }
 
   ngOnInit() {
+    // this.apiService.getMe().subscribe((resp)=>{
+    //   console.log(resp);
+    // });
   }
 
   ionViewDidEnter(){
