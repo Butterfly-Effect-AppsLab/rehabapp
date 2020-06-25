@@ -18,22 +18,32 @@ export class AuthTokenInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(this.addAuthentication(request));
-  }
-
-  private addAuthentication(request: HttpRequest<any>): HttpRequest<any> {
-
     const found = AUTH_URLS.find(url => url === request.url.split(environment.API_URL)[1]);
+    if (!found)
+      return next.handle(request);
 
-    if (found) {
-      const token = this.storage.getAccessToken();
-      console.log('tokeeeeeeeeeeeeen', token);
-      if (token) {
-        request = request.clone({
-          setHeaders: { Authorization: 'Bearer ' + token }
-        });
-      }
-    }
-    return request.clone();
+    return this.storage.getAccessToken()
+      .pipe(
+        mergeMap((token: string) => {
+          return next.handle(this.addAuthorizationHeader(request, token));
+        })
+      )
   }
+
+
+  addAuthorizationHeader(request: HttpRequest<any>, token: string): HttpRequest<any> {
+    if (token) {
+      const clonedRequest = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      return clonedRequest;
+    }
+    else {
+      console.log("Token is not available. Please check the local storage.");
+      return request;
+    }
+  }
+
 }
