@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account.service';
 import { Plugins } from '@capacitor/core';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 
 const { Storage } = Plugins;
 

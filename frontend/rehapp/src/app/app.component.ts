@@ -7,8 +7,8 @@ import { AccountService } from './services/account.service';
 import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
-import { StateService } from './services/state-service.service';
 import { APIService } from './services/apiservice.service';
+import { StateService } from './services/state.service';
 const { App } = Plugins;
 
 @Component({
@@ -37,7 +37,7 @@ export class AppComponent {
       this.accountService.loginSavedUser();
     });
 
-    let page = window.location.href.split(':8000').pop().split('?')[0];
+    let page = window.location.href.split(':8100').pop().split('?')[0];
     let params = window.location.href.split('?')[1];
 
     switch (page) {
