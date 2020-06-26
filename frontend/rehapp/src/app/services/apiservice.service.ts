@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { environment } from '../../environments/environment'
 import { Observable, throwError } from 'rxjs';
 import { User } from './models/User';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 
 
@@ -48,7 +48,7 @@ export class APIService {
 
         return this.storage.getrefreshToken()
             .pipe(
-                mergeMap((token: string) => {
+                switchMap((token: string) => {
                     return this.http.post<any>(environment.API_URL + "refresh", {
                         "refresh_token": token
                     }, HTTP_OPTIONS)

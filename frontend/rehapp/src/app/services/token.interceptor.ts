@@ -8,7 +8,7 @@ import { APIService } from './apiservice.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  
+
   isRefreshingToken = false;
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
@@ -37,15 +37,15 @@ export class TokenInterceptor implements HttpInterceptor {
       this.isRefreshingToken = true;
       this.tokenSubject.next(null);
 
-      return this.apiService.refresh().pipe(switchMap(token => {
-        console.log('tokeeeeeeeeeeeeeen',token.body['access_token']);
-        if (token) {
-          this.storage.setItem('access_token', token.body['access_token']);
-          this.tokenSubject.next(token.body['access_token']);
-          return next.handle(request);
-        }
-        // return of(<any>this.authenticationService.logout());
-      }),
+      return this.apiService.refresh().pipe(
+        switchMap(token => {
+          if (token) {
+            this.storage.setItem('access_token', token.body['access_token']);
+            this.tokenSubject.next(token.body['access_token']);
+            return next.handle(request);
+          }
+          // return of(<any>this.authenticationService.logout());
+        }),
         catchError(err => {
           // this.authenticationService.logout();
           return throwError(err.error);

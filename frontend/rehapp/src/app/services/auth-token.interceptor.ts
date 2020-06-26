@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject, observable, from } from 'rxjs';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
-import { mergeMap, catchError, take, switchMap, filter } from 'rxjs/operators'
+import { mergeMap } from 'rxjs/operators'
 
 import { environment } from 'src/environments/environment'
-import { APIService } from './apiservice.service';
 
 const AUTH_URLS: Array<string> = ["users/me", "collectDiagnoses"]
-
 
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {
@@ -30,7 +28,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       )
   }
 
-
   addAuthorizationHeader(request: HttpRequest<any>, token: string): HttpRequest<any> {
     if (token) {
       const clonedRequest = request.clone({
@@ -45,5 +42,4 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       return request;
     }
   }
-
 }
