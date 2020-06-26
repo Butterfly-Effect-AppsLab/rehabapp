@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from 'src/app/services/models/Tree';
 import { Router } from '@angular/router';
+import { StateService } from 'src/app/services/state-service.service';
 
 @Component({
   selector: 'app-prediagnostic-choice',
@@ -33,7 +34,7 @@ export class PrediagnosticChoicePage implements OnInit {
     type: null
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private stateService: StateService) { }
 
   ngOnInit() {
   }
@@ -42,7 +43,7 @@ export class PrediagnosticChoicePage implements OnInit {
     if (ref === '1')
       this.router.navigateByUrl('diagnostic/search')
     else if (ref === '2')
-      this.router.navigateByUrl('diagnostic/selection')
+      this.stateService.navigateToBodyPage();
     else 
       alert('chyba')
   }

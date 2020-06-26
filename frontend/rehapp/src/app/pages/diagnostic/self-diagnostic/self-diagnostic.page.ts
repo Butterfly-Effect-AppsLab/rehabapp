@@ -63,12 +63,6 @@ export class SelfDiagnosticPage implements OnInit {
   }
 
   redirect() {
-    this.stateService.actualTreeComponent.next(null);
-    this.stateService.resetValues = true;
-
-    while (this.stateService.componentStack.length > 0)
-      this.stateService.componentStack.pop();
-
-    this.router.navigate(['/diagnostic']);
+    this.stateService.navigateToBodyPage();
   }
 }

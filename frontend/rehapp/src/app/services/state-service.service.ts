@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ElementRef, HostListener } from '@angular/core';
 import { Question, TreeComponent } from './models/Tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { APIService } from './apiservice.service';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import { LoadingController } from '@ionic/angular';
 import { User } from './models/User';
+import { Element } from '@angular/compiler';
 
 const { Storage } = Plugins;
 
@@ -129,6 +130,29 @@ export class StateService {
     }
   }
 
+  public navigateToBodyPage() {
+      this.actualTreeComponent.next(null);
+      this.resetValues = true;
+  
+      while (this.componentStack.length > 0)
+        this.componentStack.pop();
+  
+      this.router.navigate(['/diagnostic']);    
+  }
+
+  @HostListener('scroll', ['$event'])
+  removeFader(scrollEvent, topFader: ElementRef, botFader: ElementRef){
+    // visible height + pixel scrolled >= total height 
+    if (scrollEvent.target.scrollTop == 0) 
+      topFader.nativeElement.style['display'] = "none";
+    else
+      topFader.nativeElement.style['display'] = "block";
+
+    if (scrollEvent.target.offsetHeight + scrollEvent.target.scrollTop >= scrollEvent.target.scrollHeight) 
+      botFader.nativeElement.style['display'] = "none";
+    else 
+      botFader.nativeElement.style['display'] = "block";
+  }
   
   set actualTreeComponent(state: BehaviorSubject<TreeComponent>) {
     this._actualTreeComponent = state;
