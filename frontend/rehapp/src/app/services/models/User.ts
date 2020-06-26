@@ -62,4 +62,8 @@ export class User {
     public set birthday(birthday: string) {
         this._birthday = birthday;
     }
+
+    public get name() {
+        return this._username;
+    }
 }

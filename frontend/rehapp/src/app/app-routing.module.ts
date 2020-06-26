@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard', canActivate: [DashboardGuard],
-    loadChildren: () => import('./pages/dashboard/dashboard-routing.module').then(m => m.DashboardRoutingModule)
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },
   {
     path: 'onboarding',

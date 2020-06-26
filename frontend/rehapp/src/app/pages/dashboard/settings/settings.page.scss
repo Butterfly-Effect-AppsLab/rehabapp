@@ -1,0 +1,91 @@
+.main {
+    position: relative;
+    height: 95%;
+    background-color: var(--light);
+    width: 95%;
+    margin: auto;
+
+    .header {
+        color: var(--dark);
+        width: 90%;
+        margin: auto;
+
+        .name_div {
+            h2 {
+                font-size: x-large;
+                font-weight: bold;
+                padding-left: 2%;
+            }
+        }
+        .logout_div {
+            padding-left: 2%;
+        }
+        .bottomline {
+            border-bottom: 2px solid var(--gray);
+            margin-bottom: 2%;
+        }
+    }
+
+    .diagnoses {        
+        .fade-wrapper {
+            position: absolute;
+            height: 70%;
+            width: 100%;
+    
+            .diagnoses_wrapper {
+                overflow: scroll;
+                height: 100%;
+    
+                .diag_list {
+                    background: #dfe3e3;
+                    margin: 2% 0%;
+                    border-radius: 20px;
+    
+                    .diag_item {
+                        --background: transparent;
+                        --color: var(--dark);
+                        font-weight: bold;
+    
+                        ion-button {
+                            --padding-end: 0%;
+                            font-size: 1.2em;
+    
+                            ion-icon {
+                                color: var(--dark);
+                            }
+                        }
+                    }
+                }
+            }
+            .fade-effect {
+                position: absolute;
+                height: 3em;
+                width: 100%;
+                background: var(--blue);
+                z-index: 100;
+                
+                pointer-events: none;
+            }
+            .fade-top {
+                top: 0;
+                display: none;
+                background: linear-gradient(0deg, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 100%);
+            }
+            .fade-bot {
+                bottom: 0;
+                background: linear-gradient(0deg, rgba(229, 229, 229, 1) 0%, rgba(229, 229, 229, 0) 100%);
+            }
+    }
+    }
+
+    .confirm {
+        position: absolute;
+        bottom: 2%;
+        left: 7%;
+        right: 7%;
+
+        .btn-div {
+            height: 2.5em;
+        }
+    }
+}

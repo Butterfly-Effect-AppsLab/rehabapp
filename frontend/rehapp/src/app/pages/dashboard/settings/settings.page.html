@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="main">
+    <div class="header">
+      <div class="name_div bottomline">
+        <h2 class="name">{{username}}...</h2>
+      </div>
+      <div class="logout_div bottomline" (click)="logout()">
+        <ion-label>Odhlásiť sa</ion-label>
+      </div>
+    </div>
+    <div class="diagnoses">
+      <div class="fade-wrapper">
+        <div #fader_top class="fade-effect fade-top"></div>
+        <div #fader_bot class="fade-effect fade-bot"></div>
+        <div class="diagnoses_wrapper" (scroll)="removeFader($event)">
+          <ion-list *ngFor="let diag of diagnoses; let i = index" class="diag_list">
+            <ion-item class="diag_item" lines="none">
+              <ion-label>{{diag}}</ion-label>
+              <ion-button (click)="removeDiag(i)" fill="clear" slot="end">
+                <ion-icon name="close-outline"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </div>
+    <div class="confirm">
+      <div class="btn-div">
+        <ion-button (click)="addDiagnosis()" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
+          Pridať diagnózu
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

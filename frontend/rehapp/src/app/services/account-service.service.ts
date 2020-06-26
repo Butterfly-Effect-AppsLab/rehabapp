@@ -35,6 +35,7 @@ export class AccountService {
         
         if (user != null) {
           this.userLoggedIn = user;
+          this.router.navigateByUrl('dashboard')
         }
       }
     )
