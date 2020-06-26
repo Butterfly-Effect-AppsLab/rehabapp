@@ -12,7 +12,7 @@
 
         .name_div {
             h2 {
-                font-size: x-large;
+                font-size: xx-large;
                 font-weight: bold;
                 padding-left: 2%;
             }
@@ -27,30 +27,30 @@
         }
     }
 
-    .diagnoses {        
+    .diagnoses {
         .fade-wrapper {
             position: absolute;
             height: 70%;
             width: 100%;
-    
+
             .diagnoses_wrapper {
                 overflow: scroll;
                 height: 100%;
-    
+
                 .diag_list {
                     background: #dfe3e3;
                     margin: 2% 0%;
                     border-radius: 15px;
-    
+
                     .diag_item {
                         --background: transparent;
                         --color: var(--dark);
                         font-weight: bold;
-    
+
                         ion-button {
                             --padding-end: 0%;
                             font-size: 1.2em;
-    
+
                             ion-icon {
                                 color: var(--dark);
                             }
@@ -58,12 +58,12 @@
                     }
                 }
             }
-    }
+        }
     }
 
     .confirm {
         position: absolute;
-        bottom: 2%;
+        bottom: 0%;
         left: 7%;
         right: 7%;
 

@@ -1,16 +1,35 @@
 <ion-content>
   <div class="main">
-    <div class="main_icon">
-      <img src="../../../assets/images/logo.svg" alt="fitcoregym">
+    <div class="header">
+      <div class="name_div">
+        <h2 class="name">Vitajte {{user.username}}...</h2>
+      </div>
+      <h4>...dnes Vás čakajú tieto cvičenia. Robíte to pre seba, tak to neflákajte!</h4>
     </div>
-    <div class="main_div">
-      <h1>Vitajte <br /> {{user.username}}</h1>
+    <div class="diagnoses">
+      <div class="fade-wrapper">
+        <div #fader_top class="fade-effect fade-top"></div>
+        <div #fader_bot class="fade-effect fade-bot"></div>
+        <div class="program_wrapper" (scroll)="removeFader($event)">
+          <div class="programs" *ngFor="let diag of diagnoses; let i=index"> 
+            <div class="program" (click)="programSelected(i)" [ngClass]="{active:(i==selectedIndex)}">
+              <div class="video_img">
+                <div class="play" [ngClass]="{active_play:(i==selectedIndex)}"></div>
+              </div>
+              <ion-label class="program_txt">{{diag}}</ion-label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="login_btn">
-      <ion-button (click)="logout()" expand="block" fill="solid" shape="round" strong>
-        <p>Odhlásiť sa</p>
-      </ion-button>
+
+    <div class="confirm">
+      <div class="btn-div">
+        <ion-button (click)="begin()" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
+          Začať cvičenie
+        </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>
