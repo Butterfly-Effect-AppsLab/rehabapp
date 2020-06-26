@@ -156,6 +156,6 @@ class AuthMiddleware(object):
                 method as keyword arguments.
         """
 
-        if self.require_auth(req.path):
+        if req.method != "OPTIONS" and self.require_auth(req.path):
             req.context.user = self.authenticate(req)
 
