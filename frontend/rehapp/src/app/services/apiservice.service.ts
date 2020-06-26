@@ -61,6 +61,13 @@ export class APIService {
             );
     }
 
+    public sendCodeGoogle(code: string) {
+        return this.http.get<any>(environment.API_URL + "login/oauth/google/code?"+code, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.

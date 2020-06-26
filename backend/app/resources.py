@@ -1,4 +1,3 @@
-import sys
 from datetime import datetime, timedelta
 import falcon
 import jwt
@@ -8,9 +7,9 @@ from marshmallow import ValidationError
 from oauthlib.oauth2 import WebApplicationClient
 
 from config import KEY
-from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL
 from models import *
-from oauth import get_google_provider_cfg
+from oauth import get_google_provider_cfg, google_refresh_token
 from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema
 from send_email import send_email
 import hashlib
@@ -20,6 +19,18 @@ import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+access_token_exp = dict(days=0, hours=0, minutes=15, seconds=0)
+refresh_token_exp = dict(days=7, hours=0, minutes=0, seconds=0)
+
+redirect_url = f"{APP_URL}/login"
+
+
+def generate_token(payload, exp=None):
+    payload['iat'] = datetime.utcnow()
+    if exp:
+        payload['exp'] = datetime.utcnow() + timedelta(**exp)
+    return jwt.encode(payload, KEY, algorithm='HS256').decode('utf-8')
 
 
 class TestResource:
@@ -109,28 +120,69 @@ class RegistrationResource:
 
         exist_user = session.query(User).filter(User.email == req.media['email']).first()
 
-        if exist_user:
+        if exist_user and not exist_user.google:
             res.media = "User with email already exists"
             res.status = falcon.HTTP_400
-        else:
-            user_schema = UserSchema()
 
-            try:
-                user_schema.validate(req.media)
+            return
+
+        user_schema = UserSchema()
+
+        try:
+            user_schema.validate(req.media)
+
+            if exist_user:
+                user = exist_user
+                user.password = req.media['password']
+            else:
                 user = user_schema.load(req.media)
 
-                user.password = user.generate_password(req.media['password'])
+            session.add(user)
+            session.flush()
 
+            if exist_user:
+                refresh_token = generate_token({
+                    'id': user.id
+                }, refresh_token_exp)
+
+                token = UserTokens(
+                    user_id=user.id,
+                    refresh_token=refresh_token
+                )
+
+                session.add(token)
+                session.flush()
+
+                access_token = generate_token({
+                    'id': token.id
+                }, access_token_exp)
+
+                res.media = {
+                    'user': user_schema.dump(user),
+                    'refresh_token': refresh_token,
+                    'access_token': access_token,
+                }
+
+                res.status = falcon.HTTP_201
+            else:
+
+                token = generate_token({
+                    'id': user.id
+                }, access_token_exp)
+
+                user.verification_token = token
                 session.add(user)
                 session.flush()
 
-                res.status = falcon.HTTP_201
+                send_email(user.email, token)
 
-                res.media = user_schema.dump(user)
+                res.media = "Email has been sent."
 
-            except ValidationError as err:
-                res.media = err.messages
-                res.status = falcon.HTTP_400
+                res.status = falcon.HTTP_200
+
+        except ValidationError as err:
+            res.media = err.messages
+            res.status = falcon.HTTP_400
 
 
 class CheckEmailResource:
@@ -191,8 +243,7 @@ class OauthGoogleResource:
         # scopes that let you retrieve user's profile from Google
         request_uri = client.prepare_request_uri(
             authorization_endpoint,
-            # redirect_uri="http://192.168.99.102.xip.io:8000/login/oauth/google/callback",
-            redirect_uri="http://localhost:8100/login",
+            redirect_uri=redirect_url,
             scope=["openid", "email", "profile"],
             access_type='offline',
             prompt='consent'
@@ -202,11 +253,8 @@ class OauthGoogleResource:
             'request_uri': request_uri
         }
 
-
-class OauthGoogleCallbackResource:
-    def on_get(self, req, res):
-        base_url = f"{req.prefix}{req.path}"
-
+    # sign in with google
+    def on_get_code(self, req, res):
         code = req.params['code']
 
         google_provider_cfg = get_google_provider_cfg()
@@ -215,7 +263,7 @@ class OauthGoogleCallbackResource:
         token_url, headers, body = client.prepare_token_request(
             token_endpoint,
             authorization_response=req.url,
-            redirect_url=base_url,
+            redirect_url=redirect_url,
             code=code
         )
         token_response = requests.post(
@@ -228,31 +276,70 @@ class OauthGoogleCallbackResource:
         # Parse the tokens!
         tokens = client.parse_request_body_response(json.dumps(token_response.json()))
 
-        # userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
-        # uri, headers, body = client.add_token(userinfo_endpoint)
-        # userinfo_response = requests.get(uri, headers=headers, data=body)
-
-        refresh_response = requests.post(
-            'https://oauth2.googleapis.com/token',
-            data={
-                'client_id': GOOGLE_CLIENT_ID,
-                'client_secret': GOOGLE_CLIENT_SECRET,
-                'refresh_token': tokens['refresh_token'],
-                'grant_type': 'refresh_token'
-            }
-        )
-
-        # tokens = client.parse_request_body_response(json.dumps(token_response.json()))
-
         userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
         uri, headers, body = client.add_token(userinfo_endpoint)
         userinfo_response = requests.get(uri, headers=headers, data=body)
 
+        user_email = userinfo_response.json()['email']
+
+        session = req.context.session
+
+        user_schema = UserSchema()
+
+        # check if user has account
+        user = session.query(User).filter(User.email == user_email).first()
+
+        email_verified = userinfo_response.json()['email_verified']
+        # email_verified = False
+
+        if not email_verified:
+            res.status = falcon.HTTP_400
+            res.media = "Google account email not verified"
+            return
+
+        new_user = False
+
+        # user doesn't have account
+        if not user:
+            new_user = True
+            data = {
+                'email': userinfo_response.json()['email'],
+                'name': userinfo_response.json()['given_name'],
+                'google': True
+            }
+
+            user = user_schema.load(data)
+        else:
+            if user.verification_token:
+                user.verification_token = None
+            if not user.google:
+                user.google = True
+
+        session.add(user)
+        session.flush()
+
+        refresh_token = generate_token({
+            'id': user.id
+        }, refresh_token_exp)
+
+        token = UserTokens(
+            user_id=user.id,
+            refresh_token=refresh_token,
+            google_refresh_token=tokens['refresh_token']
+        )
+
+        session.add(token)
+        session.flush()
+
+        access_token = generate_token({
+            'id': token.id
+        }, access_token_exp)
+
         res.media = {
-            'req': req.params,
-            'res': json.dumps(token_response.json()),
-            'user': json.dumps(userinfo_response.json()),
-            'refresh': json.dumps(refresh_response.json())
+            'user': user_schema.dump(user),
+            'refresh_token': refresh_token,
+            'access_token': access_token,
+            'new_user': new_user
         }
 
 
@@ -376,7 +463,6 @@ class CollectDiagnosesResource:
             res.media = {
                 'collected_id': collect.id
             }
-
 
 
 class ForgotPasswordResource:

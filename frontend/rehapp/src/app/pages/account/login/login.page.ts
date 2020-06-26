@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account-service.service';
 import { Plugins } from '@capacitor/core';
+import { StateService } from 'src/app/services/state-service.service';
 
 const { Storage } = Plugins;
 
@@ -22,18 +23,29 @@ export class LoginPage implements OnInit {
   passHighlighter: string = "highlight-gray";
   valid: boolean;
 
-  constructor(private APIservice: APIService, private accountService: AccountService, 
-    private router: Router, private alertController: AlertController) { }
+  constructor(
+    private APIservice: APIService, 
+    private accountService: AccountService, 
+    private router: Router, 
+    private alertController: AlertController,
+    private stateService: StateService
+    ) {
+      accountService.loginError.subscribe((data)=>{
+        if(data)
+          this.presentAlert(data);
+          this.stateService.stopLoading();
+      })
+    }
 
   ngOnInit() {
     this.checkValidation();
   }
 
-  async presentAlert() {
+  async presentAlert(message: string = '...Váš e-mail, alebo heslo neboli zadané správne.') {
     const alert = await this.alertController.create({
       cssClass: 'app-alert',
       header: 'Chyba ...',
-      message: '...Váš e-mail, alebo heslo neboli zadané správne.',
+      message: message,
       buttons: ['OK']
     });
 

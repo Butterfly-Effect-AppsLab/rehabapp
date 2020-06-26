@@ -1,5 +1,6 @@
 from bcrypt import hashpw, gensalt, checkpw
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float
+from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float, \
+    Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from config import DB
@@ -277,19 +278,55 @@ class Option(Base):
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = (
+        CheckConstraint(
+            'password IS NOT NULL OR google IS TRUE',
+            name='at-least-one'
+        ),
+    )
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
     email = Column(String, unique=True)
-    password = Column(String)
-    refresh_token = Column(String, nullable=True)
+    _password = Column('password', String, nullable=True)
     sex = Column(String)
     birthday = Column(Date)
+    google = Column(Boolean, default=False)
+    verification_token = Column(String, nullable=True)
+    password_reset = Column(String, nullable=True)
 
     diagnoses = relationship('Diagnose', secondary="user_diagnoses")
 
-    def generate_password(self, pwd):
-        return hashpw(pwd.encode(), gensalt()).decode()
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, pwd):
+        self.password = hashpw(pwd.encode(), gensalt()).decode()
+
+    # def generate_password(self, pwd):
+    #     return hashpw(pwd.encode(), gensalt()).decode()
 
     def validate_password(self, pwd):
         return checkpw(pwd.encode(), self.password.encode())
+
+
+class UserTokens(Base):
+    __tablename__ = "user_tokens"
+
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey(
+            'users.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
+
+    refresh_token = Column(String)
+    google_refresh_token = Column(String, nullable=True)
+
+    user = relationship('User')
