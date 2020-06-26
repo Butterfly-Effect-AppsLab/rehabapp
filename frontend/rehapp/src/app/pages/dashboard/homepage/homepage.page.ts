@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/services/models/User';
-import { AccountService } from 'src/app/services/account-service.service';
-import { StateService } from 'src/app/services/state-service.service';
+import { AccountService } from 'src/app/services/account.service';
+import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-homepage',
@@ -16,7 +17,8 @@ export class HomepagePage implements OnInit {
   constructor(
     private accountService: AccountService, 
     private router: Router,
-    private stateService: StateService
+    private stateService: StateService,
+    private apiService: APIService
     ) {}
 
   ngOnInit() {
@@ -31,6 +33,17 @@ export class HomepagePage implements OnInit {
 
   logout() {
     this.accountService.logout();
+  }
+
+  identify() {
+    this.apiService.identify().subscribe(
+      (resp) => {
+        console.log(resp);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }
 

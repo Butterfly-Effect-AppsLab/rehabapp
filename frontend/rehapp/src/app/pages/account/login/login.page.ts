@@ -3,7 +3,7 @@ import { APIService } from 'src/app/services/apiservice.service';
 import { User } from 'src/app/services/models/User';
 import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
-import { AccountService } from 'src/app/services/account-service.service';
+import { AccountService } from 'src/app/services/account.service';
 import { Plugins } from '@capacitor/core';
 import { StateService } from 'src/app/services/state-service.service';
 
@@ -56,9 +56,6 @@ export class LoginPage implements OnInit {
 
     this.APIservice.loginUser(new User(null, this.usermail, this.password)).subscribe(
       response => {
-        console.log("status code: ", response.status);
-        console.log("response: ", response.body);
-
         if (response.status == 200) {
           this.accountService.login(response.body);
           this.router.navigateByUrl('/dashboard');

@@ -1,7 +1,7 @@
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AccountService } from './services/account-service.service';
+import { AccountService } from './services/account.service';
 
 // deeplinks
 import { Component, NgZone } from '@angular/core';

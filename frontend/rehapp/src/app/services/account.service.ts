@@ -38,12 +38,11 @@ export class AccountService {
     return this._loginError;
   }
 
-  loginSavedUser() {
+  loginSavedUser() { 
     this.storageService.getUser().then(
-      (user) => {
-        console.log("User found: ", user);
-        
+      (user: User) => { 
         if (user != null) {
+          console.log("User found: ", user);
           this.userLoggedIn = user;
         }
       }

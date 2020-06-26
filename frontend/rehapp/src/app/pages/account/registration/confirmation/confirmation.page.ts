@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from 'src/app/services/apiservice.service';
-import { StateService } from 'src/app/services/state-service.service';
-import { AccountService } from 'src/app/services/account-service.service';
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
+import { StateService } from 'src/app/services/state.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-confirmation',
