@@ -54,7 +54,7 @@ export class RegistrationPage implements OnInit {
     
     console.log(JSON.stringify(this.accountService.registratingUser));
 
-    this.router.navigateByUrl('dashboard/demography'); 
+    // this.router.navigateByUrl('dashboard/demography'); 
   }
 
   checkPasswords(control: FormGroup) {

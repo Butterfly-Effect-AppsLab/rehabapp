@@ -107,7 +107,8 @@ class UpdateQuestionsResource:
 
 class MeResource:
     def on_get(self, req, res):
-        user = req.context.user
+        session = req.context.session
+        user = session.query(User).filter(User.id == req.context.user_id).first()
 
         user_schema = UserSchema()
         res.media = user_schema.dump(user)
@@ -121,10 +122,7 @@ class RegistrationResource:
         exist_user = session.query(User).filter(User.email == req.media['email']).first()
 
         if exist_user and not exist_user.google:
-            res.media = "User with email already exists"
-            res.status = falcon.HTTP_400
-
-            return
+            raise falcon.HTTPBadRequest(description="User with email already exists")
 
         user_schema = UserSchema()
 
@@ -165,16 +163,15 @@ class RegistrationResource:
 
                 res.status = falcon.HTTP_201
             else:
-
                 token = generate_token({
                     'id': user.id
-                }, access_token_exp)
+                })
 
                 user.verification_token = token
                 session.add(user)
                 session.flush()
 
-                send_email(user.email, token)
+                send_email(user.email, token, 'confirmation')
 
                 res.media = "Email has been sent."
 
@@ -184,19 +181,51 @@ class RegistrationResource:
             res.media = err.messages
             res.status = falcon.HTTP_400
 
-
-class CheckEmailResource:
-    def on_post(self, req, res):
-
+    def on_post_confirmation(self, req, res):
         session = req.context.session
 
-        exist_user = session.query(User).filter(User.email == req.media['email']).first()
+        try:
+            payload = jwt.decode(req.media['token'], KEY, algorithm='HS256')
+        except ExpiredSignatureError:
+            raise falcon.HTTPBadRequest(description="Token has expired. Request a new one.")
+        except (InvalidSignatureError, DecodeError, InvalidTokenError):
+            raise falcon.HTTPBadRequest(description="Wrong token")
 
-        if exist_user:
-            res.media = "User with email already exists"
-            res.status = falcon.HTTP_400
-        else:
-            res.status = falcon.HTTP_NO_CONTENT
+        user = session.query(User).filter(User.id == payload['id']).first()
+
+        if not user:
+            raise falcon.HTTPBadRequest(description="Wrong token")
+
+        if not user.verification_token:
+            raise falcon.HTTPBadRequest(description="User already verified")
+
+        user.verification_token = None
+        session.add(user)
+        session.flush()
+
+        user_schema = UserSchema()
+
+        refresh_token = generate_token({
+            'id': user.id
+        }, refresh_token_exp)
+
+        token = UserTokens(
+            user_id=user.id,
+            refresh_token=refresh_token
+        )
+
+        session.add(token)
+        session.flush()
+
+        access_token = generate_token({
+            'id': token.id
+        }, access_token_exp)
+
+        res.media = {
+            'user': user_schema.dump(user),
+            'refresh_token': refresh_token,
+            'access_token': access_token,
+        }
 
 
 class LoginResource:
@@ -209,28 +238,36 @@ class LoginResource:
         if not user:
             raise falcon.HTTPUnauthorized(description="Wrong credentials")
         else:
-            if user.validate_password(req.media['password']):
 
-                user_schema = UserSchema()
+            if user.verification_token:
+                raise falcon.HTTPBadRequest(description="Email is not verified")
 
-                user.refresh_token = jwt.encode({
-                    "email": user.email,
-                    "iat": datetime.utcnow(),
-                }, KEY, algorithm='HS256').decode('utf-8')
-                session.add(user)
-                session.flush()
-
-                res.media = {
-                    "user": user_schema.dump(user),
-                    "access_token": jwt.encode({
-                        "email": user.email,
-                        "iat": datetime.utcnow(),
-                        "exp": datetime.utcnow() + timedelta(minutes=15)
-                    }, KEY, algorithm='HS256').decode('utf-8'),
-                    "refresh_token": user.refresh_token
-                }
-            else:
+            if not user.validate_password(req.media['password']):
                 raise falcon.HTTPUnauthorized(description="Wrong credentials")
+
+            user_schema = UserSchema()
+
+            refresh_token = generate_token({
+                'id': user.id
+            }, refresh_token_exp)
+
+            token = UserTokens(
+                user_id=user.id,
+                refresh_token=refresh_token
+            )
+
+            session.add(token)
+            session.flush()
+
+            access_token = generate_token({
+                'id': token.id
+            }, access_token_exp)
+
+            res.media = {
+                'user': user_schema.dump(user),
+                'refresh_token': refresh_token,
+                'access_token': access_token,
+            }
 
 
 class OauthGoogleResource:
@@ -293,9 +330,7 @@ class OauthGoogleResource:
         # email_verified = False
 
         if not email_verified:
-            res.status = falcon.HTTP_400
-            res.media = "Google account email not verified"
-            return
+            raise falcon.HTTPBadRequest(description="Google account email not verified")
 
         new_user = False
 
@@ -343,61 +378,6 @@ class OauthGoogleResource:
         }
 
 
-# class OauthFbResource:
-#     def on_get(self, req, res):
-#         res.media = f"https://www.facebook.com/v7.0/dialog/oauth?" \
-#                     f"client_id={FB_APP_ID}" \
-#                     f"&redirect_uri=http://localhost:8000/login/oauth/fb/callback" \
-#                     f"&response_type=code"\
-#                     f"&scope=email"
-#
-#
-# class OauthFbCallbackResource:
-#     def on_get(self, req, res):
-#
-#         ret = {}
-#
-#         code = req.get_param('code')
-#
-#         token_response = requests.get(
-#             f'https://graph.facebook.com/v7.0/oauth/access_token?'
-#             f'client_id={FB_APP_ID}'
-#             f'&redirect_uri=http://localhost:8000/login/oauth/fb/callback'
-#             f'&client_secret={FB_APP_SECRET}'
-#             f'&code={code}'
-#         )
-#
-#         ret['token_response'] = token_response.json()
-#
-#         access_token = requests.get(f"https://graph.facebook.com/oauth/access_token"
-#                                     f"?client_id={FB_APP_ID}"
-#                                     f"&client_secret={FB_APP_SECRET}"
-#                                     f"&grant_type=client_credentials")
-#
-#         ret['access_token'] = access_token.json()
-#
-#         resp = requests.get(
-#             f"https://graph.facebook.com/debug_token?"
-#             f"input_token={token_response.json()['access_token']}"
-#             f"&access_token={access_token.json()['access_token']}"
-#         )
-#
-#         ret['resp'] = resp.json()
-#
-#         user = requests.get(
-#             f"https://graph.facebook.com/{resp.json()['data']['user_id']}?"
-#             f"fields=email,name"
-#             f"&access_token={token_response.json()['access_token']}"
-#         )
-#
-#         # print("**************************************************",resp.json())
-#
-#         # res.media = json.dumps(token_response.json()['access_token'])
-#         ret['user'] = user.json()
-#
-#         res.media = ret
-
-
 class RefreshTokenResource:
     def on_post(self, req, res):
         session = req.context.session
@@ -405,21 +385,42 @@ class RefreshTokenResource:
         try:
             payload = jwt.decode(req.media['refresh_token'], KEY, algorithm='HS256')
         except ExpiredSignatureError:
-            raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
+            raise falcon.HTTPUnauthorized(description="Token has expired.")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
             raise falcon.HTTPUnauthorized(description="Wrong token")
 
-        user = session.query(User).filter(User.email == payload['email']).first()
+        user_token = session.query(UserTokens).filter(UserTokens.refresh_token == req.media['refresh_token']).first()
 
-        if not user:
+        if not user_token:
             raise falcon.HTTPUnauthorized(description="Wrong token")
 
-        res.media = {
-            "access_token": jwt.encode({
-                "email": user.email,
-                "exp": datetime.utcnow() + timedelta(minutes=15)
-            }, KEY, algorithm='HS256').decode('utf-8'),
-        }
+        ret = {}
+
+        if datetime.utcfromtimestamp(payload['iat']) + timedelta(hours=24) <= datetime.utcnow():
+            if user_token.google_refresh_token:
+                if not google_refresh_token(user_token.google_refresh_token):
+                    session.query(UserTokens) \
+                        .filter(UserTokens.user_id == user_token.user_id) \
+                        .filter(UserTokens.google_refresh_token is not None) \
+                        .delete()
+                    raise falcon.HTTPUnauthorized(description="Wrong token")
+
+            refresh_token = generate_token({
+                'id': user_token.user_id
+            }, refresh_token_exp)
+
+            user_token.refresh_token = refresh_token
+
+            session.add(user_token)
+            session.flush()
+
+            ret['refresh_token'] = refresh_token
+
+        ret['access_token'] = generate_token({
+            'id': user_token.id
+        }, access_token_exp)
+
+        res.media = ret
 
 
 class CollectDiagnosesResource:
@@ -434,13 +435,12 @@ class CollectDiagnosesResource:
             res.status = falcon.HTTP_404
             return
 
-        if req.context.user:
+        if req.context.user_id:
 
-            user = req.context.user
+            user = session.query(User).filter(User.id == req.context.user_id).first()
 
             if diagnose in user.diagnoses:
-                res.media = "User already has diagnose"
-                res.status = falcon.HTTP_400
+                raise falcon.HTTPBadRequest(description="User already has diagnose")
             else:
                 user.diagnoses.append(diagnose)
 
@@ -480,7 +480,7 @@ class ForgotPasswordResource:
                 "email": user.email,
             }, KEY, algorithm='HS256').decode('utf-8')
 
-            send_email(user.email, token)
+            send_email(user.email, token, 'reset')
 
             res.media = "Email has been sent."
 

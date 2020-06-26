@@ -3,7 +3,7 @@ from falcon import HTTPUnauthorized
 from jwt import InvalidTokenError, DecodeError, InvalidSignatureError, ExpiredSignatureError
 
 from config import KEY
-from models import Session, User
+from models import Session, User, UserTokens
 
 
 class CORSMiddleware(object):
@@ -129,12 +129,12 @@ class AuthMiddleware(object):
 
         session = req.context.session
 
-        user = session.query(User).filter(User.email == payload['email']).first()
+        user_token = session.query(UserTokens).filter(UserTokens.id == payload['id']).first()
 
-        if not user:
-            raise HTTPUnauthorized(description="Wrong token")
+        if not user_token:
+            raise HTTPUnauthorized(description="Invalid token")
 
-        return user
+        return user_token.user_id
 
     def process_resource(self, req, resp, resource, params):
         """Process the request after routing.
@@ -157,5 +157,5 @@ class AuthMiddleware(object):
         """
 
         if req.method != 'OPTIONS' and self.require_auth(req.path):
-            req.context.user = self.authenticate(req)
+            req.context.user_id = self.authenticate(req)
 

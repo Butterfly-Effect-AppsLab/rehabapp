@@ -303,7 +303,7 @@ class User(Base):
 
     @password.setter
     def password(self, pwd):
-        self.password = hashpw(pwd.encode(), gensalt()).decode()
+        self._password = hashpw(pwd.encode(), gensalt()).decode()
 
     # def generate_password(self, pwd):
     #     return hashpw(pwd.encode(), gensalt()).decode()

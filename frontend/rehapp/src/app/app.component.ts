@@ -37,12 +37,11 @@ export class AppComponent {
       this.accountService.loginSavedUser();
     });
 
-    let page = window.location.href.split('/')[3].split('?')[0];
+    let page = window.location.href.split(':8000').pop().split('?')[0];
+    let params = window.location.href.split('?')[1];
 
     switch (page) {
-      case 'login':
-        let params = window.location.href.split('?')[1];
-
+      case '/login':
         if (params) {
           this.stateService.startLoading();
           this.apiService.sendCodeGoogle(params).subscribe(
@@ -64,7 +63,11 @@ export class AppComponent {
           );
         }
         break;
-
+        case '/registration/confirmation':
+          if (params) {
+            this.router.navigateByUrl(page+'?'+params);
+          }
+          break;
     }
 
     App.addListener('appUrlOpen', (data: any) => {
