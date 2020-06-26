@@ -21,9 +21,27 @@ export class DemographyPage implements OnInit {
   private nameHighlighter: string = "highlight-gray";
 
 
-  constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
+  constructor(
+    private APIservice: APIService, 
+    private router: Router, 
+    private accountService: AccountService, 
+    private alertController: AlertController,
+    private stateService: StateService
+    ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  ionViewDidEnter(){
+    let user:User = this.accountService.userLoggedIn;
+
+    console.log(user);
+
+    this.name = user.username;
+    this.gender = user.sex;
+    this.birth = new Date(user.birthday);
+    this.stateService.stopLoading();
+  }
 
   async presentAlert(error?: object, message?: string) {
     const alert = await this.alertController.create({

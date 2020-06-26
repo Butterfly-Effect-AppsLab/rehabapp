@@ -1,15 +1,20 @@
-from marshmallow import Schema, fields, post_load, EXCLUDE, validate, pre_dump
+import datetime
+
+from marshmallow import Schema, fields, post_load, EXCLUDE, validate
 from models import User, Diagnose, Area, Question, Option, Color, Tree
 
 
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
-    name = fields.Str(required=True)
+    name = fields.Str(missing='Používateľ')
     email = fields.Email(required=True)
-    password = fields.String(validate=validate.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"), required=True,
-                             load_only=True)
-    sex = fields.String(validate=validate.OneOf(["male", "female"]), required=True)
-    birthday = fields.Date(required=True)
+    password = fields.String(validate=validate.Regexp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"),
+                             load_only=True, default=None)
+    sex = fields.String(validate=validate.OneOf(["male", "female"]), missing='female')
+    birthday = fields.Date(missing=datetime.date(1990, 1, 1))
+    google = fields.Boolean(missing=False, load_only=True)
+    verification_token = fields.String(default=None, load_only=True)
+    password_reset = fields.String(default=None, load_only=True)
 
     @post_load
     def create_model(self, data, **kwargs):

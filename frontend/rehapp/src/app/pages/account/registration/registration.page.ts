@@ -67,18 +67,22 @@ export class RegistrationPage implements OnInit {
     let email: string = this.email.value;
     let password: string = this.password.value;
 
-    await this.api.checkEmail({ "email": email }).subscribe(
-      () => {
-        this.accountService.registratingUser = new User("", email, password);
-        this.router.navigateByUrl('registration/demography');
-      },
-      (error) => {
-        if (error['status'] == 400) {
-          this.presentAlert("...zadaná emailová adresa už bola zaregistrovaná.")
-        }
-        return
-      }
-    );
+
+    // this.router.navigateByUrl('dashboard/demography'); 
+
+    // await this.api.checkEmail({ "email": email }).subscribe(
+    //   () => {
+    //     this.accountService.registratingUser = new User("", email, password);
+    //     this.router.navigateByUrl('registration/demography');
+    //   },
+    //   (error) => {
+    //     if (error['status'] == 400) {
+    //       this.presentAlert("...zadaná emailová adresa už bola zaregistrovaná.")
+    //     }
+    //     return
+    //   }
+    // );
+
   }
 
   checkPasswords(control: FormGroup) {

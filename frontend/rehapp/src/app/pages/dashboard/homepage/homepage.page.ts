@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/services/models/User';
 import { AccountService } from 'src/app/services/account.service';
 import { APIService } from 'src/app/services/apiservice.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-homepage',
@@ -14,8 +14,12 @@ export class HomepagePage implements OnInit {
 
   user: User = new User("");
 
-  constructor(private accountService: AccountService, private router: Router, private api: APIService, private storage: StorageService) {
-  }
+  constructor(
+    private accountService: AccountService, 
+    private router: Router,
+    private stateService: StateService,
+    private apiService: APIService
+    ) {}
 
   ngOnInit() {
     this.user = this.accountService.userLoggedIn;
@@ -23,7 +27,8 @@ export class HomepagePage implements OnInit {
 
   ionViewDidEnter() {
     if (this.user.username == null)
-      this.user.username = this.accountService.userLoggedIn['name'];
+      this.user.username = this.accountService.userLoggedIn['name'];    
+    this.stateService.stopLoading();
   }
 
   logout() {
@@ -31,7 +36,7 @@ export class HomepagePage implements OnInit {
   }
 
   identify() {
-    this.api.identify().subscribe(
+    this.apiService.identify().subscribe(
       (resp) => {
         console.log(resp);
       },
