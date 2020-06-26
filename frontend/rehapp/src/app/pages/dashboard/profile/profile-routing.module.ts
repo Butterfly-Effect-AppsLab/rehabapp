@@ -7,7 +7,15 @@ const routes: Routes = [
   {
     path: '',
     component: ProfilePage
+  },
+  {
+    path: 'popover',
+    loadChildren: () => import('./popover/popover.module').then( m => m.PopoverPageModule)
+  },  {
+    path: 'diaginfo',
+    loadChildren: () => import('./diaginfo/diaginfo.module').then( m => m.DiaginfoPageModule)
   }
+
 ];
 
 @NgModule({

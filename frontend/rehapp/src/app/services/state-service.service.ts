@@ -1,5 +1,5 @@
 import { Injectable, ElementRef, HostListener } from '@angular/core';
-import { Question, TreeComponent } from './models/Tree';
+import { Question, TreeComponent, Diagnose } from './models/Tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { APIService } from './apiservice.service';
 import { Router } from '@angular/router';
@@ -21,6 +21,7 @@ export class StateService {
   private _componentStack: Array<TreeComponent> = [];
   private _actualSide: BehaviorSubject<string> = new BehaviorSubject<string>("front");
   private _opositeSide: BehaviorSubject<string> = new BehaviorSubject<string>("back");
+  private _userDiagnosis: Diagnose;
   private isLoading = false;
   public animationInPogress = false;
   public resetValues: boolean = false; 
@@ -175,6 +176,9 @@ export class StateService {
 
   public get checksum() { return this._checksum }
   public set checksum(checksum: string) { this._checksum = checksum }
-
+  
   public get componentStack() { return this._componentStack }
+
+  public get diagnosis() { return this._userDiagnosis }
+  public set diagnosis(userDiagnosis: Diagnose) { this._userDiagnosis = userDiagnosis }
 }

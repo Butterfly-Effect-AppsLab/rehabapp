@@ -1,12 +1,12 @@
 <ion-content>
   <div class="main">
     <div class="header">
-      <div class="name_div bottomline">
+      <div class="name_div">
         <h2 class="name">{{username}}...</h2>
       </div>
-      <div class="logout_div bottomline" (click)="logout()">
+      <ion-item button class="logout" lines="none" (click)="logout()">
         <ion-label>Odhlásiť sa</ion-label>
-      </div>
+      </ion-item>
     </div>
     <div class="diagnoses">
       <div class="fade-wrapper">

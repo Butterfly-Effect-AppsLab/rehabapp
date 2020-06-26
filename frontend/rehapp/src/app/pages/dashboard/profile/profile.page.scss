@@ -1,0 +1,103 @@
+.main {
+    position: relative;
+    height: 90%;
+    background-color: var(--light);
+    width: 95%;
+    margin: auto;
+
+    .header {
+        color: var(--dark);
+        width: 90%;
+        margin: auto;
+
+        .name_div {
+            h2 {
+                font-size: x-large;
+                font-weight: bold;
+                padding-left: 2%;
+            }
+        }
+        .diagnosis {
+            --background: var(--light);
+            --color: var(--dark);
+            --padding-start: 2%;
+            border-top: 2px solid var(--gray);
+            border-bottom: 2px solid var(--gray);
+            margin-bottom: 2%;
+
+            ion-button {
+                --padding-end: 0%;
+                font-size: 1.2em;
+
+                ion-icon {
+                    color: var(--dark);
+                }
+            }
+        }
+    }
+    
+
+    .content {
+        .fade-wrapper {
+            position: absolute;
+            height: 90%;
+            width: 100%;
+
+            .content-wrapper {
+                overflow: scroll;
+                height: 100%;
+
+                .info_btn {
+                    --background: var(--blue);
+                    --color: var(--light);
+                    --inner-padding-start: 3%;
+                    font-weight: bold;
+                    font-size: large;
+                    border-radius: 15px;
+            
+                    ion-button {
+                        --padding-end: 0%;
+                        font-size: 1.2em;
+                    }
+                }
+
+                .overview {
+                    background-color: #e5e5e5;
+                    margin-top: 2%;
+                    padding: 2%;
+                    border-radius: 15px;
+
+                    .days {
+                        width: 100%;
+                        display: inline-grid;
+                        grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+                        text-align: center;
+                        justify-items: center;
+
+                        .day {
+                            display: grid;
+                        }
+                    }
+                }
+
+                .graph {
+                    .graph_image {
+                        height: 50vh;
+                        background-color: #e5e5e5;
+                        border-radius: 15px;
+                    }
+                    .legend {
+                        .center {
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep .my-custom-class {
+    --backdrop-opacity: 0;
+    --width: 85%;
+}

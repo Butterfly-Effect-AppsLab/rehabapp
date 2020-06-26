@@ -17,10 +17,11 @@
                 padding-left: 2%;
             }
         }
-        .logout_div {
-            padding-left: 2%;
-        }
-        .bottomline {
+        .logout {
+            --background: var(--light);
+            --color: var(--dark);
+            --padding-start: 2%;
+            border-top: 2px solid var(--gray);
             border-bottom: 2px solid var(--gray);
             margin-bottom: 2%;
         }
@@ -39,7 +40,7 @@
                 .diag_list {
                     background: #dfe3e3;
                     margin: 2% 0%;
-                    border-radius: 20px;
+                    border-radius: 15px;
     
                     .diag_item {
                         --background: transparent;
@@ -56,24 +57,6 @@
                         }
                     }
                 }
-            }
-            .fade-effect {
-                position: absolute;
-                height: 3em;
-                width: 100%;
-                background: var(--blue);
-                z-index: 100;
-                
-                pointer-events: none;
-            }
-            .fade-top {
-                top: 0;
-                display: none;
-                background: linear-gradient(0deg, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 100%);
-            }
-            .fade-bot {
-                bottom: 0;
-                background: linear-gradient(0deg, rgba(229, 229, 229, 1) 0%, rgba(229, 229, 229, 0) 100%);
             }
     }
     }

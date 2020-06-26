@@ -11,6 +11,7 @@ import { Diagnose } from 'src/app/services/models/Tree';
 export class DiagnoseComponent implements OnInit {
 
   @Input() diagnose: Diagnose;
+  @Input() showContinueBtn: boolean = true;
   @Output() onBack: EventEmitter<null> = new EventEmitter;
   @ViewChild('fader_top', {static: true}) topFader: ElementRef;
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
@@ -21,6 +22,8 @@ export class DiagnoseComponent implements OnInit {
   h1Size: number;
 
   ngOnInit() {
+    console.log(this.showContinueBtn);
+    
     if (this.diagnose.definition == undefined) {
       let newDiagnose: Diagnose = new Diagnose();
       newDiagnose.name = this.diagnose.name;
@@ -44,7 +47,7 @@ export class DiagnoseComponent implements OnInit {
   }
 
   continue() {
-    this.router.navigateByUrl('/dashboard');
+    this.router.navigateByUrl('/dashboard');    
   }
 
   removeFader(event){

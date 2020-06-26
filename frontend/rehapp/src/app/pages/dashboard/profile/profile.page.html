@@ -1,9 +1,97 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <div class="main">
+    <div class="header">
+      <div class="name_div">
+        <h2 class="name">{{username}}...</h2>
+      </div>
+      <ion-item button class="diagnosis" lines="none" (click)="presentPopover($event)">
+        <ion-label>Diagnóza {{diagnosisShown}}</ion-label>
+        <ion-button (click)="removeDiag(i)" fill="clear" slot="end">
+          <ion-icon [name]="popoverIcon"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+    <div class="content">
+      <div class="fade-wrapper">
+        <div #fader_top class="fade-effect fade-top"></div>
+        <div #fader_bot class="fade-effect fade-bot"></div>
+        <div class="content-wrapper" (scroll)="removeFader($event)">
+          <div class="info">
+            <ion-item button (click)="showInfo()" class="info_btn" lines="none">
+              <ion-label>Info o diagnóze</ion-label>
+              <ion-button fill="clear" slot="end">
+                <img src="/assets/images/icons/info.svg" alt="info">
+              </ion-button>
+            </ion-item>
+          </div>
+          <div class="overview">
+            <h4>...toto je Váš týždenný prehľad cvičenia</h4>
+            <div class="days">
+              <div class="day">
+                <img [src]="days.mon" alt="done">
+                <ion-label>Po</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.tue" alt="done">
+                <ion-label>Ut</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.wed" alt="done">
+                <ion-label>Str</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.thu" alt="done">
+                <ion-label>Št</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.fri" alt="done">
+                <ion-label>Pia</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.sat" alt="done">
+                <ion-label>So</ion-label>
+              </div>
+              <div class="day">
+                <img [src]="days.sun" alt="done">
+                <ion-label>Ne</ion-label>
+              </div>
+            </div>
+            <h4>Katkina motivačná hláška</h4>
+          </div>
+          <h4>Vaša bolesť za posledných 7 dní...</h4>
+          <div class="graph">
+            <div class="graph_image">
+              <h1>GRAF</h1>
+            </div> 
+            <div class="legend">
+              <ion-grid fixed>
+                <ion-row>
+                  <ion-col size="2" class="center">
+                    <img src="/assets/images/icons/no_pain.svg" alt="no-pain">
+                  </ion-col>
+                  <ion-col size="10">Žiadna bolesť</ion-col>
+                  <ion-col size="2" class="center">
+                    <img src="/assets/images/icons/light_pain.svg" alt="no-pain">
+                  </ion-col>
+                  <ion-col size="10">Mierna bolesť</ion-col>
+                  <ion-col size="2" class="center">
+                    <img src="/assets/images/icons/medium_pain.svg" alt="no-pain">
+                  </ion-col>
+                  <ion-col size="10">Výrazná bolesť</ion-col>
+                  <ion-col size="2" class="center">
+                    <img src="/assets/images/icons/severe_pain.svg" alt="no-pain">
+                  </ion-col>
+                  <ion-col size="10">Silná bolesť</ion-col>
+                  <ion-col size="2" class="center">
+                    <img src="/assets/images/icons/high_pain.svg" alt="no-pain">
+                  </ion-col>
+                  <ion-col size="10">Neznesiteľná bolesť</ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

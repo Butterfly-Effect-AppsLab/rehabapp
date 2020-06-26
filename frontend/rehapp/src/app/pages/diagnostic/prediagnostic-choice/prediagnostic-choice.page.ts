@@ -29,7 +29,7 @@ export class PrediagnosticChoicePage implements OnInit {
       },
     ],
     style: {
-      'background-color': '#e5e5e5', 'color': '#012c3d'
+      'background-color': '#f6f1ee', 'color': '#012c3d'
     },
     type: null
   }

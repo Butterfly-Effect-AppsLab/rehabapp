@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProfilePageRoutingModule } from './profile-routing.module';
+import { DiaginfoPageRoutingModule } from './diaginfo-routing.module';
 
-import { ProfilePage } from './profile.page';
-import { PopoverPageModule } from './popover/popover.module';
+import { DiaginfoPage } from './diaginfo.page';
 import { DiagnosticModule } from 'src/app/pluginzz/diagnostic/diagnostic.module';
 
 @NgModule({
@@ -15,10 +14,9 @@ import { DiagnosticModule } from 'src/app/pluginzz/diagnostic/diagnostic.module'
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule,
-    PopoverPageModule,
+    DiaginfoPageRoutingModule,
     DiagnosticModule
   ],
-  declarations: [ProfilePage]
+  declarations: [DiaginfoPage]
 })
-export class ProfilePageModule {}
+export class DiaginfoPageModule {}

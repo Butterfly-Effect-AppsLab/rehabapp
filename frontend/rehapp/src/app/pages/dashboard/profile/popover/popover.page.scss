@@ -1,0 +1,12 @@
+.list {
+    background: var(--light);
+    padding: 2px 0px;
+    .diagnosis {
+        --background: transparent;
+        --color: var(--dark);
+        width: 80%;
+        margin: 0px auto;
+        border-bottom: 2px solid var(--gray);
+        // border-top: 2px solid var(--gray);
+    }
+}
