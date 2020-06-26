@@ -28,12 +28,11 @@ export class AccountService {
   public get accessToken() { return this._accessToken }
   public set accessToken(token: string) { this._accessToken = token }
 
-  loginSavedUser() {
+  loginSavedUser() { 
     this.storageService.getUser().then(
-      (user) => {
-        console.log("User found: ", user);
-        
+      (user: User) => { 
         if (user != null) {
+          console.log("User found: ", user);
           this.userLoggedIn = user;
           this.router.navigateByUrl('dashboard')
         }

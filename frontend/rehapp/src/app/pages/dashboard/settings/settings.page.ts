@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AccountService } from 'src/app/services/account-service.service';
+import { AccountService } from 'src/app/services/account.service';
 import { AlertController } from '@ionic/angular';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
 
 @Component({

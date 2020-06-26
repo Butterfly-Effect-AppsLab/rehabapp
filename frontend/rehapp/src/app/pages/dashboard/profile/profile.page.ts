@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { StateService } from 'src/app/services/state-service.service';
-import { AccountService } from 'src/app/services/account-service.service';
+import { StateService } from 'src/app/services/state.service';
+import { AccountService } from 'src/app/services/account.service';
 import { PopoverController } from '@ionic/angular';
 import { PopoverPage } from './popover/popover.page';
 import { Router } from '@angular/router';
@@ -19,9 +19,9 @@ export class ProfilePage implements OnInit {
   username: string;
   popoverIcon: string = "chevron-down-outline";
   listOfDiagnoses = ["Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza"]
-  doneIcon = "/assets/images/days/done.svg";
-  undoneIcon = "/assets/images/days/undone.svg";
-  unknownIcon = "/assets/images/days/unknown.svg";
+  doneIcon = "/assets/images/icons/days/done.svg";
+  undoneIcon = "/assets/images/icons/days/undone.svg";
+  unknownIcon = "/assets/images/icons/days/unknown.svg";
   diagnosisShown: string;
   days = {
     'mon' : '',

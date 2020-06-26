@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { Diagnose } from 'src/app/services/models/Tree';
 
 @Component({
@@ -22,8 +22,6 @@ export class DiagnoseComponent implements OnInit {
   h1Size: number;
 
   ngOnInit() {
-    console.log(this.showContinueBtn);
-    
     if (this.diagnose.definition == undefined) {
       let newDiagnose: Diagnose = new Diagnose();
       newDiagnose.name = this.diagnose.name;

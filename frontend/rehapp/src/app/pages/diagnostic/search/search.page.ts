@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Element } from '@angular/compiler';
 import { Option, Diagnose } from 'src/app/services/models/Tree';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { IonItemOptions } from '@ionic/angular';
 import { Router } from '@angular/router';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from 'src/app/services/models/Tree';
 import { Router } from '@angular/router';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-prediagnostic-choice',
