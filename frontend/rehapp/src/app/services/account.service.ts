@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from './models/User';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +14,7 @@ export class AccountService {
   private _userLoggedIn: User;
   private _refreshToken: string;
   private _accessToken: string;
+  private _loginError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(private storageService: StorageService, private router: Router) { }
 
@@ -28,6 +30,14 @@ export class AccountService {
   public get accessToken() { return this._accessToken }
   public set accessToken(token: string) { this._accessToken = token }
 
+  set loginError(error: BehaviorSubject<string>) {
+    this._loginError = error;
+  }
+
+  get loginError(): BehaviorSubject<string> {
+    return this._loginError;
+  }
+
   loginSavedUser() { 
     this.storageService.getUser().then(
       (user: User) => { 
@@ -40,16 +50,21 @@ export class AccountService {
     )
   }
 
-  login(responseBody: object) {
+  async login(responseBody: object) {
+    console.log(responseBody['user']);
+    console.log(responseBody['user'].name);
     this.userLoggedIn = new User(
       responseBody['user'].name, responseBody['user'].email, null, responseBody['user'].sex, responseBody['user'].birthday
     );
+
+    console.log(this.userLoggedIn);
+
     this.accessToken = responseBody['access_token'];
     this.refreshToken = responseBody['refresh_token'];
 
     this.storageService.setObject('user', this.userLoggedIn);
-    this.storageService.setItem('access_token', this.accessToken)
-    this.storageService.setItem('refresh_token', this.refreshToken)
+    this.storageService.setItem('access_token', this.accessToken);
+    this.storageService.setItem('refresh_token', this.refreshToken);
   }
 
   logout() {

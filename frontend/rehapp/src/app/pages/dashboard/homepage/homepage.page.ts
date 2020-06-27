@@ -32,7 +32,8 @@ export class HomepagePage implements OnInit {
 
   ionViewDidEnter() {
     if (this.user.username == null)
-      this.user.username = this.accountService.userLoggedIn['name'];
+      this.user.username = this.accountService.userLoggedIn['name'];    
+    this.stateService.stopLoading();
   }
 
   begin() {

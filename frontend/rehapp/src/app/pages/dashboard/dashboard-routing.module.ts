@@ -24,6 +24,10 @@ const routes: Routes = [
       {
         path: 'settings',
         loadChildren: () => import('./settings/settings.module').then(m => m.SettingsPageModule)
+      },
+      {
+        path: 'demography',
+        loadChildren: () => import('./demography/demography.module').then( m => m.DemographyPageModule)
       }
     ]
   }
