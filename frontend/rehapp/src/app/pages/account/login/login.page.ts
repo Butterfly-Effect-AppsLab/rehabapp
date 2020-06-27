@@ -4,11 +4,7 @@ import { User } from 'src/app/services/models/User';
 import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account.service';
-import { Plugins } from '@capacitor/core';
 import { StateService } from 'src/app/services/state.service';
-
-const { Storage } = Plugins;
-
 
 @Component({
   selector: 'app-login',

@@ -44,6 +44,7 @@ export class AccountService {
         if (user != null) {
           console.log("User found: ", user);
           this.userLoggedIn = user;
+          this.router.navigateByUrl('dashboard')
         }
       }
     )

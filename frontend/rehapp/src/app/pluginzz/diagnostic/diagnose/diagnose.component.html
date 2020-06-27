@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div class="bottom">
+    <div *ngIf="showContinueBtn == true" class="bottom">
       <ion-button (click)="continue()" expand="block" fill="solid" shape="round" class="app-button-dark" size="large">
         Pokračovať
       </ion-button>

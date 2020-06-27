@@ -11,6 +11,7 @@ import { Diagnose } from 'src/app/services/models/Tree';
 export class DiagnoseComponent implements OnInit {
 
   @Input() diagnose: Diagnose;
+  @Input() showContinueBtn: boolean = true;
   @Output() onBack: EventEmitter<null> = new EventEmitter;
   @ViewChild('fader_top', {static: true}) topFader: ElementRef;
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
@@ -44,20 +45,10 @@ export class DiagnoseComponent implements OnInit {
   }
 
   continue() {
-    this.router.navigateByUrl('/dashboard');
+    this.router.navigateByUrl('/dashboard');    
   }
 
-  @HostListener('scroll', ['$event'])
   removeFader(event){
-    // visible height + pixel scrolled >= total height 
-    if (event.target.scrollTop == 0) 
-      this.topFader.nativeElement.style['display'] = "none";
-    else
-      this.topFader.nativeElement.style['display'] = "block";
-
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
-      this.botFader.nativeElement.style['display'] = "none";
-    else 
-      this.botFader.nativeElement.style['display'] = "block";
+    this.stateService.removeFader(event, this.topFader, this.botFader)    
   }
 }

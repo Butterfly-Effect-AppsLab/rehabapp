@@ -1,0 +1,10 @@
+#header {
+    ion-toolbar {
+        --background: var(--app-background);
+
+        ion-button {
+            --color: var(--dark);
+        }
+    }
+}
+

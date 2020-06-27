@@ -23,11 +23,6 @@ export class SliderPage implements OnInit {
   buttonText: string = "Pokračovať";
 
   constructor(private storageService:StorageService, private router: Router, private alertController: AlertController) {  
-    this.storageService.getUser().then( 
-      (user) => {
-        if (user != null)
-          this.router.navigateByUrl('/dashboard')
-      })
   }
 
   ngOnInit() {        
