@@ -327,7 +327,7 @@ class OauthGoogleResource:
         user = session.query(User).filter(User.email == user_email).first()
 
         email_verified = userinfo_response.json()['email_verified']
-        email_verified = False
+        # email_verified = False
 
         if not email_verified:
             raise falcon.HTTPBadRequest(description="Google account email not verified")

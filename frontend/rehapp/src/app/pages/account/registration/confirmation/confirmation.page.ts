@@ -4,6 +4,7 @@ import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
 import { StateService } from 'src/app/services/state.service';
 import { AccountService } from 'src/app/services/account.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-confirmation',
@@ -16,7 +17,8 @@ export class ConfirmationPage implements OnInit {
     private apiService: APIService,
     private stateService: StateService,
     private accountService: AccountService,
-    private router: Router
+    private router: Router,
+    private alertController: AlertController
   ) {
     let token = window.location.href.split('=')[1];
 
@@ -31,6 +33,10 @@ export class ConfirmationPage implements OnInit {
           }
         },
         (error) => {
+          if (error.error['description'] === 'User already verified') {
+            this.presentAlert('...Vaša emailová adresa už bola potvrdená.')
+          }
+          
           this.accountService.loginError.next(error.error);
           this.router.navigateByUrl('login');
         }
@@ -41,4 +47,14 @@ export class ConfirmationPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      header: 'Upozornenie ...',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
 }

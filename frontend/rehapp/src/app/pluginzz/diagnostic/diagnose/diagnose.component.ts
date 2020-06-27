@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild, 
 import { Router } from '@angular/router';
 import { StateService } from 'src/app/services/state.service';
 import { Diagnose } from 'src/app/services/models/Tree';
+import { StorageService } from 'src/app/services/storage.service';
+import { APIService } from 'src/app/services/apiservice.service';
 
 @Component({
   selector: 'app-diagnose',
@@ -11,12 +13,16 @@ import { Diagnose } from 'src/app/services/models/Tree';
 export class DiagnoseComponent implements OnInit {
 
   @Input() diagnose: Diagnose;
+  @Input() diagnoseId: string;
   @Input() showContinueBtn: boolean = true;
   @Output() onBack: EventEmitter<null> = new EventEmitter;
   @ViewChild('fader_top', {static: true}) topFader: ElementRef;
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
 
-  constructor(private router: Router, private stateService: StateService) { }
+  constructor(private router: Router, 
+    private stateService: StateService, 
+    private storage: StorageService,
+    private api: APIService) { }
   area: string = "";
   areaClicked = false;
   h1Size: number;
@@ -34,7 +40,6 @@ export class DiagnoseComponent implements OnInit {
       this.h1Size = 130;
     else 
       this.h1Size = 100;
-
   }
 
   setArea(area: string) {
@@ -45,6 +50,12 @@ export class DiagnoseComponent implements OnInit {
   }
 
   continue() {
+    this.api.identify().subscribe( 
+      () => { console.log("pouzivatel je prihlaseny") },
+      () => {
+        this.storage.setItem('user_diagnose',this.diagnoseId)
+      }
+    )
     this.router.navigateByUrl('/dashboard');    
   }
 

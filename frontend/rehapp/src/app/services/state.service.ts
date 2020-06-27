@@ -7,6 +7,7 @@ import { Plugins } from '@capacitor/core';
 import { LoadingController } from '@ionic/angular';
 import { User } from './models/User';
 import { Element } from '@angular/compiler';
+import { StorageService } from './storage.service';
 
 const { Storage } = Plugins;
 
@@ -24,49 +25,48 @@ export class StateService {
   private _userDiagnosis: Diagnose;
   private isLoading = false;
   public animationInPogress = false;
-  public resetValues: boolean = false; 
+  public resetValues: boolean = false;
 
-  constructor(private api: APIService, private router: Router, private loadingController: LoadingController) {
+  constructor(private api: APIService,
+    private router: Router,
+    private loadingController: LoadingController,
+    private storage: StorageService) {
+
     if (this.questions == undefined) {
-      this.getObject('tree');
+      this.loadTreeFromStorage();
     }
   }
 
   updateTree(resp) {
     this.questions = resp['questions'];
     this.checksum = resp['checksum'];
-    this.setObject('tree', resp);
+    this.storage.setObject('tree', resp);
   }
 
-  async getObject(keyToFind: string) {
-    const ret = await Storage.get({ key: keyToFind });
+  loadTreeFromStorage() {
+    this.storage.getObject('tree').then(
+      (tree) => {
+        if (tree) {
+          console.log("Tree is loaded from storage.");
 
-    if (ret.value != undefined) {
-      console.log("Tree is loaded from storage.");
+          this.questions = tree['questions'];
+          this.checksum = tree['checksum'];
 
-      this.questions = JSON.parse(ret.value)['questions'];
-      this.checksum = JSON.parse(ret.value)['checksum'];
-
-      this.api.updateTree(this.checksum).subscribe(
-        (resp) => {
-          if (resp.status != 204) {
-            console.log("Tree is outdated.");
-            this.updateTree(resp.body);
-          }
+          this.api.updateTree(this.checksum).subscribe(
+            (resp) => {
+              if (resp.status != 204) {
+                console.log("Tree is outdated.");
+                this.updateTree(resp.body);
+              }
+            }
+          );
         }
-      );
-    }
-    else {
-      console.log("Tree is not in storage.");
-      this.loadTreeFromAPI();
-    }
-  }
-
-  async setObject(keyToSave: string, objectToSave: object) {
-    await Storage.set({
-      key: keyToSave,
-      value: JSON.stringify(objectToSave)
-    });
+        else {
+          console.log("Tree is not in storage.");
+          this.loadTreeFromAPI();
+        }        
+      }
+    )
   }
 
   loadTreeFromAPI() {
@@ -74,7 +74,7 @@ export class StateService {
       (resp) => {
         this.updateTree(resp);
       },
-      (err) => alert("Prerusilo sa spojenie.")
+      () => alert("Prerusilo sa spojenie.")
     );
   }
 
@@ -98,7 +98,6 @@ export class StateService {
     this.loadingController.getTop().then(v => v ? this.loadingController.dismiss() : null);
     this.isLoading = false;
   }
-
 
   public pushComponent(component: TreeComponent) {
     this._componentStack.push(component);
@@ -132,29 +131,29 @@ export class StateService {
   }
 
   public navigateToBodyPage() {
-      this.actualTreeComponent.next(null);
-      this.resetValues = true;
-  
-      while (this.componentStack.length > 0)
-        this.componentStack.pop();
-  
-      this.router.navigate(['/diagnostic']);    
+    this.actualTreeComponent.next(null);
+    this.resetValues = true;
+
+    while (this.componentStack.length > 0)
+      this.componentStack.pop();
+
+    this.router.navigate(['/diagnostic']);
   }
 
   @HostListener('scroll', ['$event'])
-  removeFader(scrollEvent, topFader: ElementRef, botFader: ElementRef){
+  removeFader(scrollEvent, topFader: ElementRef, botFader: ElementRef) {
     // visible height + pixel scrolled >= total height 
-    if (scrollEvent.target.scrollTop == 0) 
+    if (scrollEvent.target.scrollTop == 0)
       topFader.nativeElement.style['display'] = "none";
     else
       topFader.nativeElement.style['display'] = "block";
 
-    if (scrollEvent.target.offsetHeight + scrollEvent.target.scrollTop >= scrollEvent.target.scrollHeight) 
+    if (scrollEvent.target.offsetHeight + scrollEvent.target.scrollTop >= scrollEvent.target.scrollHeight)
       botFader.nativeElement.style['display'] = "none";
-    else 
+    else
       botFader.nativeElement.style['display'] = "block";
   }
-  
+
   set actualTreeComponent(state: BehaviorSubject<TreeComponent>) {
     this._actualTreeComponent = state;
   }
@@ -176,7 +175,7 @@ export class StateService {
 
   public get checksum() { return this._checksum }
   public set checksum(checksum: string) { this._checksum = checksum }
-  
+
   public get componentStack() { return this._componentStack }
 
   public get diagnosis() { return this._userDiagnosis }

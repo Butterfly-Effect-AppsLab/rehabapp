@@ -5,6 +5,7 @@ import { User } from 'src/app/services/models/User';
 import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-demography',
@@ -19,21 +20,30 @@ export class DemographyPage implements OnInit {
   private gender: string = "female"
   private birth: Date = new Date("1990-01-01");
   private nameHighlighter: string = "highlight-gray";
+  private userDiagnose: string;
 
 
   constructor(
-    private APIservice: APIService, 
-    private router: Router, 
-    private accountService: AccountService, 
+    private router: Router,
+    private APIservice: APIService,
+    private accountService: AccountService,
+    private stateService: StateService,
+    private storage: StorageService,
     private alertController: AlertController,
-    private stateService: StateService
-    ) { }
+  ) { }
 
   ngOnInit() {
+    this.storage.getItem('user_diagnose').then(
+      (diag) => {
+        if (diag) {
+          this.userDiagnose = diag;
+        }
+      }
+    )
   }
 
-  ionViewDidEnter(){
-    let user:User = this.accountService.userLoggedIn;
+  ionViewDidEnter() {
+    let user: User = this.accountService.userLoggedIn;
 
     console.log(user);
 
@@ -41,6 +51,9 @@ export class DemographyPage implements OnInit {
     this.gender = user.sex;
     this.birth = new Date(user.birthday);
     this.stateService.stopLoading();
+
+    if (this.name.length > 0)
+      this.nameHighlighter = "highlight-dark"
   }
 
   async presentAlert(error?: object, message?: string) {
@@ -55,7 +68,7 @@ export class DemographyPage implements OnInit {
   }
 
   valueSelected(event: CustomEvent, source: string) {
-    if (source == "sex"){
+    if (source == "sex") {
       this.gender = event.detail.value;
     }
     else if (source == "date")
@@ -85,35 +98,43 @@ export class DemographyPage implements OnInit {
       response => {
         console.log("status code: ", response.status);
         console.log("response: ", response.body);
-        if (response.status == 201)
+        if (response.status == 201) {
+          // poslat diagnozu na backend
+          this.storage.removeItem('user_diagnose');
           this.router.navigateByUrl('/login');
+        }
         else {
           this.presentAlert(response.body)
         }
-      }, 
+      },
       error => {
         this.presentAlert(error.error);
       }
     );
   }
 
-  setHighlight(event: string): string {
+  setHighlight(event: string) {
     if (event == "focus")
-      return "highlight-blue";
+      this.nameHighlighter = "highlight-blue";
     else if (event == "blur") {
       if (this.name.length > 0)
-        return "highlight-dark";
-      return "highlight-gray";
+        this.nameHighlighter = "highlight-dark";
+      else
+        this.nameHighlighter = "highlight-red";
     }
     else {
-      return "";
+      this.nameHighlighter = "";
     }
   }
 
   nameChanged() {
     if (this.name.length > 0)
       this.validName = true;
-    else 
+    else
       this.validName = false;
+  }
+
+  removeDiag() {
+    this.userDiagnose = null;
   }
 }

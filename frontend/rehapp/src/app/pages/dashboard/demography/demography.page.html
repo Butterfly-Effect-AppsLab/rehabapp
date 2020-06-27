@@ -2,86 +2,99 @@
 
   <div class="main">
     <div class="text_div">
-      <h5>Pre dokončene registrácie prosím zadajte svoje...</h5>
+      <h5>Pre úpravu svojich údajov prosím zadajte Vaše...</h5>
     </div>
-    <div class="text_div left">
-      <h5>...meno</h5>
-    </div>
-
-    <div class="item_div">
-      <ion-item class="input_item" lines="none" [ngClass]="nameHighlighter">
-        <ion-input 
-          [(ngModel)]="name" 
-          (ionFocus)="nameHighlighter = setHighlight('focus')" 
-          (ionBlur)="nameHighlighter = setHighlight('blur')" 
-          (ionChange)="nameChanged()"
-          maxlength=40
-          autofocus="true"
-          required="true"
-          ></ion-input>
-      </ion-item>
-    </div>
-
-    <div class="text_div left">
-      <h5>...pohlavie</h5>
-    </div>
-
-    <ion-radio-group (ionChange)="valueSelected($event, 'sex')">
-      <div class="radio-group">
-        <div class="radio-opt">
-          <ion-item class="radio" lines="none">
-            <div>
-              <ion-radio value="male"></ion-radio>
-              <div [ngClass]="{'selected-radio': gender == 'male'}">
-                <img src="./assets/images/selected_radio.png" alt="" class="selected">
-                <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
+    <div class="scrollable">
+      <div class="text_div left">
+        <h5>...meno</h5>
+      </div>
+  
+      <div class="item_div">
+        <ion-item class="input_item" lines="none" [ngClass]="nameHighlighter">
+          <ion-input 
+            [(ngModel)]="name" 
+            (ionFocus)="setHighlight('focus')" 
+            (ionBlur)="setHighlight('blur')" 
+            (ionChange)="nameChanged()"
+            maxlength=40
+            autofocus="true"
+            required="true"
+            ></ion-input>
+        </ion-item>
+      </div>
+  
+      <div class="text_div left">
+        <h5>...pohlavie</h5>
+      </div>
+  
+      <ion-radio-group (ionChange)="valueSelected($event, 'sex')">
+        <div class="radio-group">
+          <div class="radio-opt">
+            <ion-item class="radio" lines="none">
+              <div>
+                <ion-radio value="male"></ion-radio>
+                <div>
+                  <img *ngIf="gender == 'male'" src="/assets/images/icons/radio-selected.svg" alt="">
+                  <img *ngIf="gender != 'male'" src="/assets/images/icons/radio-unselected.svg" alt="">
+                </div>
+                <ion-label>muž</ion-label>
               </div>
-              <ion-label>muž</ion-label>
-            </div>
-          </ion-item>
-        </div>
-        <div class="radio-opt">
-          <ion-item class="radio" lines="none">
-            <div>
-              <ion-radio value="female"></ion-radio>
-              <div [ngClass]="{'selected-radio': gender == 'female'}">
-                <img src="./assets/images/selected_radio.png" alt="" class="selected">
-                <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
-            </div>
-              <ion-label>žena</ion-label>
-            </div>
-          </ion-item>
-        </div>
-        <div class="radio-opt">
-          <ion-item class="radio" lines="none">
-            <div>
-              <ion-radio value="other"></ion-radio>
-              <div [ngClass]="{'selected-radio': gender == 'other'}">
-              <img src="./assets/images/selected_radio.png" alt="" class="selected">
-              <img src="./assets/images/not_selected_radio.png" alt=""class="not-selected">
-            </div>
-              <ion-label>iné</ion-label>
-            </div>
-          </ion-item>
-        </div>
-      </div> 
-    </ion-radio-group> 
+            </ion-item>
+          </div>
+          <div class="radio-opt">
+            <ion-item class="radio" lines="none">
+              <div>
+                <ion-radio value="female"></ion-radio>
+                <div>
+                  <img *ngIf="gender == 'female'" src="/assets/images/icons/radio-selected.svg" alt="">
+                  <img *ngIf="gender != 'female'" src="/assets/images/icons/radio-unselected.svg" alt="">
+                </div>
+                <ion-label>žena</ion-label>
+              </div>
+            </ion-item>
+          </div>
+          <div class="radio-opt">
+            <ion-item class="radio" lines="none">
+              <div>
+                <ion-radio value="other"></ion-radio>
+                <div>
+                  <img *ngIf="gender == 'other'" src="/assets/images/icons/radio-selected.svg" alt="">
+                  <img *ngIf="gender != 'other'" src="/assets/images/icons/radio-unselected.svg" alt="">
+                </div>
+                <ion-label>iné</ion-label>
+              </div>
+            </ion-item>
+          </div>
+        </div> 
+      </ion-radio-group> 
+  
+      <div class="text_div left">
+        <h5>...a dátum narodenia</h5>
+      </div>
+      <ion-item class="date-picker" lines="none">
+        <ion-icon name="caret-down-outline" slot="end" class="icon"></ion-icon>
+        <ion-datetime 
+          displayFormat="DD MMMM YYYY" 
+          value={{birth}}
+          cancelText='Zrušiť'
+          doneText='Potvrdiť'
+          [monthNames]="months"
+          (ionChange)="valueSelected($event, 'date')"></ion-datetime
+        >
+      </ion-item>  
 
-    <div class="text_div left">
-      <h5>...a dátum narodenia</h5>
+      <div *ngIf="userDiagnose">
+        <div class="text_div left">
+          <h5>Vaša diagnóza...</h5>
+        </div>
+        <ion-item class="diag_item" lines="none">
+          <ion-label>{{userDiagnose}}</ion-label>
+          <ion-button (click)="removeDiag()" fill="clear" slot="end" class="icon">
+            <ion-icon name="close-outline" class="icon"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
     </div>
-    <ion-item class="date-picker" lines="none">
-      <ion-icon name="caret-down-outline" slot="end" class="icon"></ion-icon>
-      <ion-datetime 
-        displayFormat="DD MMMM YYYY" 
-        value={{birth}}
-        cancelText='Zrušiť'
-        doneText='Potvrdiť'
-        [monthNames]="months"
-        (ionChange)="valueSelected($event, 'date')"></ion-datetime
-      >
-    </ion-item>
-    
     <div class="form-buttons">
       <div class="btn-div">
         <ion-button (click)="createUser()" expand="block" [fill]="validName ? 'solid' : 'outline'" shape="round" class="app-big-btn" [ngClass]="validName ? 'app-button-dark' : 'app-button-light'">
@@ -89,6 +102,5 @@
         </ion-button>
       </div>
     </div>
-
   </div>
 </ion-content>

@@ -20,13 +20,13 @@
 :root {
     --dark: #012c3d;
     --light: #f6f1ee;
-    --blue: #8ABEC4;
-    --gray: #C0C6C7;
-    --red: #EA5050;
+    --blue: #8abec4;
+    --gray: #c0c6c7;
+    --red: #ea5050;
     --app-background: var(--light);
     --app-font-color: var(--dark);
-    
-    .app-button-light {    
+
+    .app-button-light {
         --border-color: var(--dark);
         --border-width: 3px;
         --color: var(--dark);
@@ -34,7 +34,7 @@
         font-weight: bold;
         font-size: large;
     }
-    
+
     .app-button-dark {
         --background: var(--dark);
         --color: var(--light);
@@ -62,7 +62,7 @@
 
         .alert-wrapper {
             border-radius: 25px;
-            
+
             .alert-title {
                 color: var(--dark);
                 font-weight: bold;
@@ -71,12 +71,11 @@
             .alert-message {
                 color: var(--dark);
                 font-size: large;
-            }    
+            }
             .alert-button {
                 color: var(--dark);
             }
         }
-
     }
 
     .fade-effect {
@@ -121,22 +120,22 @@ ion-header {
 }
 
 .my-custom-class {
-    --background: rgba(0,0,0,0);
+    --background: rgba(0, 0, 0, 0);
     box-shadow: none;
     text-align: center;
     color: var(--dark);
     --backdrop-opacity: 1;
     font-size: 1.3em;
-    ion-backdrop{
+    ion-backdrop {
         background-color: var(--light);
     }
 
-    .custom-spinner-container{
+    .custom-spinner-container {
         width: 100%;
     }
 
-    .custom-spinner-box{
+    .custom-spinner-box {
         width: 80%;
         margin: 0 auto;
     }
-  }
+}

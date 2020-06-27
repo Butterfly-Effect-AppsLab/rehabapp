@@ -37,7 +37,8 @@ export class HomepagePage implements OnInit {
   }
 
   begin() {
-    alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
+    this.router.navigateByUrl('dashboard/demography')
+    // alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
   }
 
   removeFader(event) {

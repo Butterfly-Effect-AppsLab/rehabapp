@@ -3,6 +3,7 @@ import { User } from './models/User';
 import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { APIService } from './apiservice.service';
 
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AccountService {
   private _accessToken: string;
   private _loginError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private storageService: StorageService, private router: Router) { }
+  constructor(private storageService: StorageService, private router: Router, private api: APIService) { }
 
   public get registratingUser() { return this._registratingUser }
   public set registratingUser(user: User) { this._registratingUser = user }
@@ -38,21 +39,18 @@ export class AccountService {
     return this._loginError;
   }
 
-  loginSavedUser() { 
-    this.storageService.getUser().then(
-      (user: User) => { 
-        if (user != null) {
-          console.log("User found: ", user);
-          this.userLoggedIn = user;
-          this.router.navigateByUrl('dashboard')
-        }
-      }
+  loginSavedUser() {
+    this.api.identify().subscribe(
+      (user) => {
+        console.log("User found: ", user);
+        this.userLoggedIn = user;
+        this.router.navigateByUrl('dashboard')
+      },
+      () => { }
     )
   }
 
   async login(responseBody: object) {
-    console.log(responseBody['user']);
-    console.log(responseBody['user'].name);
     this.userLoggedIn = new User(
       responseBody['user'].name, responseBody['user'].email, null, responseBody['user'].sex, responseBody['user'].birthday
     );
