@@ -99,4 +99,8 @@ export class LoginPage implements OnInit {
   checkValidation() {
     this.valid = (this.usermail.length > 0 && this.password.length > 0)
   }
+
+  forgotPass() {
+    this.router.navigateByUrl('forgotten-pass');
+  }
 }

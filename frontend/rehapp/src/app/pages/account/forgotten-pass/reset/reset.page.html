@@ -1,0 +1,38 @@
+<ion-header id="header" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Späť" icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main">
+    <div class="form-inputs">
+      <div class="item_div">
+        <ion-item class="input_item" lines="none" [ngClass]="passHighlighter">
+          <ion-input [(ngModel)]="pass" (ionFocus)="setHighlight(passHighlighter, 'focus')"
+            (ionBlur)="setHighlight(passHighlighter, 'blur')" (ionChange)="checkValidation()"
+            placeholder="Zadajte nové heslo" inputmode="password" maxlength=40 autofocus="true" required="true"></ion-input>
+        </ion-item>
+      </div>
+      <div class="item_div">
+        <ion-item class="input_item" lines="none" [ngClass]="repHighlighter">
+          <ion-input [(ngModel)]="repeat" (ionFocus)="setHighlight(repHighlighter, 'focus')"
+            (ionBlur)="setHighlight(repHighlighter, 'blur')" (ionChange)="checkConfirmation()"
+            placeholder="Zopkaujte nové heslo" inputmode="password" maxlength=40 required="true"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <div class="btn-div">
+        <ion-button (click)="resetPass()" expand="block" [fill]="(validPass && confirmedPass) ? 'solid' : 'outline'" shape="round"
+          class="app-big-btn" [ngClass]="(validPass && confirmedPass) ? 'app-button-dark' : 'app-button-light'">
+          Obnoviť heslo
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
