@@ -508,7 +508,8 @@ class CollectDiagnosesResource:
 
             res.status = falcon.HTTP_201
             res.media = {
-                'collected_id': collect.id
+                'collected_id': collect.id,
+                'name': diagnose.name
             }
 
     def on_delete(self, req, res):
