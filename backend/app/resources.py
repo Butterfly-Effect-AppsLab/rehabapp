@@ -35,10 +35,16 @@ def generate_token(payload, exp=None):
 
 class TestResource:
     def on_get(self, req, res):
-        # res.media = "Saying HI from RehabApp API :)"
-        # labeled_frame = gen()
-        # res.content_type = 'multipart/x-mixed-replace; boundary=frame'
-        # res.stream = labeled_frame
+        res.media = "Saying HI from RehabApp API :)"
+
+
+class VideoResource:
+    def on_get(self, req, res):
+        session = req.context.session
+
+        # check if user has diagnose
+        # user = session.query(User).filter(User.id == req.context.user_id).first()
+
         res.content_type = 'video/mp4'
         # print(open('Rehappka.mp4', 'rb').read())
         res.data = open('Rehappka.mp4', 'rb').read()

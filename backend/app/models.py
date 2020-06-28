@@ -1,3 +1,6 @@
+import hashlib
+import json
+
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float, \
     Boolean
@@ -330,3 +333,30 @@ class UserTokens(Base):
     google_refresh_token = Column(String, nullable=True)
 
     user = relationship('User')
+
+
+class Video(Base):
+    __tablename__ = "videos"
+
+    id = Column(Integer, primary_key=True)
+
+    diagnose_id = Column(
+        Integer,
+        ForeignKey(
+            'diagnoses.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
+
+    text = Column(String)
+    order = Column(Integer)
+    checksum_video = Column(String)
+    name = Column(String)
+
+    @property
+    def checksum_row(self):
+        m = hashlib.md5()
+        m.update(json.dumps(self).encode())
+
+        return m.hexdigest()

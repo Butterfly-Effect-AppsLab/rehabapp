@@ -1,7 +1,7 @@
 import datetime
 
 from marshmallow import Schema, fields, post_load, EXCLUDE, validate
-from models import User, Diagnose, Area, Question, Option, Color, Tree
+from models import User, Diagnose, Area, Question, Option, Color, Tree, Video
 
 
 class UserSchema(Schema):
@@ -130,3 +130,20 @@ class AreaSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+
+
+class VideoSchema(Schema):
+    name = fields.Str()
+    text = fields.Str()
+    diagnose_id = fields.Integer()
+    order = fields.Integer()
+    checksum_video = fields.Str()
+    checksum_row = fields.Str()
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return Video(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+
