@@ -29,7 +29,7 @@ ion-content {
 
     .form-inputs {
         position: absolute;
-        top: 20%;
+        top: 25%;
         left: 7%;
         right: 7%;
 
@@ -52,10 +52,6 @@ ion-content {
             > ion-item {
                 --background: "transparent";
                 --color: var(--dark);
-
-                > ion-input {
-                    font-family: poppins;
-                }
 
                 > ion-checkbox {
                     --background-checked: var(--light);
