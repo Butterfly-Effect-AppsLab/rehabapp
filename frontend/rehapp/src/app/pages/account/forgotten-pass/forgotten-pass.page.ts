@@ -63,23 +63,27 @@ export class ForgottenPassPage implements OnInit {
     if (!this.validEmail)
       this.presentAlert("Chyba...", null, "...zadajte platnú emailovú adresu.")
     else {
-      this.stateService.startLoading();
-      this.apiService.forgotPassword(this.usermail).subscribe((response) => {
-        this.presentAlert(null, "Potvrdzovací email bol zaslaný na adresu", this.usermail);
-        this.router.navigateByUrl('login');
-      },
-        (error) => {
-          this.stateService.stopLoading();
-          switch (error.error.description) {
-            case 'Email not registered.':
-              this.presentAlert("Chyba...", null, "...emailová adresa nie je zaregistrovaná.");
-              break;
-            case 'Email not verified.':
-              this.presentAlert("Chyba...", null, "...emailová adresa nie je potvrdená.");
-              break;
-          }
+      this.stateService.startLoading().then (
+        () => {
+          this.apiService.forgotPassword(this.usermail).subscribe(
+            () => {
+              this.presentAlert(null, "Potvrdzovací email bol zaslaný na adresu", this.usermail);
+              this.router.navigateByUrl('login');
+            },
+            (error) => {
+              this.stateService.stopLoading();
+              switch (error.error.description) {
+                case 'Email not registered.':
+                  this.presentAlert("Chyba...", null, "...emailová adresa nie je zaregistrovaná.");
+                  break;
+                case 'Email not verified.':
+                  this.presentAlert("Chyba...", null, "...emailová adresa nie je potvrdená.");
+                  break;
+              }
+            }
+          );
         }
-      );
+      )
     }
   }
 }
