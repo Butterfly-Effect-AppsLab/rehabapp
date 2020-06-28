@@ -38,8 +38,7 @@ export class ConfirmationPage implements OnInit {
             this.presentAlert('...Vaša emailová adresa už bola potvrdená.')
           }
           
-          this.accountService.loginError.next(error.error);
-          this.router.navigateByUrl('login');
+          this.router.navigateByUrl('dashboard');
         }
       );
     }

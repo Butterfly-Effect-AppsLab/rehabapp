@@ -75,12 +75,15 @@ export class RegistrationPage implements OnInit {
     this.stateService.startLoading().then(
       () => {
         this.api.registrateUser(email, password).subscribe(
-          () => {
+          (resp) => {
             this.stateService.stopLoading().then(
               () => {
-                this.presentAlert(email, '', "Potvrdzovací email bol zaslaný na adresu")
-                // this.accountService.registratingUser = new User("", email, password);
-                // this.router.navigateByUrl('registration/demography');
+                if (resp.body['access_token']) {
+                  this.accountService.login(resp.body)
+                  this.router.navigateByUrl('dashboard');
+                }
+                else 
+                  this.presentAlert(email, '', "Potvrdzovací email bol zaslaný na adresu")
               }
             )
           },

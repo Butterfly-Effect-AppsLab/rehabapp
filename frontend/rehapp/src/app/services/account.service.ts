@@ -116,7 +116,7 @@ export class AccountService {
       },
       (err) => {
         if (err.error['description'] === 'User already has diagnose')
-          this.presentAlert('Zvolenú diagnózu už máte pridelenu.')
+          this.presentAlert('Zvolenú diagnózu už máte pridelenú.')
       }
     )
   }
