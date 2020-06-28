@@ -16,7 +16,7 @@ class UserSchema(Schema):
     verification_token = fields.String(default=None, load_only=True)
     password_reset = fields.String(default=None, load_only=True)
 
-    diagnoses = fields.Nested(lambda: DiagnoseSchema(only=("id", "name", "svk")), many=True, dump_only=True)
+    diagnoses = fields.Nested(lambda: DiagnoseSchema(only=("id", "name")), many=True, dump_only=True)
 
     @post_load
     def create_model(self, data, **kwargs):
