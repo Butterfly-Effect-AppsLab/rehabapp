@@ -103,8 +103,14 @@ export class AccountService {
     this.api.collect(diag.id).subscribe(
       (resp) => {
         if (resp.body['collected_id']) {
+          console.log(resp.body);
+          
           console.log('Diagnoza pridana neznamemu');
-          this.storageService.setItem('user_diagnose', diag.id.toString())
+          this.storageService.setObject('user_diagnose', 
+          {
+            'id': resp.body['collected_id'],
+            'name': resp.body['name']
+          })
           this.router.navigateByUrl('/dashboard');
         }
         if (resp.body['diagnoses']) {
@@ -112,7 +118,6 @@ export class AccountService {
           this.userLoggedIn.diagnoses.push(diag);
           this.router.navigateByUrl('/dashboard');
         }
-        console.log('prihlaseny', resp.body)
       },
       (err) => {
         if (err.error['description'] === 'User already has diagnose')

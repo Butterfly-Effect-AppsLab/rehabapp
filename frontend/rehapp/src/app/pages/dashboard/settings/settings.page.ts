@@ -18,6 +18,7 @@ export class SettingsPage implements OnInit {
   
   diagnoses: Array<Diagnose> = []
   username: string;
+  namesize: number = 32;
 
   constructor(private account: AccountService, 
     private alertController: AlertController,
@@ -31,6 +32,7 @@ export class SettingsPage implements OnInit {
   ionViewWillEnter() { 
     this.diagnoses = this.account.userLoggedIn.diagnoses;
     this.username = this.account.userLoggedIn.name;
+    this.namesize = this.calculateFont(this.username.length)
   }
 
   async presentAlert(text: string, confirmHandler?: () => void) {
@@ -49,6 +51,19 @@ export class SettingsPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  calculateFont(length: number) {
+    if (length < 8)
+      return 32;
+    if (length < 15)
+      return 28;
+    if (length < 20)
+      return 24;
+    if (length < 25)
+      return 20;
+    else
+      return 18;
   }
 
   logout() {

@@ -23,22 +23,25 @@ export class ConfirmationPage implements OnInit {
     let token = window.location.href.split('=')[1];
 
     if (token) {
-      this.stateService.startLoading();
-      this.apiService.sendConfirmationToken(token).subscribe(
-        (resp) => {
-          if (resp.body['access_token']) {
-            this.accountService.login(resp.body).then(() => {
-              this.stateService.stopLoading();
-              this.presentConfirm('Emailová adresa bola potvrdená.','Pokračujte do aplikácie.');
-            });
-          }
-        },
-        (error) => {
-          if (error.error['description'] === 'User already verified') {
-            this.presentAlert('...Vaša emailová adresa už bola potvrdená.')
-          }
-          
-          this.router.navigateByUrl('dashboard');
+      this.stateService.startLoading().then(
+        () => {
+          this.apiService.sendConfirmationToken(token).subscribe(
+            (resp) => {
+              if (resp.body['access_token']) {
+                this.accountService.login(resp.body).then(() => {
+                  this.stateService.stopLoading();
+                  this.presentConfirm('Emailová adresa bola potvrdená.','Pokračujte do aplikácie.');
+                });
+              }
+            },
+            (error) => {
+              if (error.error['description'] === 'User already verified') {
+                this.presentAlert('...Vaša emailová adresa už bola potvrdená.')
+              }
+              
+              this.router.navigateByUrl('dashboard');
+            }
+          );
         }
       );
     }

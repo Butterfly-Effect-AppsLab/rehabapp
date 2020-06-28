@@ -23,6 +23,7 @@ export class ProfilePage implements OnInit {
   undoneIcon = "/assets/images/icons/days/undone.svg";
   unknownIcon = "/assets/images/icons/days/unknown.svg";
   diagnosisShown: string;
+  namesize: number = 32;
   days = {
     mon : '',
     tue : '',
@@ -50,6 +51,7 @@ export class ProfilePage implements OnInit {
   
   ionViewDidEnter() {
     this.username = this.account.userLoggedIn.name;
+    this.namesize = this.calculateFont(this.username.length)
     this.listOfDiagnoses = this.account.userLoggedIn.diagnoses;
     if (this.listOfDiagnoses.length > 0)
       this.diagnosisShown = this.listOfDiagnoses[0].name;
@@ -84,6 +86,19 @@ export class ProfilePage implements OnInit {
         this.popoverIcon = "chevron-down-outline"
       }
     );
+  }
+
+  calculateFont(length: number) {
+    if (length < 8)
+      return 32;
+    if (length < 15)
+      return 28;
+    if (length < 20)
+      return 24;
+    if (length < 25)
+      return 20;
+    else
+      return 18;
   }
 
   removeFader(event) {
