@@ -15,7 +15,7 @@ def init_api():
                 'forgotPassword',
                 'resetPassword',
                 'refresh',
-                'checkEmail'
+                'logout',
             ])
         ]
     )
@@ -25,6 +25,7 @@ def init_api():
     api_tmp.add_route('/registration', RegistrationResource())
     api_tmp.add_route('/registration/confirmation', RegistrationResource(), suffix='confirmation')
     api_tmp.add_route('/login', LoginResource())
+    api_tmp.add_route('/logout', LogoutResource())
     api_tmp.add_route('/login/oauth/google', OauthGoogleResource())
     api_tmp.add_route('/login/oauth/google/code', OauthGoogleResource(), suffix='code')
     # api_tmp.add_route('/login/oauth/fb', OauthFbResource())
