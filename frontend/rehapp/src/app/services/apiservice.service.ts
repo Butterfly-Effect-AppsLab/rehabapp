@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { User } from './models/User';
 import { catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
+import { Diagnose } from './models/Tree';
 
 
 const HTTP_OPTIONS = {
@@ -42,13 +43,25 @@ export class APIService {
         return this.http.get<any>(environment.API_URL + "users/me");
     }
 
-    public updateUser(username: string, usersex: string, userbirth: string) {
-        let body = {
-            'name': username,
-            'sex': usersex,
-            'birthday': userbirth
+    public updateUser(username: string, usersex: string, userbirth: string, userDiagnose: Diagnose) {
+
+        let user;
+        if (userDiagnose) {
+            user = {
+                'name': username,
+                'sex': usersex,
+                'birthday': userbirth,
+                'collected_id': userDiagnose.id
+            }
+        } else {
+            user = {
+                'name': username,
+                'sex': usersex,
+                'birthday': userbirth
+            }
         }
-        return this.http.put<any>(environment.API_URL + "users/me", body);
+        
+        return this.http.put<any>(environment.API_URL + "users/me", user);
     }
 
     // public refresh(token: {"refresh_token": string}) {

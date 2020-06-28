@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { StorageService } from 'src/app/services/storage.service';
+import { Diagnose } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-demography',
@@ -20,8 +21,7 @@ export class DemographyPage implements OnInit {
   private gender: string = "female"
   private birth: Date = new Date("1990-01-01");
   private nameHighlighter: string = "highlight-gray";
-  private userDiagnose: string;
-
+  private userDiagnose: Diagnose;
 
   constructor(
     private router: Router,
@@ -33,14 +33,10 @@ export class DemographyPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.storage.getItem('user_diagnose').then(
+    this.storage.getObject('user_diagnose').then(      
       (diag) => {
         if (diag) {
-          this.storage.getObject('tree').then(
-            (tree) => {
-              this.userDiagnose = tree['questions']['d_' + diag];
-            }
-          )
+          this.userDiagnose = diag;
         }
       }
     )
@@ -105,7 +101,7 @@ export class DemographyPage implements OnInit {
 
     this.stateService.startLoading().then(
       () => {
-        this.APIservice.updateUser(this.name, this.gender, birthday).subscribe(
+        this.APIservice.updateUser(this.name, this.gender, birthday, this.userDiagnose).subscribe(
           (resp) => {
             this.stateService.stopLoading().then(
               () => {

@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header">
       <div class="name_div">
-        <h2 class="name">{{username}}...</h2>
+        <h2 class="name" [style.fontSize.px]="namesize">{{username}}...</h2>
       </div>
       <ion-item button class="item" lines="none" (click)="logout()">
         <ion-label>Odhlásiť sa</ion-label>
