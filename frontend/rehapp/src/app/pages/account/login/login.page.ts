@@ -37,6 +37,10 @@ export class LoginPage implements OnInit {
     this.checkValidation();
   }
 
+  ionViewDidEnter(){
+    this.stateService.stopLoading();
+  }
+
   async presentAlert(message: string = '...Váš e-mail, alebo heslo neboli zadané správne.') {
     const alert = await this.alertController.create({
       cssClass: 'app-alert',
