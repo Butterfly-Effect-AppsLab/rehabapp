@@ -14,7 +14,7 @@
 
 <div id="componentDiv">
   <app-question *ngIf="stateService.actualTreeComponent.getValue() && stateService.actualTreeComponent.getValue().type == 'question'" [question]="stateService.actualTreeComponent.getValue()" (onAnswer)="childAnswered($event)" (onBack)="back()"></app-question>
-  <app-diagnose *ngIf="stateService.actualTreeComponent.getValue() && stateService.actualTreeComponent.getValue().type == 'diagnose'" [diagnose]="stateService.actualTreeComponent.getValue()" [diagnoseId]="diagnose" (onBack)="back()"></app-diagnose>
+  <app-diagnose *ngIf="stateService.actualTreeComponent.getValue() && stateService.actualTreeComponent.getValue().type == 'diagnose'" [diagnose]="stateService.actualTreeComponent.getValue()" (onBack)="back()"></app-diagnose>
 </div>
 
 

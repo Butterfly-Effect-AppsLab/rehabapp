@@ -36,7 +36,11 @@ export class DemographyPage implements OnInit {
     this.storage.getItem('user_diagnose').then(
       (diag) => {
         if (diag) {
-          this.userDiagnose = diag;
+          this.storage.getObject('tree').then(
+            (tree) => {
+              this.userDiagnose = tree['questions']['d_'+diag];              
+            }
+          )
         }
       }
     )
@@ -47,7 +51,7 @@ export class DemographyPage implements OnInit {
 
     console.log(user);
 
-    this.name = user.username;
+    this.name = user.name;
     this.gender = user.sex;
     this.birth = new Date(user.birthday);
     this.stateService.stopLoading();

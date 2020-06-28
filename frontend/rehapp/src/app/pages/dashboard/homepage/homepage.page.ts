@@ -29,9 +29,9 @@ export class HomepagePage implements OnInit {
   ngOnInit() {
     this.user = this.accountService.userLoggedIn;
   }
-
+  
   ionViewDidEnter() {
-    if (this.user.username == null)
+    if (this.user.name == null)
       this.user.username = this.accountService.userLoggedIn['name'];    
     this.stateService.stopLoading();
   }

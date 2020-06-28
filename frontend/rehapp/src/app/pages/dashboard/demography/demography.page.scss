@@ -9,19 +9,19 @@
         overflow: scroll;
 
         .text_div {
-            color: var(--dark);
-            h5 {
-                margin-bottom: 0;
-            }
-        }
-
-        .left {
-            text-align: left;
             margin-top: 5%;
+        }
+        .left {
+            color: var(--dark);
+            text-align: left;
+        }
+        .extratop {
+            margin-top: 8%;
         }
 
         .item_div {
             padding-bottom: 3%;
+            margin-top: -3%;
 
             .highlight-dark {
                 border-bottom: 2px solid var(--dark);
@@ -50,7 +50,6 @@
         .radio-group {
             display: inline-block;
             width: 100%;
-            margin: 5% 0% 2% 0%;
 
             .radio-opt {
                 float: left;
@@ -77,7 +76,6 @@
         }
 
         .date-picker {
-            margin-top: 10%;
             border-radius: 3em;
             font-size: 1.2em;
             --background: var(--gray);

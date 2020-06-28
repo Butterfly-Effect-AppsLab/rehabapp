@@ -13,25 +13,28 @@ import { APIService } from 'src/app/services/apiservice.service';
 export class DiagnoseComponent implements OnInit {
 
   @Input() diagnose: Diagnose;
-  @Input() diagnoseId: string;
   @Input() showContinueBtn: boolean = true;
   @Output() onBack: EventEmitter<null> = new EventEmitter;
   @ViewChild('fader_top', {static: true}) topFader: ElementRef;
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
 
-  constructor(private router: Router, 
-    private stateService: StateService, 
-    private storage: StorageService,
-    private api: APIService) { }
   area: string = "";
   areaClicked = false;
   h1Size: number;
 
+  constructor(private router: Router, 
+    private stateService: StateService, 
+    private storage: StorageService,
+    private api: APIService) { }
+
   ngOnInit() {
+    console.log(this.diagnose);
+    
     if (this.diagnose.definition == undefined) {
       let newDiagnose: Diagnose = new Diagnose();
       newDiagnose.name = this.diagnose.name;
       newDiagnose.type = this.diagnose.type;
+      newDiagnose.id = this.diagnose.id;
       this.diagnose = newDiagnose;
     }
     if (this.diagnose.name.length < 40) 
@@ -53,7 +56,7 @@ export class DiagnoseComponent implements OnInit {
     this.api.identify().subscribe( 
       () => { console.log("pouzivatel je prihlaseny") },
       () => {
-        this.storage.setItem('user_diagnose',this.diagnoseId)
+        this.storage.setItem('user_diagnose',this.diagnose.id.toString())
       }
     )
     this.router.navigateByUrl('/dashboard');    

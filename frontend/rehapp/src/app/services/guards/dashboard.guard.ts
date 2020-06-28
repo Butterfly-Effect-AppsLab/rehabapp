@@ -9,16 +9,22 @@ import { APIService } from '../apiservice.service';
 })
 export class DashboardGuard implements CanActivate {
 
-  constructor(private accountService: AccountService, private router: Router, private api: APIService) {}
+  constructor(private accountService: AccountService, private router: Router, private api: APIService) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!this.accountService.userLoggedIn) {
-      this.accountService.logout();
-      this.router.navigateByUrl('/login')
-      return false;
+    if (!this.accountService.userLoggedIn) {      
+      setTimeout(() => {
+        if (!this.accountService.userLoggedIn) {
+          this.accountService.logout();
+          this.router.navigateByUrl('/login')
+          return false;
+        }
+        else 
+          return true;
+      }, 500);
     }
     else {
       return true;

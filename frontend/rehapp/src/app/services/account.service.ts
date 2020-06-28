@@ -40,6 +40,7 @@ export class AccountService {
   }
 
   loginSavedUser() {
+    
     this.api.identify().subscribe(
       (user) => {
         console.log("User found: ", user);

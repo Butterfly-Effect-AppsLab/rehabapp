@@ -5,7 +5,7 @@
       <h5>Pre úpravu svojich údajov prosím zadajte Vaše...</h5>
     </div>
     <div class="scrollable">
-      <div class="text_div left">
+      <div class="left">
         <h5>...meno</h5>
       </div>
   
@@ -84,11 +84,11 @@
       </ion-item>  
 
       <div *ngIf="userDiagnose">
-        <div class="text_div left">
+        <div class="text_div left extratop">
           <h5>Vaša diagnóza...</h5>
         </div>
         <ion-item class="diag_item" lines="none">
-          <ion-label>{{userDiagnose}}</ion-label>
+          <ion-label>{{userDiagnose.name}}</ion-label>
           <ion-button (click)="removeDiag()" fill="clear" slot="end" class="icon">
             <ion-icon name="close-outline" class="icon"></ion-icon>
           </ion-button>
