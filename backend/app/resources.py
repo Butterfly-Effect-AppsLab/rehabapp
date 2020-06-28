@@ -10,7 +10,7 @@ from config import KEY
 from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL
 from models import *
 from oauth import get_google_provider_cfg, google_refresh_token
-from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema
+from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema, VideoSchema
 from send_email import send_email
 import hashlib
 import json
@@ -26,6 +26,7 @@ refresh_token_exp = dict(days=7, hours=0, minutes=0, seconds=0)
 
 redirect_url = f"{APP_URL}/login"
 
+
 def generate_token(payload, exp=None):
     payload['iat'] = datetime.utcnow()
     if exp:
@@ -39,22 +40,93 @@ class TestResource:
 
 
 class VideoResource:
-    def on_get(self, req, res):
+    def on_get(self, req, res, id):
         session = req.context.session
 
         # check if user has diagnose
-        # user = session.query(User).filter(User.id == req.context.user_id).first()
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        diagnose = session.query(Diagnose).filter(Diagnose.id == id).first()
+
+        if not diagnose:
+            raise falcon.HTTPBadRequest(description="Diagnose doesn't exist")
+
+        if diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
+
+        video_schema = VideoSchema(many=True, only=['id', 'size'])
+
+        size = diagnose.videos_size
+
+        res.media = {
+            'size': size,
+            'formatted_size': diagnose.formatted_videos_size(size=size),
+            'ids': video_schema.dump(diagnose.videos),
+        }
+
+    def on_get_data(self, req, res, id):
+        session = req.context.session
+
+        # check if user has diagnose
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        video = session.query(Video).filter(Video.id == id).first()
+
+        if not video:
+            raise falcon.HTTPBadRequest(description="Video doesn't exist")
+
+        if video.diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
+
+        video_schema = VideoSchema()
+
+        json_video = video_schema.dump(video)
+
+        m = hashlib.md5()
+        m.update(video_schema.dumps(video).encode())
+        json_video['checksum_data'] = m.hexdigest()
+
+        res.media = {
+            'video': json_video
+        }
+
+    def on_get_video(self, req, res, id):
+        session = req.context.session
+
+        # check if user has diagnose
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        video = session.query(Video).filter(Video.id == id).first()
+
+        if not video:
+            raise falcon.HTTPBadRequest(description="Video doesn't exist")
+
+        if video.diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
 
         res.content_type = 'video/mp4'
-        # print(open('Rehappka.mp4', 'rb').read())
-        res.data = open('Rehappka.mp4', 'rb').read()
-        # video = open('Rehappka.mp4', 'rb').read()
+        res.data = open(f"videos/{video.name}", 'rb').read()
 
-        # res.media = {
-        #     'video': base64.b64encode(video).decode('utf-8'),
-        #     # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
-        # }
+# how to send img as base64encoded string
+# video_schema = VideoSchema(many=True, only=['id', 'size'])
+#
+# size = diagnose.videos_size
+#
+# res.media = {
+#     'size': size,
+#     'formatted_size': diagnose.formatted_videos_size(size=size),
+#     'ids': video_schema.dump(diagnose.videos)
+# }
 
+# res.content_type = 'video/mp4'
+# print(open('Rehappka.mp4', 'rb').read())
+# res.data = open('Rehappka.mp4', 'rb').read()
+# video = open('Rehappka.mp4', 'rb').read()
+
+# res.media = {
+#     'video': base64.b64encode(video).decode('utf-8'),
+#     # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
+# }
 
 class QuestionsResource:
     def on_get(self, req, res):
@@ -547,8 +619,8 @@ class CollectDiagnosesResource:
         if diagnose not in user.diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
         else:
-            user_diagnose = session.query(UserDiagnose)\
-                .filter(UserDiagnose.user_id == user.id)\
+            user_diagnose = session.query(UserDiagnose) \
+                .filter(UserDiagnose.user_id == user.id) \
                 .filter(UserDiagnose.diagnose_id == diagnose.id) \
                 .filter(UserDiagnose.deleted == False) \
                 .first()

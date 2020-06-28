@@ -47,6 +47,7 @@ export class HomepagePage implements OnInit {
   programSelected(i) {
     console.log(i);
      this.selectedIndex = i;
+     this.router.navigateByUrl('dashboard/video');
   }
 
   identify() {

@@ -48,28 +48,66 @@ def load_videos(diagnose_name=None):
         if not os.path.exists(f"videos/{name}"):
             print("Path doesn't exist")
             continue
-        for order, video in enumerate(os.listdir(f'videos/{name}')):
+
+        actual_videos = os.listdir(f'videos/{name}')
+        list.sort(actual_videos)
+
+        saved_videos = list()
+
+        for order, video in enumerate(actual_videos):
             video_name = f'{name}/{video}'
+            saved_videos.append(video_name)
             video_path = f'videos/{video_name}'
-            size = int(os.stat(video_path).st_size / float(1 << 10))
+            # size = int(os.stat(video_path).st_size / float(1 << 10))
+            size = int(os.stat(video_path).st_size)
             video = open(video_path, 'rb').read()
             m = hashlib.md5()
             m.update(base64.b64encode(video).decode('ascii').encode('utf-8'))
             checksum_video = m.hexdigest()
+            text = 'Tu nájdete čoskoro popis videa na ktorom momentálne pracujeme...'
 
-            video_obj = session.query(Video).filter(Video.name == video_name).all()
+            video_obj = session.query(Video).filter(Video.name == video_name).first()
 
             video_schema = VideoSchema()
 
             if not video_obj:
-                video_schema.load({
-                    'name': video_name
+                video_obj = video_schema.load({
+                    'name': video_name,
+                    'order': order,
+                    'size': size,
+                    'text': text,
+                    'checksum_video': checksum_video,
+                    'diagnose_id': diagnose.id
                 })
+
+                session.add(video_obj)
+                session.flush()
+            else:
+                video_obj.name = video_name
+                video_obj.order = order
+                video_obj.size = size
+                video_obj.text = text
+                video_obj.checksum_video = checksum_video
+                video_obj.diagnose_id = diagnose.id
+
+            video_json = video_schema.dumps(video_obj)
+
+            m = hashlib.md5()
+            m.update(video_json.encode())
+            print(m.hexdigest())
 
             print('order ', order)
             print(video_name)
             print(size)
-            print(m.hexdigest())
+
+        session.query(Video).filter(~Video.name.in_(saved_videos)).delete(False)
+
+    try:
+        session.commit()
+    except:
+        session.rollback()
+    finally:
+        session.close()
 
 
 if __name__ == "__main__":

@@ -3,5 +3,19 @@
         <div id="cover"></div>
         <video id="player" #player loop controls controlsList="nodownload" preload="auto" muted="true"></video>
     </div>
+
+
+    <ion-button (click)="getVideos()">
+        stiahnut
+    </ion-button>
+
+    <div>{{formattedSize}}</div>
+
+    <ion-button (click)="downloadVideos()">
+        download
+    </ion-button>
+
+    <ion-progress-bar value="{{downloaded/size}}"></ion-progress-bar>
+
     <!-- <video id="player" src="./assets/videos/Rehappka.mp4" #player loop controls controlsList="nodownload" preload="auto" muted="true"></video> -->
 </ion-content>

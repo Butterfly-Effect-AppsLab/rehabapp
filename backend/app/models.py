@@ -36,9 +36,27 @@ class Diagnose(Base):
         'Option',
     )
 
+    videos = relationship("Video", cascade="delete", backref='videos', order_by="Video.order")
+
     @property
     def unique_id(self):
         return f"d_{self.id}"
+
+    @property
+    def videos_size(self):
+        return sum(v.size for v in self.videos)
+
+    def formatted_videos_size(self, size=None):
+        if not size:
+            size = self.videos_size
+        if size > 1e9:
+            return '{:,.2f}'.format(size / float(1 << 30)) + "GB"
+        elif size > 1e6:
+            return '{:,.2f}'.format(size / float(1 << 20)) + "MB"
+        elif size > 1e3:
+            return '{:,.2f}'.format(size / float(1 << 10)) + "KB"
+
+        return '{:,.0f}'.format(size) + "B"
 
 
 class UserDiagnose(Base):
@@ -355,10 +373,6 @@ class Video(Base):
     order = Column(Integer)
     checksum_video = Column(String)
     name = Column(String)
+    size = Column(Integer)
 
-    @property
-    def checksum_row(self):
-        m = hashlib.md5()
-        m.update(json.dumps(self).encode())
-
-        return m.hexdigest()
+    diagnose = relationship("Diagnose")

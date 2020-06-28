@@ -37,10 +37,6 @@ const routes: Routes = [
     path: 'chart', 
     loadChildren: () => import('./pages/chart/chart.module').then(m => m.ChartPageModule)
   },
-  {
-    path: 'video',
-    loadChildren: () => import('./pages/video/video.module').then(m => m.VideoPageModule)
-  },
 ];
 
 @NgModule({

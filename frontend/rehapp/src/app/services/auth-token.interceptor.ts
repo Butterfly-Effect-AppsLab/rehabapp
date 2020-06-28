@@ -6,7 +6,7 @@ import { mergeMap } from 'rxjs/operators'
 
 import { environment } from 'src/environments/environment'
 
-const AUTH_URLS: Array<string> = ["users/me", "collectDiagnoses"]
+const AUTH_URLS: Array<string> = ["users/me", "collectDiagnoses", "diagnoses"]
 
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {
@@ -16,7 +16,7 @@ export class AuthTokenInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const found = AUTH_URLS.find(url => url === request.url.split(environment.API_URL)[1]);
+    const found = AUTH_URLS.find(url => request.url.split(environment.API_URL)[1].includes(url));
     if (!found)
       return next.handle(request);
 
