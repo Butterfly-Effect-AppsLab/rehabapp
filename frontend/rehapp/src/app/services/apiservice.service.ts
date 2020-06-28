@@ -58,8 +58,8 @@ export class APIService {
         // return this.http.post<any>(environment.API_URL + "refresh", token, HTTP_OPTIONS)
     }
 
-    public collect() {
-        return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": 78 }, HTTP_OPTIONS)
+    public collect(id: number) {
+        return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": id }, HTTP_OPTIONS)
     }
 
     public checkEmail(email: object) {
@@ -88,9 +88,12 @@ export class APIService {
             );
     }
 
-    public registrateUser(user: User) {
-
-        return this.http.post<User>(environment.API_URL + "registration", user.toJSON(), HTTP_OPTIONS)
+    public registrateUser(email: string, pass: string) {
+        let body = {
+            'email' : email,
+            'password': pass
+        }
+        return this.http.post<User>(environment.API_URL + "registration", body, HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );

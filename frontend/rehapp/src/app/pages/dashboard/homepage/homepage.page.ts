@@ -27,18 +27,16 @@ export class HomepagePage implements OnInit {
   }
  
   ngOnInit() {
-    this.user = this.accountService.userLoggedIn;
+    this.user = new User('');
   }
   
   ionViewDidEnter() {
-    if (this.user.name == null)
-      this.user.username = this.accountService.userLoggedIn['name'];    
+    this.user = this.accountService.userLoggedIn;
     this.stateService.stopLoading();
   }
 
   begin() {
-    this.router.navigateByUrl('dashboard/demography')
-    // alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
+    alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
   }
 
   removeFader(event) {

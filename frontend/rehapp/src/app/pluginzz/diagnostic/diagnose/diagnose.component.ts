@@ -4,6 +4,7 @@ import { StateService } from 'src/app/services/state.service';
 import { Diagnose } from 'src/app/services/models/Tree';
 import { StorageService } from 'src/app/services/storage.service';
 import { APIService } from 'src/app/services/apiservice.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-diagnose',
@@ -24,6 +25,7 @@ export class DiagnoseComponent implements OnInit {
 
   constructor(private router: Router, 
     private stateService: StateService, 
+    private accountService: AccountService,
     private storage: StorageService,
     private api: APIService) { }
 
@@ -53,13 +55,7 @@ export class DiagnoseComponent implements OnInit {
   }
 
   continue() {
-    this.api.identify().subscribe( 
-      () => { console.log("pouzivatel je prihlaseny") },
-      () => {
-        this.storage.setItem('user_diagnose',this.diagnose.id.toString())
-      }
-    )
-    this.router.navigateByUrl('/dashboard');    
+    this.accountService.addDiagnose(this.diagnose.id);
   }
 
   removeFader(event){

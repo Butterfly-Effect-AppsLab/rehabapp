@@ -51,6 +51,9 @@ export class SettingsPage implements OnInit {
   logout() {
     this.presentAlert('...že sa chcete odhlásiť?', () => { this.account.logout();});
   }
+  updateCredentials() {
+    this.router.navigateByUrl('dashboard/demography')
+  }
 
   removeDiag(index) {    
     let removeFromArr = () => { 

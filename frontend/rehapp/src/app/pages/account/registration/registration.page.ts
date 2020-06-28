@@ -48,10 +48,11 @@ export class RegistrationPage implements OnInit {
   ngOnInit() {
   }
 
-  async presentAlert(error: string) {
+  async presentAlert(error: string, header?: string, subheader?: string) {
     const alert = await this.alertController.create({
       cssClass: 'app-alert',
-      header: 'Chyba...',
+      header: (header === '') ? null : 'Chyba...',
+      subHeader: subheader,
       message: error,
       buttons: ['OK']
     });
@@ -59,8 +60,9 @@ export class RegistrationPage implements OnInit {
     await alert.present();
   }
 
-  async createUser() {
+  createUser() {
     if (!this.regForm.valid) {
+      this.presentAlert('...nesprávne vyplnené údaje.')
       return;
     }
 
@@ -70,18 +72,31 @@ export class RegistrationPage implements OnInit {
 
     // this.router.navigateByUrl('dashboard/demography'); 
 
-    // await this.api.checkEmail({ "email": email }).subscribe(
-    //   () => {
-    //     this.accountService.registratingUser = new User("", email, password);
-    //     this.router.navigateByUrl('registration/demography');
-    //   },
-    //   (error) => {
-    //     if (error['status'] == 400) {
-    //       this.presentAlert("...zadaná emailová adresa už bola zaregistrovaná.")
-    //     }
-    //     return
-    //   }
-    // );
+    this.stateService.startLoading().then(
+      () => {
+        this.api.registrateUser(email, password).subscribe(
+          () => {
+            this.stateService.stopLoading().then(
+              () => {
+                this.presentAlert(email, '', "Potvrdzovací email bol zaslaný na adresu")
+                // this.accountService.registratingUser = new User("", email, password);
+                // this.router.navigateByUrl('registration/demography');
+              }
+            )
+          },
+          (error) => {
+            this.stateService.stopLoading().then(
+              () => {
+                console.log(error.error['description'] === 'User with email already exists');                
+                if (error.error['description'] === 'User with email already exists') {
+                  this.presentAlert("...zadaná emailová adresa už bola zaregistrovaná.")
+                }
+              }
+            )
+          }
+        );
+      }
+    )
 
   }
 

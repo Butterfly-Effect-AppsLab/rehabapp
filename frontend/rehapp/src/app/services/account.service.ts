@@ -4,6 +4,7 @@ import { StorageService } from './storage.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { APIService } from './apiservice.service';
+import { AlertController } from '@ionic/angular';
 
 
 @Injectable({
@@ -17,7 +18,10 @@ export class AccountService {
   private _accessToken: string;
   private _loginError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private storageService: StorageService, private router: Router, private api: APIService) { }
+  constructor(private storageService: StorageService, 
+    private router: Router, 
+    private api: APIService,
+    private alertController: AlertController) { }
 
   public get registratingUser() { return this._registratingUser }
   public set registratingUser(user: User) { this._registratingUser = user }
@@ -38,6 +42,24 @@ export class AccountService {
   get loginError(): BehaviorSubject<string> {
     return this._loginError;
   }
+  
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      subHeader: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => { this.router.navigateByUrl('dashboard') }
+        },
+        {
+          text: 'Zrušiť'
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   loginSavedUser() {
     
@@ -45,6 +67,7 @@ export class AccountService {
       (user) => {
         console.log("User found: ", user);
         this.userLoggedIn = user;
+        this.storageService.removeItem('user_diagnose');
         this.router.navigateByUrl('dashboard')
       },
       () => { }
@@ -72,5 +95,26 @@ export class AccountService {
     this.storageService.removeItem("refresh_token");
     this.userLoggedIn = undefined;
     this.router.navigateByUrl('/')
+  }
+
+  addDiagnose(id: number) {
+    this.api.collect(id).subscribe(
+      (resp) => {
+        if (resp.body['collected_id']) {
+          console.log('Diagnoza pridana neznamemu');
+          this.storageService.setItem('user_diagnose', id.toString())
+          this.router.navigateByUrl('/dashboard');
+        }
+        if (resp.body['diagnoses']) {
+          console.log('Diagnoza pripada prihlasenemu');
+          this.router.navigateByUrl('/dashboard');
+        }
+        console.log('prihlaseny', resp.body)
+      },
+      (err) => {
+        if (err.error['description'] === 'User already has diagnose')
+          this.presentAlert('Zvolenú diagnózu už máte pridelenu.')
+      }
+    )
   }
 }

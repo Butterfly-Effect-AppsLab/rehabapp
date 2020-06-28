@@ -4,8 +4,11 @@
       <div class="name_div">
         <h2 class="name">{{username}}...</h2>
       </div>
-      <ion-item button class="logout" lines="none" (click)="logout()">
+      <ion-item button class="item" lines="none" (click)="logout()">
         <ion-label>Odhlásiť sa</ion-label>
+      </ion-item>
+      <ion-item button class="item bot" lines="none" (click)="updateCredentials()">
+        <ion-label>Zmeniť údaje</ion-label>
       </ion-item>
     </div>
     <div class="diagnoses">

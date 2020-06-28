@@ -98,23 +98,23 @@ export class DemographyPage implements OnInit {
     if (this.birth == undefined) this.birth = new Date()
     user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth() + 1}-${this.birth.getDate()}`;
 
-    this.APIservice.registrateUser(user).subscribe(
-      response => {
-        console.log("status code: ", response.status);
-        console.log("response: ", response.body);
-        if (response.status == 201) {
-          // poslat diagnozu na backend
-          this.storage.removeItem('user_diagnose');
-          this.router.navigateByUrl('/login');
-        }
-        else {
-          this.presentAlert(response.body)
-        }
-      },
-      error => {
-        this.presentAlert(error.error);
-      }
-    );
+    // this.APIservice.registrateUser(user).subscribe(
+    //   response => {
+    //     console.log("status code: ", response.status);
+    //     console.log("response: ", response.body);
+    //     if (response.status == 201) {
+    //       // poslat diagnozu na backend
+    //       this.storage.removeItem('user_diagnose');
+    //       this.router.navigateByUrl('/login');
+    //     }
+    //     else {
+    //       this.presentAlert(response.body)
+    //     }
+    //   },
+    //   error => {
+    //     this.presentAlert(error.error);
+    //   }
+    // );
   }
 
   setHighlight(event: string) {

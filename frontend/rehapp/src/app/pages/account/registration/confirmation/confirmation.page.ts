@@ -29,6 +29,7 @@ export class ConfirmationPage implements OnInit {
           if (resp.body['access_token']) {
             this.accountService.login(resp.body).then(() => {
               this.stateService.stopLoading();
+              this.presentConfirm('Emailová adresa bola potvrdená.','Pokračujte do aplikácie.');
             });
           }
         },
@@ -53,6 +54,24 @@ export class ConfirmationPage implements OnInit {
       header: 'Upozornenie ...',
       message: message,
       buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  async presentConfirm(header: string, message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      subHeader: header,
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.router.navigateByUrl('dashboard/demography');
+          }
+        }
+      ]
     });
 
     await alert.present();
