@@ -69,6 +69,25 @@ export class APIService {
             );
     }
 
+    public forgotPassword(email: string) {
+        return this.http.post<any>(environment.API_URL + "forgotPassword", {
+            'email': email
+        }, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    public resetPassword(token: string, password: string) {
+        return this.http.post<any>(environment.API_URL + "resetPassword", {
+            'token': token,
+            'password': password
+        }, HTTP_OPTIONS)
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+
     public registrateUser(user: User) {
 
         return this.http.post<User>(environment.API_URL + "registration", user.toJSON(), HTTP_OPTIONS)

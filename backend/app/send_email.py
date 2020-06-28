@@ -25,14 +25,14 @@ def gen_confirmation_email(token):
 
 def gen_reset_email(token):
     return {
-        'subject': 'Potvrdenie e-mailu',
+        'subject': 'Reset hesla',
         'html': f""" 
         <html> 
             <body> 
                 <h3>Vážený používateľ,</h3>
                 <p> 
                     vyzerá to, že chcete zmeniť svoje prístupové heslo. V tom prípade pokračujte kliknutím na odkaz:<br>
-                    <a href="{APP_URL}?token={token}">Zmena hesla</a><br>
+                    <a href="{APP_URL}/forgotten-pass/reset?token={token}">Zmena hesla</a><br>
                     Pokiaľ o žiadosti ohľadne zmeny hesla nič neviete, tento e-mail kľudne ignorujte.<br>
                     Odkaz je platný 24 hodín.<br>
                     Prajeme Vám príjemný deň!<br>
@@ -49,6 +49,8 @@ def send_email(reciever_email, token, type):
 
     if type == 'confirmation':
         template = gen_confirmation_email(token)
+    elif type == 'reset':
+        template = gen_reset_email(token)
 
     sender_email = "info@rehabapp.com"
     receiver_email = reciever_email
