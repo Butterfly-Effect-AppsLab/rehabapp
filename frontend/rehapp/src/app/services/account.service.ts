@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { APIService } from './apiservice.service';
 import { AlertController } from '@ionic/angular';
+import { Diagnose } from './models/Tree';
 
 
 @Injectable({
@@ -74,19 +75,20 @@ export class AccountService {
     )
   }
 
-  async login(responseBody: object) {
+  async login(responseBody: object) {    
     this.userLoggedIn = new User(
       responseBody['user'].name, responseBody['user'].email, null, responseBody['user'].sex, responseBody['user'].birthday
     );
 
-    console.log(this.userLoggedIn);
-
+    this.userLoggedIn.diagnoses = responseBody['user'].diagnoses;
+    
     this.accessToken = responseBody['access_token'];
     this.refreshToken = responseBody['refresh_token'];
-
+    
     this.storageService.setObject('user', this.userLoggedIn);
     this.storageService.setItem('access_token', this.accessToken);
     this.storageService.setItem('refresh_token', this.refreshToken);
+    console.log(this.userLoggedIn);
   }
 
   logout() {
@@ -97,16 +99,17 @@ export class AccountService {
     this.router.navigateByUrl('/')
   }
 
-  addDiagnose(id: number) {
-    this.api.collect(id).subscribe(
+  addDiagnose(diag: Diagnose) {
+    this.api.collect(diag.id).subscribe(
       (resp) => {
         if (resp.body['collected_id']) {
           console.log('Diagnoza pridana neznamemu');
-          this.storageService.setItem('user_diagnose', id.toString())
+          this.storageService.setItem('user_diagnose', diag.id.toString())
           this.router.navigateByUrl('/dashboard');
         }
         if (resp.body['diagnoses']) {
           console.log('Diagnoza pripada prihlasenemu');
+          this.userLoggedIn.diagnoses.push(diag);
           this.router.navigateByUrl('/dashboard');
         }
         console.log('prihlaseny', resp.body)

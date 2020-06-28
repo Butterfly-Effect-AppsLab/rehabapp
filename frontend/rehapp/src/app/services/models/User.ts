@@ -1,9 +1,12 @@
+import { Diagnose } from './Tree';
+
 export class User {
     private _username: string;
     private _password: string;
     private _email: string;
     private _sex: string;
     private _birthday: string;
+    private _diagnoses: Array<Diagnose>;
 
     constructor(username: string, email?: string, password?: string, sex?: string, birthday?: string) {
         this._username = username;
@@ -66,4 +69,18 @@ export class User {
     public get name() {
         return this._username;
     }
+
+    public get diagnoses() {
+        return this._diagnoses;
+    }
+
+    public set diagnoses(diagnoses: Array<Diagnose>) {
+        this._diagnoses = diagnoses;
+    }
+
+    public addDiagnosis(diagnosis: Diagnose) {
+        this._diagnoses.push(diagnosis)
+    }
+
+    // public removeDiagnosis()
 }

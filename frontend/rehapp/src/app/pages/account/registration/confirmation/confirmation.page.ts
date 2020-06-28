@@ -64,16 +64,13 @@ export class ConfirmationPage implements OnInit {
       cssClass: 'app-alert',
       subHeader: header,
       message: message,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.router.navigateByUrl('dashboard/demography');
-          }
-        }
-      ]
+      buttons: ['OK']
     });
 
     await alert.present();
+    alert.onDidDismiss().then( () => {
+        this.router.navigateByUrl('dashboard/demography')
+      }
+    );    
   }
 }

@@ -38,7 +38,7 @@ export class DemographyPage implements OnInit {
         if (diag) {
           this.storage.getObject('tree').then(
             (tree) => {
-              this.userDiagnose = tree['questions']['d_'+diag];              
+              this.userDiagnose = tree['questions']['d_' + diag];
             }
           )
         }
@@ -71,14 +71,27 @@ export class DemographyPage implements OnInit {
     await alert.present();
   }
 
+  async confirmAlert(message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      subHeader: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => { this.router.navigateByUrl('dashboard') }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   valueSelected(event: CustomEvent, source: string) {
     if (source == "sex") {
       this.gender = event.detail.value;
     }
     else if (source == "date")
       this.birth = new Date(event.detail.value);
-    else
-      alert("Zla volba");
   }
 
   createUser() {
@@ -87,34 +100,27 @@ export class DemographyPage implements OnInit {
       return
     }
 
-    let user: User = this.accountService.registratingUser;
-    if (user == undefined) {
-      console.log("UNDEFINED");
-      user = new User("NAME", "EMAIL", "PSSWD");
-    }
-    user.username = this.name;
-    user.sex = this.gender;
+    if (this.birth == undefined) this.birth = new Date();
+    let birthday = `${this.birth.getFullYear()}-${this.birth.getMonth() + 1}-${this.birth.getDate()}`;
 
-    if (this.birth == undefined) this.birth = new Date()
-    user.birthday = `${this.birth.getFullYear()}-${this.birth.getMonth() + 1}-${this.birth.getDate()}`;
-
-    // this.APIservice.registrateUser(user).subscribe(
-    //   response => {
-    //     console.log("status code: ", response.status);
-    //     console.log("response: ", response.body);
-    //     if (response.status == 201) {
-    //       // poslat diagnozu na backend
-    //       this.storage.removeItem('user_diagnose');
-    //       this.router.navigateByUrl('/login');
-    //     }
-    //     else {
-    //       this.presentAlert(response.body)
-    //     }
-    //   },
-    //   error => {
-    //     this.presentAlert(error.error);
-    //   }
-    // );
+    this.stateService.startLoading().then(
+      () => {
+        this.APIservice.updateUser(this.name, this.gender, birthday).subscribe(
+          (resp) => {
+            this.stateService.stopLoading().then(
+              () => {
+                this.confirmAlert("Vaše údaje boli aktualizované.")
+                this.accountService.userLoggedIn = resp;
+              }
+            )
+          },
+          (err) => {
+            this.stateService.stopLoading();
+            this.presentAlert(err.error);
+          }
+        )
+      }
+    )
   }
 
   setHighlight(event: string) {

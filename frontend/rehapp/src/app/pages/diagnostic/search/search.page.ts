@@ -1,14 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Element } from '@angular/compiler';
-import { Option, Diagnose } from 'src/app/services/models/Tree';
 import { StateService } from 'src/app/services/state.service';
-import { IonItemOptions, AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { APIService } from 'src/app/services/apiservice.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { error } from 'console';
-import { resolve } from 'url';
 import { AccountService } from 'src/app/services/account.service';
+import { Diagnose } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-search',
@@ -18,10 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
 export class SearchPage implements OnInit {
 
   constructor(private stateService: StateService,
-    private accountService: AccountService,
-    private storage: StorageService,
-    private router: Router,
-    private alertController: AlertController) { }
+    private accountService: AccountService) { }
 
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
   @ViewChild('fader_top', { static: true }) topFader: ElementRef;
@@ -85,7 +78,12 @@ export class SearchPage implements OnInit {
   }
 
   submit() {
-    if (this.selected != "")
-      this.accountService.addDiagnose(this.findOption(this.selected)['id']);      
+    if (this.selected != "") {
+      let diagnosis = new Diagnose();
+      diagnosis.id = this.findOption(this.selected)['id'];
+      diagnosis.name = this.findOption(this.selected)['text'];
+      
+      this.accountService.addDiagnose(diagnosis);      
+    }
   }
 }

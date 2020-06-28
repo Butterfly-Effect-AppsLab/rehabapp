@@ -3,6 +3,8 @@ import { AccountService } from 'src/app/services/account.service';
 import { AlertController } from '@ionic/angular';
 import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
+import { Diagnose } from 'src/app/services/models/Tree';
+import { APIService } from 'src/app/services/apiservice.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,20 +16,21 @@ export class SettingsPage implements OnInit {
   @ViewChild('fader_top', {static: true}) topFader: ElementRef;
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
   
-  diagnoses: Array<string> = ["Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza"]
+  diagnoses: Array<Diagnose> = []
   username: string;
 
   constructor(private account: AccountService, 
     private alertController: AlertController,
     private stateService: StateService,
+    private api: APIService,
     private router: Router) { }
 
   ngOnInit() {
   }
-
+  
   ionViewWillEnter() { 
-    if (!this.username || this.username !== this.account.userLoggedIn.username)
-      this.username = this.account.userLoggedIn.name;
+    this.diagnoses = this.account.userLoggedIn.diagnoses;
+    this.username = this.account.userLoggedIn.name;
   }
 
   async presentAlert(text: string, confirmHandler?: () => void) {
@@ -55,11 +58,17 @@ export class SettingsPage implements OnInit {
     this.router.navigateByUrl('dashboard/demography')
   }
 
-  removeDiag(index) {    
+  removeDiag(index) {   
     let removeFromArr = () => { 
-      this.diagnoses.splice(index,1)
+      this.api.removeDiagnosis(this.diagnoses[index].id).subscribe(
+        (resp) => { 
+          this.account.userLoggedIn.diagnoses = resp['diagnoses'];
+          this.diagnoses = this.account.userLoggedIn.diagnoses;
+         },
+        (err) => { console.log(err); }
+      )
     };
-    this.presentAlert(`...že chcete odstrániť diagnózu ${this.diagnoses[index]}`, removeFromArr)
+    this.presentAlert(`...že chcete odstrániť diagnózu ${this.diagnoses[index].name}`, removeFromArr)
   }
 
   removeFader(event) {    

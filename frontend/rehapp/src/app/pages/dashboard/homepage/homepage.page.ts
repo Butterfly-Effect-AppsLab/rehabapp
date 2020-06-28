@@ -5,6 +5,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { StateService } from 'src/app/services/state.service';
 import { APIService } from 'src/app/services/apiservice.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { Diagnose } from 'src/app/services/models/Tree';
 
 @Component({
   selector: 'app-homepage',
@@ -17,7 +18,7 @@ export class HomepagePage implements OnInit {
   @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
   
   user: User = new User("");
-  diagnoses = ["Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza","Prva diagnoza","Druha diagnoze","Tretia diagnoza"]
+  diagnoses: Array<Diagnose> = []
   selectedIndex = 0;
 
   constructor( private api: APIService, 
@@ -32,11 +33,17 @@ export class HomepagePage implements OnInit {
   
   ionViewDidEnter() {
     this.user = this.accountService.userLoggedIn;
+    this.diagnoses = this.user.diagnoses;
+    
     this.stateService.stopLoading();
   }
 
   begin() {
     alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
+  }
+
+  addDiagnosis() {
+    this.router.navigateByUrl('/diagnostic/choice')
   }
 
   removeFader(event) {

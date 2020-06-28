@@ -55,7 +55,7 @@ export class DiagnoseComponent implements OnInit {
   }
 
   continue() {
-    this.accountService.addDiagnose(this.diagnose.id);
+    this.accountService.addDiagnose(this.diagnose);
   }
 
   removeFader(event){

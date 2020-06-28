@@ -18,7 +18,7 @@
         <div class="diagnoses_wrapper" (scroll)="removeFader($event)">
           <ion-list *ngFor="let diag of diagnoses; let i = index" class="diag_list">
             <ion-item class="diag_item" lines="none">
-              <ion-label>{{diag}}</ion-label>
+              <ion-label>{{diag.name}}</ion-label>
               <ion-button (click)="removeDiag(i)" fill="clear" slot="end">
                 <ion-icon name="close-outline"></ion-icon>
               </ion-button>

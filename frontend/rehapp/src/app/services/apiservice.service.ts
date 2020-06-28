@@ -39,7 +39,16 @@ export class APIService {
     }
 
     public identify() {
-        return this.http.get<any>(environment.API_URL + "users/me")
+        return this.http.get<any>(environment.API_URL + "users/me");
+    }
+
+    public updateUser(username: string, usersex: string, userbirth: string) {
+        let body = {
+            'name': username,
+            'sex': usersex,
+            'birthday': userbirth
+        }
+        return this.http.put<any>(environment.API_URL + "users/me", body);
     }
 
     // public refresh(token: {"refresh_token": string}) {
@@ -60,6 +69,13 @@ export class APIService {
 
     public collect(id: number) {
         return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": id }, HTTP_OPTIONS)
+    }
+
+    public removeDiagnosis(id: number) {
+        return this.http.request<any>('delete',environment.API_URL + "collectDiagnoses", 
+        { 
+            body: {'diagnose_id' : id }
+        })
     }
 
     public checkEmail(email: object) {

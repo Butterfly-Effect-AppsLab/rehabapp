@@ -87,10 +87,10 @@ export class RegistrationPage implements OnInit {
           (error) => {
             this.stateService.stopLoading().then(
               () => {
-                console.log(error.error['description'] === 'User with email already exists');                
                 if (error.error['description'] === 'User with email already exists') {
                   this.presentAlert("...zadaná emailová adresa už bola zaregistrovaná.")
                 }
+                console.log(error);                
               }
             )
           }
