@@ -113,6 +113,39 @@ class MeResource:
         user_schema = UserSchema()
         res.media = user_schema.dump(user)
 
+    def on_put(self, req, res):
+        session = req.context.session
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        user_schema = UserSchema()
+
+        try:
+            new_user = user_schema.load(req.media, partial=True)
+
+            user.name = new_user.name
+            user.sex = new_user.sex
+            user.birthday = new_user.birthday
+
+            if 'collected_id' in req.media:
+                user_diagnose = session.query(UserDiagnose).filter(UserDiagnose.id == req.media['collected_id']).first()
+
+                if not user_diagnose:
+                    raise falcon.HTTPBadRequest(description="Collected diagnose doesn't exist")
+
+                if user_diagnose.diagnose not in user.diagnoses:
+                    user_diagnose.user_id = user.id
+                    session.add(user_diagnose)
+                    session.commit()
+
+            session.add(user)
+            session.flush()
+
+            res.media = user_schema.dump(user)
+
+        except ValidationError as err:
+            res.media = err.messages
+            res.status = falcon.HTTP_400
+
 
 class RegistrationResource:
     def on_post(self, req, res):
@@ -127,9 +160,10 @@ class RegistrationResource:
         user_schema = UserSchema()
 
         try:
-            user_schema.validate(req.media)
-
             if exist_user:
+                user_schema.load({
+                    'password': req.media['password']
+                }, partial=True)
                 user = exist_user
                 user.password = req.media['password']
             else:
@@ -268,6 +302,18 @@ class LoginResource:
                 'refresh_token': refresh_token,
                 'access_token': access_token,
             }
+
+
+class LogoutResource:
+    def on_post(self, req, res):
+        session = req.context.session
+
+        user_token = session.query(UserTokens).filter(UserTokens.refresh_token == req.media['refresh_token']).first()
+
+        if not user_token:
+            raise falcon.HTTPBadRequest(description="User already logged out")
+
+        session.delete(user_token)
 
 
 class OauthGoogleResource:
@@ -437,6 +483,7 @@ class CollectDiagnosesResource:
 
         if req.context.user_id:
 
+            user_schema = UserSchema()
             user = session.query(User).filter(User.id == req.context.user_id).first()
 
             if diagnose in user.diagnoses:
@@ -449,7 +496,7 @@ class CollectDiagnosesResource:
 
                 res.status = falcon.HTTP_200
                 res.media = {
-                    'diagnoses': [d.unique_id for d in user.diagnoses]
+                    'diagnoses': user_schema.dump(user)['diagnoses']
                 }
 
         else:
@@ -522,11 +569,13 @@ class ResetPasswordResource:
 
         user_schema = UserSchema()
 
-        user.password = req.media['password']
-        user.password_reset = None
-
         try:
-            user_schema.validate(req.media)
+            user_schema.load({
+                'password': req.media['password']
+            }, partial=True)
+
+            user.password = req.media['password']
+            user.password_reset = None
 
             session.query(UserTokens) \
                 .filter(UserTokens.user_id == user.id) \
