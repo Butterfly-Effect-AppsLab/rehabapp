@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-forgotten-pass',
@@ -14,7 +16,12 @@ export class ForgottenPassPage implements OnInit {
   emailPattern: RegExp = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
   emailHighlighter: string = "highlight-gray";
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private apiService: APIService,
+    private stateService: StateService
+  ) { }
 
   ngOnInit() {
   }
@@ -30,7 +37,7 @@ export class ForgottenPassPage implements OnInit {
 
     await alert.present();
   }
-  
+
   setHighlight(event: string) {
     if (event == "focus")
       this.emailHighlighter = "highlight-blue";
@@ -56,8 +63,27 @@ export class ForgottenPassPage implements OnInit {
     if (!this.validEmail)
       this.presentAlert("Chyba...", null, "...zadajte platnú emailovú adresu.")
     else {
-      this.presentAlert(null, "Potvrdzovací email bol zaslaný na adresu", this.usermail);
-      this.router.navigateByUrl('forgotten-pass/reset');
+      this.stateService.startLoading().then (
+        () => {
+          this.apiService.forgotPassword(this.usermail).subscribe(
+            () => {
+              this.presentAlert(null, "Potvrdzovací email bol zaslaný na adresu", this.usermail);
+              this.router.navigateByUrl('login');
+            },
+            (error) => {
+              this.stateService.stopLoading();
+              switch (error.error.description) {
+                case 'Email not registered.':
+                  this.presentAlert("Chyba...", null, "...emailová adresa nie je zaregistrovaná.");
+                  break;
+                case 'Email not verified.':
+                  this.presentAlert("Chyba...", null, "...emailová adresa nie je potvrdená.");
+                  break;
+              }
+            }
+          );
+        }
+      )
     }
   }
 }

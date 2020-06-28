@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-reset',
@@ -16,8 +19,18 @@ export class ResetPage implements OnInit {
   passPattern: RegExp = new RegExp(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9].{7,}/)
   passHighlighter: string = "highlight-gray";
   repHighlighter: string = "highlight-gray";
+  token: string;
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  constructor(
+    private apiService: APIService,
+    private stateService: StateService,
+    private accountService: AccountService,
+    private router: Router,
+    private alertController: AlertController,
+  ) {
+    this.token = window.location.href.split('=')[1];
+  }
+
 
   ngOnInit() {
   }
@@ -86,7 +99,20 @@ export class ResetPage implements OnInit {
       this.presentAlert("Chyba...", "...heslo je príliš slabé");
     else if (!this.confirmedPass)
       this.presentAlert("Chyba...", "...zadané heslá sa nezhodujú");
-    else
-      this.presentAlert("Vaše heslo bude zmenené", null, () => { this.router.navigateByUrl('login') });
+    else {
+      this.stateService.startLoading();
+      this.apiService.resetPassword(this.token, this.pass).subscribe((resp) => {
+        if (resp.body['access_token']) {
+          this.accountService.login(resp.body).then(() => {
+            this.presentAlert("Vaše heslo bolo zmenené...", '...pokračujte do aplikácie.', () => { this.router.navigateByUrl('dashboard') });
+            this.stateService.stopLoading();
+          });
+        }
+      }, (error) => {
+        this.stateService.stopLoading();
+        this.presentAlert("Chyba...", "...link na zmenu hesla je neplatný.");
+        this.router.navigateByUrl('login');
+      });
+    }
   }
 }

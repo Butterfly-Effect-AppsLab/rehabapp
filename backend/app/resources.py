@@ -401,7 +401,7 @@ class RefreshTokenResource:
                 if not google_refresh_token(user_token.google_refresh_token):
                     session.query(UserTokens) \
                         .filter(UserTokens.user_id == user_token.user_id) \
-                        .filter(UserTokens.google_refresh_token is not None) \
+                        .filter(UserTokens.google_refresh_token != None) \
                         .delete()
                     raise falcon.HTTPUnauthorized(description="Wrong token")
 
@@ -473,16 +473,26 @@ class ForgotPasswordResource:
         user = session.query(User).filter(User.email == req.media['email']).first()
 
         if not user:
-            raise falcon.HTTPBadRequest(description="Wrong email or password")
-        else:
-            token = jwt.encode({
-                "exp": datetime.utcnow() + timedelta(days=1),
-                "email": user.email,
-            }, KEY, algorithm='HS256').decode('utf-8')
+            raise falcon.HTTPBadRequest(description="Email not registered.")
 
-            send_email(user.email, token, 'reset')
+        if user.verification_token:
+            raise falcon.HTTPBadRequest(description="Email not verified.")
 
-            res.media = "Email has been sent."
+        token = generate_token(
+            {
+                'id': user.id,
+            },
+            {
+                'hours': 24
+            }
+        )
+
+        user.password_reset = token
+        session.add(user)
+
+        send_email(user.email, token, 'reset')
+
+        res.media = "Email has been sent."
 
 
 class ResetPasswordResource:
@@ -493,24 +503,59 @@ class ResetPasswordResource:
         token = req.media['token']
 
         if not token:
-            raise falcon.HTTPUnauthorized(description="No token")
+            raise falcon.HTTPBadRequest(description="No token")
 
         try:
             payload = jwt.decode(token, KEY, algorithm='HS256')
         except ExpiredSignatureError:
-            raise falcon.HTTPUnauthorized(description="Token has expired. Request a new one.")
+            raise falcon.HTTPBadRequest(description="Token has expired. Request a new one.")
         except (InvalidSignatureError, DecodeError, InvalidTokenError):
-            raise falcon.HTTPUnauthorized(description="Wrong token")
+            raise falcon.HTTPBadRequest(description="Wrong token")
 
-        user = session.query(User).filter(User.email == payload['email']).first()
+        user = session.query(User).filter(User.id == payload['id']).first()
 
         if not user:
-            raise falcon.HTTPUnauthorized(description="Wrong auth token")
+            raise falcon.HTTPBadRequest(description="Wrong token")
 
-        user.password = user.generate_password(req.media['password'])
+        if user.password_reset != req.media['token']:
+            raise falcon.HTTPBadRequest(description="Wrong token")
 
-        user.refresh_token = None
-        session.add(user)
-        session.flush()
+        user_schema = UserSchema()
 
-        res.media = "Password changed successfully."
+        user.password = req.media['password']
+        user.password_reset = None
+
+        try:
+            user_schema.validate(req.media)
+
+            session.query(UserTokens) \
+                .filter(UserTokens.user_id == user.id) \
+                .filter(UserTokens.google_refresh_token == None) \
+                .delete()
+
+            session.add(user)
+
+            refresh_token = generate_token({
+                'id': user.id
+            }, refresh_token_exp)
+
+            token = UserTokens(
+                user_id=user.id,
+                refresh_token=refresh_token
+            )
+
+            session.add(token)
+            session.flush()
+
+            access_token = generate_token({
+                'id': token.id
+            }, access_token_exp)
+
+            res.media = {
+                'user': user_schema.dump(user),
+                'refresh_token': refresh_token,
+                'access_token': access_token,
+            }
+        except ValidationError as err:
+            res.media = err.messages
+            res.status = falcon.HTTP_400

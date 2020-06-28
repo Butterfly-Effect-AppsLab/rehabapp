@@ -47,9 +47,8 @@ export class AppComponent {
           this.apiService.sendCodeGoogle(params).subscribe(
             (resp) => {
               if (resp.body['access_token']) {
-                this.accountService.login(resp.body).then(()=>{
-                  console.log(this.accountService.userLoggedIn);
-                  if(resp.body['new_user'])
+                this.accountService.login(resp.body).then(() => {
+                  if (resp.body['new_user'])
                     this.router.navigateByUrl('dashboard/demography');
                   else
                     this.router.navigateByUrl('dashboard');
@@ -57,17 +56,22 @@ export class AppComponent {
               }
             },
             (error) => {
-            this.accountService.loginError.next(error.error);
-            this.router.navigateByUrl('login');
+              this.accountService.loginError.next(error.error);
+              this.router.navigateByUrl('login');
             }
           );
         }
         break;
-        case '/registration/confirmation':
-          if (params) {
-            this.router.navigateByUrl(page+'?'+params);
-          }
-          break;
+      case '/registration/confirmation':
+        if (params) {
+          this.router.navigateByUrl(page + '?' + params);
+        }
+        break;
+      case '/resetPassword':
+        if (params) {
+          this.router.navigateByUrl(page + '?' + params);
+        }
+        break;
     }
 
     App.addListener('appUrlOpen', (data: any) => {
