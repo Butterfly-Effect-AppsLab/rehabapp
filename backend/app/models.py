@@ -1,6 +1,6 @@
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float, \
-    Boolean
+    Boolean, and_
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from config import DB
@@ -45,6 +45,7 @@ class UserDiagnose(Base):
 
     user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
     diagnose_id = Column(Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
+    deleted = Column(Boolean, nullable=False, default=False, server_default='f')
 
     diagnose = relationship("Diagnose", cascade="delete")
 
@@ -295,7 +296,11 @@ class User(Base):
     verification_token = Column(String, nullable=True)
     password_reset = Column(String, nullable=True)
 
-    diagnoses = relationship('Diagnose', secondary="user_diagnoses")
+    diagnoses = relationship(
+        'Diagnose',
+        secondary="user_diagnoses",
+        primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
+    )
 
     @property
     def password(self):
@@ -304,9 +309,6 @@ class User(Base):
     @password.setter
     def password(self, pwd):
         self._password = hashpw(pwd.encode(), gensalt()).decode()
-
-    # def generate_password(self, pwd):
-    #     return hashpw(pwd.encode(), gensalt()).decode()
 
     def validate_password(self, pwd):
         return checkpw(pwd.encode(), self.password.encode())

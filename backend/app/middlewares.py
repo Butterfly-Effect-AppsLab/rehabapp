@@ -116,7 +116,7 @@ class AuthMiddleware(object):
 
     def authenticate(self, req):
         if not req.auth:
-            if self.get_path(req.path) == 'collectDiagnoses':
+            if self.get_path(req.path) == 'collectDiagnoses' and req.method == 'POST':
                 return None
             raise HTTPUnauthorized(description="No token")
         token = req.auth.split(" ")[1]

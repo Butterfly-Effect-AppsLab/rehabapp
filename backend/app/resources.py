@@ -154,7 +154,7 @@ class RegistrationResource:
 
         exist_user = session.query(User).filter(User.email == req.media['email']).first()
 
-        if exist_user and not exist_user.google:
+        if exist_user and exist_user.password:
             raise falcon.HTTPBadRequest(description="User with email already exists")
 
         user_schema = UserSchema()
@@ -509,6 +509,39 @@ class CollectDiagnosesResource:
             res.status = falcon.HTTP_201
             res.media = {
                 'collected_id': collect.id
+            }
+
+    def on_delete(self, req, res):
+
+        session = req.context.session
+
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+        if not diagnose:
+            res.media = "Diagnose doesn't exist"
+            res.status = falcon.HTTP_404
+            return
+
+        user_schema = UserSchema()
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        if diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
+        else:
+            user_diagnose = session.query(UserDiagnose)\
+                .filter(UserDiagnose.user_id == user.id)\
+                .filter(UserDiagnose.diagnose_id == diagnose.id) \
+                .filter(UserDiagnose.deleted == False) \
+                .first()
+
+            user_diagnose.deleted = True
+
+            session.add(user_diagnose)
+            session.commit()
+
+            res.status = falcon.HTTP_200
+            res.media = {
+                'diagnoses': user_schema.dump(user)['diagnoses']
             }
 
 
