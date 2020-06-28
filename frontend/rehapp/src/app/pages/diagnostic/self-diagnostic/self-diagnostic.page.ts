@@ -11,7 +11,7 @@ import { StateService } from 'src/app/services/state.service';
 })
 export class SelfDiagnosticPage implements OnInit {
 
-  headerColor: string; 
+  headerColor: string;
 
   constructor(private stateService: StateService, private router: Router) {
   }
@@ -46,8 +46,8 @@ export class SelfDiagnosticPage implements OnInit {
       await this.stateService.startLoading();
       this.router.navigateByUrl('/diagnostic');
     }
-    else if (this.stateService.actualTreeComponent.getValue().type == "diagnose")
-      this.headerColor = "#f6f1ee"
+    else if (this.stateService.actualTreeComponent.getValue().type == "diagnose") 
+      this.headerColor = "#f6f1ee"          
     else {
       let question = this.stateService.actualTreeComponent.getValue() as Question;
       this.headerColor = question.style["background-color"];

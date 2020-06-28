@@ -112,9 +112,13 @@ $gapSize: 3px;
 .not-selected {
   background-color: var(--light);
   color: var(--dark);
+  font-size: large;
+  font-weight: bold;
 }
 
 .selected {
   background-color: var(--dark);
   color: var(--light);
+  font-size: large;
+  font-weight: bold;
 }

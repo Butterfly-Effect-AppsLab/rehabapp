@@ -100,7 +100,7 @@ export class BodyPartSelectionPage implements OnInit {
     if ((area != null && area.type == "area" && !area.first) || (area != null && area.type == "area" && area.first && this.areaSubmitted)) {
       await this.forward(0, 0);
     }
-
+    this.botFader.nativeElement.style['display'] = "none";
     this.stateService.stopLoading();
   }
 

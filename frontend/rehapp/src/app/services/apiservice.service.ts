@@ -39,7 +39,16 @@ export class APIService {
     }
 
     public identify() {
-        return this.http.get<any>(environment.API_URL + "users/me")
+        return this.http.get<any>(environment.API_URL + "users/me");
+    }
+
+    public updateUser(username: string, usersex: string, userbirth: string) {
+        let body = {
+            'name': username,
+            'sex': usersex,
+            'birthday': userbirth
+        }
+        return this.http.put<any>(environment.API_URL + "users/me", body);
     }
 
     // public refresh(token: {"refresh_token": string}) {
@@ -58,8 +67,15 @@ export class APIService {
         // return this.http.post<any>(environment.API_URL + "refresh", token, HTTP_OPTIONS)
     }
 
-    public collect() {
-        return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": 78 }, HTTP_OPTIONS)
+    public collect(id: number) {
+        return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": id }, HTTP_OPTIONS)
+    }
+
+    public removeDiagnosis(id: number) {
+        return this.http.request<any>('delete',environment.API_URL + "collectDiagnoses", 
+        { 
+            body: {'diagnose_id' : id }
+        })
     }
 
     public checkEmail(email: object) {
@@ -88,9 +104,12 @@ export class APIService {
             );
     }
 
-    public registrateUser(user: User) {
-
-        return this.http.post<User>(environment.API_URL + "registration", user.toJSON(), HTTP_OPTIONS)
+    public registrateUser(email: string, pass: string) {
+        let body = {
+            'email' : email,
+            'password': pass
+        }
+        return this.http.post<User>(environment.API_URL + "registration", body, HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );

@@ -17,11 +17,13 @@
                 padding-left: 2%;
             }
         }
-        .logout {
+        .item {
             --background: var(--light);
             --color: var(--dark);
             --padding-start: 2%;
             border-top: 2px solid var(--gray);
+        }
+        .bot {
             border-bottom: 2px solid var(--gray);
             margin-bottom: 2%;
         }
@@ -30,7 +32,7 @@
     .diagnoses {
         .fade-wrapper {
             position: absolute;
-            height: 70%;
+            height: 60%;
             width: 100%;
 
             .diagnoses_wrapper {
@@ -68,7 +70,7 @@
         right: 7%;
 
         .btn-div {
-            height: 2.5em;
+            height: 6vh;
         }
     }
 }

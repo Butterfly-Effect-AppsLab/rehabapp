@@ -38,7 +38,6 @@ export class AuthTokenInterceptor implements HttpInterceptor {
       return clonedRequest;
     }
     else {
-      console.log("Token is not available. Please check the local storage.");
       return request;
     }
   }

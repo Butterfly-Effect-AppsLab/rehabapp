@@ -41,6 +41,8 @@ export class TokenInterceptor implements HttpInterceptor {
         switchMap(token => {
           if (token) {
             this.storage.setItem('access_token', token.body['access_token']);
+            if (token.body['refresh_token'])
+              this.storage.setItem('refresh_token', token.body['refresh_token']);
             this.tokenSubject.next(token.body['access_token']);
             return next.handle(request);
           }
