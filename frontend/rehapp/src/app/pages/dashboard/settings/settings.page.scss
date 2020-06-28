@@ -1,0 +1,74 @@
+.main {
+    position: relative;
+    height: 95%;
+    background-color: var(--light);
+    width: 95%;
+    margin: auto;
+
+    .header {
+        color: var(--dark);
+        width: 90%;
+        margin: auto;
+
+        .name_div {
+            h2 {
+                font-size: xx-large;
+                font-weight: bold;
+                padding-left: 2%;
+            }
+        }
+        .logout {
+            --background: var(--light);
+            --color: var(--dark);
+            --padding-start: 2%;
+            border-top: 2px solid var(--gray);
+            border-bottom: 2px solid var(--gray);
+            margin-bottom: 2%;
+        }
+    }
+
+    .diagnoses {
+        .fade-wrapper {
+            position: absolute;
+            height: 70%;
+            width: 100%;
+
+            .diagnoses_wrapper {
+                overflow: scroll;
+                height: 100%;
+
+                .diag_list {
+                    background: #dfe3e3;
+                    margin: 2% 0%;
+                    border-radius: 15px;
+
+                    .diag_item {
+                        --background: transparent;
+                        --color: var(--dark);
+                        font-weight: bold;
+
+                        ion-button {
+                            --padding-end: 0%;
+                            font-size: 1.2em;
+
+                            ion-icon {
+                                color: var(--dark);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .confirm {
+        position: absolute;
+        bottom: 0%;
+        left: 7%;
+        right: 7%;
+
+        .btn-div {
+            height: 2.5em;
+        }
+    }
+}

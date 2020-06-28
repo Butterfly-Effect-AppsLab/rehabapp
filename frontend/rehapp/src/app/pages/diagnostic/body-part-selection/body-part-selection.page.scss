@@ -75,27 +75,6 @@
 
 #buttons-wrapper {
   position: relative;
-
-  .fade-effect {
-    position: absolute;
-    display: none;
-    height: 3em;
-    width: 100%;
-    z-index: 100;
-    pointer-events: none;
-    background: rgb(246, 241, 238);
-  }
-
-  .fade-top {
-    top: 0;
-    display: none;
-    background: linear-gradient(0deg, rgba(229, 229, 229, 0) 0%, rgba(229, 229, 229, 1) 100%);
-  }
-
-  .fade-bot {
-    bottom: 0;
-    background: linear-gradient(0deg, rgba(229, 229, 229, 1) 0%, rgba(229, 229, 229, 0) 100%);
-  }
 }
 
 $gapSize: 3px;

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart } from 'chart.js';
-import { StateService } from 'src/app/services/state-service.service';
 import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-chart',

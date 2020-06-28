@@ -1,0 +1,99 @@
+#header {
+    ion-toolbar {
+        --background: var(--app-background);
+
+        ion-button {
+            --color: var(--dark);
+        }
+    }
+}
+
+ion-content {
+    --background: var(--app-background);
+    --color: var(--app-font-color);
+}
+
+.main {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+
+    .caption {
+        position: absolute;
+        top: 10%;
+        color: var(--dark);
+        font-size: xx-large;
+        font-weight: bold;
+        text-align: left;
+        padding-left: 15px;
+    }
+    
+    .form-inputs {
+        position: absolute;
+        top: 25%;
+        left: 7%;
+        right: 7%;
+        
+
+        .item_div {
+            padding-bottom: 3%;
+
+            .highlight-dark {
+                border-bottom: 2px solid var(--dark);
+            }
+            .highlight-blue {
+                border-bottom: 2px solid var(--blue);
+            }
+            .highlight-gray {
+                border-bottom: 2px solid var(--gray);
+            }
+            .highlight-red {
+                border-bottom: 2px solid var(--red);
+            }
+
+            > ion-item {
+                --background: "transparent";
+                --color: var(--dark);
+                border: none;
+
+                > ion-input {
+                    font-family: poppins;
+                }
+
+                .eye {
+                    height: 100%;
+                    margin: 0%;
+
+                    > ion-icon {
+                        height: 100%;
+                        color: var(--dark);
+                    }
+                }
+            }
+
+            .item-txt {
+                color: #8f8f8f;
+                text-align: right;
+                margin-top: 2%;
+            }
+        }
+
+        .item_text {
+            color: #67808B;
+            font-size: small;
+            text-align: left;
+            padding-left: 15px;
+        }
+    }
+
+    .form-buttons {
+        position: absolute;
+        bottom: 2%;
+        left: 7%;
+        right: 7%;
+
+        .btn-div {
+            height: 2.5em;
+        }
+    }
+}

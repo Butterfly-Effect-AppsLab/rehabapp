@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { APIService } from 'src/app/services/apiservice.service';
 import { Area, Option } from 'src/app/services/models/Tree';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { ToggleComponent } from 'src/app/pluginzz/diagnostic/toggle/toggle.component';
 import { BodyComponent } from 'src/app/pluginzz/diagnostic/body/body.component';
 
@@ -433,17 +433,7 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   removeFader(event){
-    // visible height + pixel scrolled >= total height 
-    if (event.target.scrollTop == 0) 
-      this.topFader.nativeElement.style['display'] = "none";
-    else
-      this.topFader.nativeElement.style['display'] = "block";
-
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
-      this.botFader.nativeElement.style['display'] = "none";
-    else 
-      this.botFader.nativeElement.style['display'] = "block";
-    
+    this.stateService.removeFader(event, this.topFader, this.botFader)    
   }
 
   async submit() {

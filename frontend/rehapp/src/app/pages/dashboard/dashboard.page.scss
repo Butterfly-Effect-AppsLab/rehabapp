@@ -1,0 +1,8 @@
+.tab_bar {
+    height: 10%;
+    --background: var(--dark);
+    .tab_btn {
+        --color: var(--blue);
+        --color-selected: var(--light)
+    }
+}

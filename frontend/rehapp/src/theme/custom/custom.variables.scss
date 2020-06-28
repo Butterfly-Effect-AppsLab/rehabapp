@@ -14,12 +14,12 @@
 }
 
 * {
-    font-family: "Poppins";
+    font-family: "Poppins" !important;
 }
 
 :root {
     --dark: #012c3d;
-    --light: #e5e5e5;
+    --light: #f6f1ee;
     --blue: #8ABEC4;
     --gray: #C0C6C7;
     --red: #EA5050;
@@ -39,7 +39,7 @@
         --background: var(--dark);
         --color: var(--light);
         white-space: normal;
-        font-weight: 500;
+        font-weight: bold;
         font-size: large;
     }
 
@@ -68,6 +68,10 @@
                 font-weight: bold;
                 font-size: xx-large;
             }
+            .alert-sub-title {
+                color: var(--dark);
+                font-size: x-large;
+            }
             .alert-message {
                 color: var(--dark);
                 font-size: large;
@@ -77,6 +81,25 @@
             }
         }
 
+    }
+
+    .fade-effect {
+        position: absolute;
+        height: 3em;
+        width: 100%;
+        background: var(--blue);
+        z-index: 100;
+
+        pointer-events: none;
+    }
+    .fade-top {
+        top: 0;
+        display: none;
+        background: linear-gradient(0deg, rgba(246, 241, 238, 0) 0%, rgba(246, 241, 238, 1) 100%);
+    }
+    .fade-bot {
+        bottom: 0;
+        background: linear-gradient(0deg, rgba(246, 241, 238, 1) 0%, rgba(246, 241, 238, 0) 100%);
     }
 }
 

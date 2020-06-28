@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard', canActivate: [DashboardGuard],
-    loadChildren: () => import('./pages/dashboard/dashboard-routing.module').then(m => m.DashboardRoutingModule)
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },
   {
     path: 'onboarding',
@@ -30,6 +30,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/account/login/login.module').then(m => m.LoginPageModule)
   },
   {
+    path: 'forgotten-pass',
+    loadChildren: () => import('./pages/account/forgotten-pass/forgotten-pass.module').then( m => m.ForgottenPassPageModule)
+  },
+  {
     path: 'chart', 
     loadChildren: () => import('./pages/chart/chart.module').then(m => m.ChartPageModule)
   },
@@ -37,7 +41,6 @@ const routes: Routes = [
     path: 'video',
     loadChildren: () => import('./pages/video/video.module').then(m => m.VideoPageModule)
   },
-
 ];
 
 @NgModule({

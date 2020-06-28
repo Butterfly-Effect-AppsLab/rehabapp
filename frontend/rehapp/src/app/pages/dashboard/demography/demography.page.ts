@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { APIService } from 'src/app/services/apiservice.service';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { User } from 'src/app/services/models/User';
-import { AccountService } from 'src/app/services/account-service.service';
+import { AccountService } from 'src/app/services/account.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
@@ -21,9 +21,27 @@ export class DemographyPage implements OnInit {
   private nameHighlighter: string = "highlight-gray";
 
 
-  constructor(private APIservice: APIService, private router: Router, private accountService: AccountService, private alertController: AlertController) { }
+  constructor(
+    private APIservice: APIService, 
+    private router: Router, 
+    private accountService: AccountService, 
+    private alertController: AlertController,
+    private stateService: StateService
+    ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  ionViewDidEnter(){
+    let user:User = this.accountService.userLoggedIn;
+
+    console.log(user);
+
+    this.name = user.username;
+    this.gender = user.sex;
+    this.birth = new Date(user.birthday);
+    this.stateService.stopLoading();
+  }
 
   async presentAlert(error?: object, message?: string) {
     const alert = await this.alertController.create({
@@ -57,6 +75,7 @@ export class DemographyPage implements OnInit {
       console.log("UNDEFINED");
       user = new User("NAME", "EMAIL", "PSSWD");
     }
+    user.username = this.name;
     user.sex = this.gender;
 
     if (this.birth == undefined) this.birth = new Date()
@@ -71,12 +90,10 @@ export class DemographyPage implements OnInit {
         else {
           this.presentAlert(response.body)
         }
-      },
+      }, 
       error => {
         this.presentAlert(error.error);
-
       }
-
     );
   }
 

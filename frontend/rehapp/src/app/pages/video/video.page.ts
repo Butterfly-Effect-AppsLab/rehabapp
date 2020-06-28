@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { StateService } from 'src/app/services/state-service.service';
 import { APIService } from 'src/app/services/apiservice.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-video',

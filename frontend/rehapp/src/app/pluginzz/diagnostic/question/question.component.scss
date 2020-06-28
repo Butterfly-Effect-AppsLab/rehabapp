@@ -26,10 +26,9 @@
                 position: relative;
 
                 ion-button {
-                    // font-size: 1em;
                     display: table;
                     width: 100%;
-
+                    font-weight: normal;
                     --padding-top: 0.6em !important;
                     --padding-bottom: 0.6em !important;
                 }

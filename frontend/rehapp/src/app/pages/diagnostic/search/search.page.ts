@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Element } from '@angular/compiler';
 import { Option, Diagnose } from 'src/app/services/models/Tree';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 import { IonItemOptions } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -62,16 +62,7 @@ export class SearchPage implements OnInit {
   }
 
   removeFader(event){
-    // visible height + pixel scrolled >= total height 
-    if (event.target.scrollTop == 0) 
-      this.topFader.nativeElement.style['display'] = "none";
-    else
-      this.topFader.nativeElement.style['display'] = "block";
-
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) 
-      this.botFader.nativeElement.style['display'] = "none";
-    else 
-      this.botFader.nativeElement.style['display'] = "block";
+    this.stateService.removeFader(event, this.topFader, this.botFader)    
   }
 
   optionSelected(event) {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Question } from 'src/app/services/models/Tree';
-import { StateService } from 'src/app/services/state-service.service';
+import { StateService } from 'src/app/services/state.service';
 
 @Component({
   selector: 'app-self-diagnostic',
@@ -11,7 +11,7 @@ import { StateService } from 'src/app/services/state-service.service';
 })
 export class SelfDiagnosticPage implements OnInit {
 
-  headerColor = "red"
+  headerColor: string; 
 
   constructor(private stateService: StateService, private router: Router) {
   }
@@ -47,7 +47,7 @@ export class SelfDiagnosticPage implements OnInit {
       this.router.navigateByUrl('/diagnostic');
     }
     else if (this.stateService.actualTreeComponent.getValue().type == "diagnose")
-      this.headerColor = "#e5e5e5"
+      this.headerColor = "#f6f1ee"
     else {
       let question = this.stateService.actualTreeComponent.getValue() as Question;
       this.headerColor = question.style["background-color"];
@@ -63,12 +63,6 @@ export class SelfDiagnosticPage implements OnInit {
   }
 
   redirect() {
-    this.stateService.actualTreeComponent.next(null);
-    this.stateService.resetValues = true;
-
-    while (this.stateService.componentStack.length > 0)
-      this.stateService.componentStack.pop();
-
-    this.router.navigate(['/diagnostic']);
+    this.stateService.navigateToBodyPage();
   }
 }
