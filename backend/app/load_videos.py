@@ -35,11 +35,11 @@ def duplicate_videos():
                 copyfile('videos/Rehappka.mp4', f'videos/{name}/Rehappka{i + 1}.mp4')
 
 
-def load_videos(diagnose_name=None):
-    if not diagnose_name:
-        diagnoses = session.query(Diagnose).all()
-    else:
+def load_videos(diagnose_name='all'):
+    if diagnose_name == 'all':
         diagnoses = session.query(Diagnose).filter(Diagnose.name == diagnose_name).all()
+    else:
+        diagnoses = session.query(Diagnose).all()
 
     for diagnose in diagnoses:
         name = diagnose.name
