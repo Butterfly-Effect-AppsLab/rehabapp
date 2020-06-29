@@ -1,3 +1,6 @@
+import hashlib
+import json
+
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float, \
     Boolean, and_
@@ -33,9 +36,27 @@ class Diagnose(Base):
         'Option',
     )
 
+    videos = relationship("Video", cascade="delete", backref='videos', order_by="Video.order")
+
     @property
     def unique_id(self):
         return f"d_{self.id}"
+
+    @property
+    def videos_size(self):
+        return sum(v.size for v in self.videos)
+
+    def formatted_videos_size(self, size=None):
+        if not size:
+            size = self.videos_size
+        if size > 1e9:
+            return '{:,.2f}'.format(size / float(1 << 30)) + "GB"
+        elif size > 1e6:
+            return '{:,.2f}'.format(size / float(1 << 20)) + "MB"
+        elif size > 1e3:
+            return '{:,.2f}'.format(size / float(1 << 10)) + "KB"
+
+        return '{:,.0f}'.format(size) + "B"
 
 
 class UserDiagnose(Base):
@@ -332,3 +353,26 @@ class UserTokens(Base):
     google_refresh_token = Column(String, nullable=True)
 
     user = relationship('User')
+
+
+class Video(Base):
+    __tablename__ = "videos"
+
+    id = Column(Integer, primary_key=True)
+
+    diagnose_id = Column(
+        Integer,
+        ForeignKey(
+            'diagnoses.id',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ), nullable=True
+    )
+
+    text = Column(String)
+    order = Column(Integer)
+    checksum_video = Column(String)
+    name = Column(String)
+    size = Column(Integer)
+
+    diagnose = relationship("Diagnose")

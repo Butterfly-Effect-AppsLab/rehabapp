@@ -1,0 +1,39 @@
+$radius: 25px;
+
+#player{
+    border-radius: $radius;
+    width: 100%;
+    background-color: #D6E6EF;
+    height: 100%;
+    visibility: hidden;
+}
+
+video::-webkit-media-controls-panel {
+    background-image: linear-gradient(rgba(153, 171, 177, 0), rgba(153, 171, 177, 1)) !important;
+}
+
+#wrapper{
+    position: relative;
+    border-radius: $radius;
+    height: 40%;
+    padding: 5%;
+
+    #cover{
+        border-radius: $radius;
+        width: 90%;
+        height: 90%;
+        background-color: #D6E6EF;
+        z-index: 100;
+        position: absolute;
+    }
+}
+
+.loaded{
+    #cover{
+        display: none;
+    }
+
+    #player{
+        visibility: visible;
+    }
+}

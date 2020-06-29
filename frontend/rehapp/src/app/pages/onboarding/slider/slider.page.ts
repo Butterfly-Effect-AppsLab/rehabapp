@@ -26,6 +26,7 @@ export class SliderPage implements OnInit {
   }
 
   ngOnInit() {        
+    
   }
 
   async skip() {

@@ -10,10 +10,9 @@ import { Diagnose } from './models/Tree';
 
 
 const HTTP_OPTIONS = {
-    // headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'jwt-token'
-    // }),
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+    }),
     observe: 'response' as const,
 };
 
@@ -28,7 +27,19 @@ export class APIService {
     ) { }
 
     public checkConnection() {
-        return this.http.get(environment.API_URL)
+        return this.http.get<any>(environment.API_URL)
+    }
+
+    public getVideos(diagnose_id: number) {
+        return this.http.get<any>(environment.API_URL+'diagnoses/'+diagnose_id+'/videos')
+    }
+
+    public donloadVideo(video_id: number) {
+        return this.http.get<any>(environment.API_URL+'diagnoses/videos/'+video_id+'/video', {responseType: 'blob' as 'json'})
+    }
+
+    public donloadVideoData(video_id: number) {
+        return this.http.get<any>(environment.API_URL+'diagnoses/videos/'+video_id+'/data')
     }
 
     public getTree() {

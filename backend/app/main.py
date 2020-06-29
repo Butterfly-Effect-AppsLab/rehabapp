@@ -19,6 +19,7 @@ def init_api():
             ])
         ]
     )
+
     api_tmp.add_route('/', TestResource())
     api_tmp.add_route('/questions', QuestionsResource())
     api_tmp.add_route('/questions/update/{checksum}', UpdateQuestionsResource())
@@ -35,6 +36,9 @@ def init_api():
     api_tmp.add_route('/refresh', RefreshTokenResource())
     api_tmp.add_route('/users/me', MeResource())
     api_tmp.add_route('/collectDiagnoses', CollectDiagnosesResource())
+    api_tmp.add_route('/diagnoses/{id}/videos', VideoResource())
+    api_tmp.add_route('/diagnoses/videos/{id}/data', VideoResource(), suffix='data')
+    api_tmp.add_route('/diagnoses/videos/{id}/video', VideoResource(), suffix='video')
     return api_tmp
 
 
