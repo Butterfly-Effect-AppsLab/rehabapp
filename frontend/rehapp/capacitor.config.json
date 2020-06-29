@@ -9,6 +9,11 @@
       "launchShowDuration": 3000,
       "androidSplashResourceName": "screen",
       "showSpinner": true
+    },
+    "GoogleAuth": {
+      "scopes": ["profile", "email"],
+      "serverClientId": "724656542128-vfqlpjmbrer14jbaeu2k4bnqr9gap28p.apps.googleusercontent.com",
+      "forceCodeForRefreshToken" : true
     }
   },
   "cordova": {}

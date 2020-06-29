@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { APIService } from 'src/app/services/apiservice.service';
 import { StateService } from 'src/app/services/state.service';
+import { Plugins, FilesystemDirectory, FilesystemEncoding, Filesystem } from '@capacitor/core';
 
 @Component({
   selector: 'app-video',
@@ -18,6 +19,7 @@ export class VideoPage implements OnInit {
   videos = [];
   downloaded = 0.0;
   videoData = {};
+  actualVideo = 0;
 
   @ViewChild('player', { static: false }) player: ElementRef;
 
@@ -75,8 +77,8 @@ export class VideoPage implements OnInit {
   }
 
   getVideos() {
-    let diagnose_id = 39;
-    this.apiService.getVideos(39).subscribe((resp) => {
+    let diagnose_id = 59;
+    this.apiService.getVideos(diagnose_id).subscribe((resp) => {
       let b = resp;
       this.size = b.size;
       this.formattedSize = b.formatted_size;
@@ -94,19 +96,29 @@ export class VideoPage implements OnInit {
 
           // This fires after the blob has been read/loaded.
           reader.addEventListener('loadend', (e: ProgressEvent) => {
-            this.stateService.setObject(resp.video.name, e.srcElement['result']).then(() => {
-              this.stateService.getVideoObject(resp.video.name).then(async (data) => {
-                console.log(video);
-                console.log(resp);
-                this.downloaded += this.ids[idx].size;
-                this.downloadVideos(idx + 1);
-                console.log(data);
-                // videoTag['src'] = data;
-                // videoTag['muted'] = true;
-                // await videoTag.play();
-                // this.loaded = true;
-              });
+            this.fileWrite(resp.video.name, e.srcElement['result']).then(() => {
+              this.downloaded += this.ids[idx].size;
+              this.videos.push(resp.video);
+              this.downloadVideos(idx + 1);
+              // this.fileRead(resp.video.name).then((data) => {
+              //   this.downloaded += this.ids[idx].size;
+              //   this.downloadVideos(idx + 1);
+
+              // });
             });
+            // this.stateService.setObject(resp.video.name, e.srcElement['result']).then(() => {
+            //   this.stateService.getVideoObject(resp.video.name).then(async (data) => {
+            //     console.log(video);
+            //     console.log(resp);
+            //     this.downloaded += this.ids[idx].size;
+            //     this.downloadVideos(idx + 1);
+            //     console.log(data);
+            //     // videoTag['src'] = data;
+            //     // videoTag['muted'] = true;
+            //     // await videoTag.play();
+            //     // this.loaded = true;
+            //   });
+            // });
           });
 
           // this.stateService.getVideoObject('video').then(async (data)=>{
@@ -127,4 +139,69 @@ export class VideoPage implements OnInit {
       });
     }
   }
+
+  async fileWrite(path, data) {
+    try {
+      const result = await Filesystem.writeFile({
+        path: path,
+        data: data,
+        directory: FilesystemDirectory.Data,
+        encoding: FilesystemEncoding.UTF8
+      })
+      console.log('Wrote file', result);
+    } catch (e) {
+      console.error('Unable to write file', e);
+    }
+  }
+
+  async fileRead(path) {
+    let contents = await Filesystem.readFile({
+      path: path,
+      directory: FilesystemDirectory.Data,
+      encoding: FilesystemEncoding.UTF8
+    });
+    return contents;
+  }
+
+  play() {
+    console.log(this.videos);
+    let actual = this.videos[0];
+    const videoTag: HTMLVideoElement = this.player.nativeElement;
+
+    this.fileRead(actual.name).then(async (data) => {
+      videoTag['src'] = data.data;
+      videoTag['muted'] = true;
+      await videoTag.play();
+      this.loaded = true;
+    });
+  }
+
+  prev() {
+    if (this.actualVideo - 1 >= 0) {
+      this.actualVideo -= 1;
+      let actual = this.videos[this.actualVideo];
+      const videoTag: HTMLVideoElement = this.player.nativeElement;
+      this.fileRead(actual.name).then(async (data) => {
+        videoTag['src'] = data.data;
+        videoTag['muted'] = true;
+        await videoTag.play();
+        this.loaded = true;
+      });
+    }
+  }
+
+  next() {
+    if (this.actualVideo + 1 < this.videos.length) {
+      this.actualVideo += 1;
+      let actual = this.videos[this.actualVideo];
+      const videoTag: HTMLVideoElement = this.player.nativeElement;
+      this.fileRead(actual.name).then(async (data) => {
+        videoTag['src'] = data.data;
+        videoTag['muted'] = true;
+        await videoTag.play();
+        this.loaded = true;
+      });
+    }
+  }
+
 }

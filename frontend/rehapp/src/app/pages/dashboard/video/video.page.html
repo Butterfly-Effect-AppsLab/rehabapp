@@ -17,5 +17,18 @@
 
     <ion-progress-bar value="{{downloaded/size}}"></ion-progress-bar>
 
+    <ion-button (click)="play()">
+        play
+    </ion-button>
+
+    <ion-button (click)="prev()">
+        prev
+    </ion-button>
+
+    <ion-button (click)="next()">
+        next
+    </ion-button>
+    
+
     <!-- <video id="player" src="./assets/videos/Rehappka.mp4" #player loop controls controlsList="nodownload" preload="auto" muted="true"></video> -->
 </ion-content>

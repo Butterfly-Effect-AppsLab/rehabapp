@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TokenInterceptor } from './services/token.interceptor';
 import { AuthTokenInterceptor } from './services/auth-token.interceptor';
+import "@codetrix-studio/capacitor-google-auth";
 
 @NgModule({
   declarations: [AppComponent],

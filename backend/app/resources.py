@@ -51,8 +51,8 @@ class VideoResource:
         if not diagnose:
             raise falcon.HTTPBadRequest(description="Diagnose doesn't exist")
 
-        # if diagnose not in user.diagnoses:
-        #     raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
+        if diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
 
         video_schema = VideoSchema(many=True, only=['id', 'size'])
 
@@ -75,8 +75,8 @@ class VideoResource:
         if not video:
             raise falcon.HTTPBadRequest(description="Video doesn't exist")
 
-        # if video.diagnose not in user.diagnoses:
-        #     raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
+        if video.diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
 
         video_schema = VideoSchema()
 
@@ -101,8 +101,8 @@ class VideoResource:
         if not video:
             raise falcon.HTTPBadRequest(description="Video doesn't exist")
 
-        # if video.diagnose not in user.diagnoses:
-        #     raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
+        if video.diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
 
         res.content_type = 'video/mp4'
         res.data = open(f"videos/{video.name}", 'rb').read()
