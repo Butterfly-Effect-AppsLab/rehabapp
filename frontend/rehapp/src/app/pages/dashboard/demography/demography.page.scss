@@ -3,103 +3,106 @@
     margin: auto;
     text-align: center;
 
-    .text_div {
-        color: var(--dark);
-        h5 {
-            margin-bottom: 0;
-        }
-    }
+    .scrollable {
+        position: relative;
+        height: 70vh;
+        overflow: scroll;
 
-    .left {
-        text-align: left;
-        margin-top: 5%;
-    }
-
-    .item_div {
-        padding-bottom: 3%;
-
-        .highlight-dark {
-            border-bottom: 2px solid var(--dark);
+        .text_div {
+            margin-top: 5%;
         }
-        .highlight-blue {
-            border-bottom: 2px solid var(--blue);
+        .left {
+            color: var(--dark);
+            text-align: left;
         }
-        .highlight-gray {
-            border-bottom: 2px solid var(--gray);
+        .extratop {
+            margin-top: 8%;
         }
 
-        > ion-item {
-            --background: "transparent";
-            --color: var(--dark);
-            border: none;
+        .item_div {
+            padding-bottom: 3%;
+            margin-top: -3%;
 
-            > ion-input {
-                font-family: poppins;
+            .highlight-dark {
+                border-bottom: 2px solid var(--dark);
             }
-        }
-    }
+            .highlight-blue {
+                border-bottom: 2px solid var(--blue);
+            }
+            .highlight-gray {
+                border-bottom: 2px solid var(--gray);
+            }
+            .highlight-red {
+                border-bottom: 2px solid var(--red);
+            }
 
-    .radio-group {
-        display: inline-block;
-        width: 100%;
-        margin: 10% 0%;
-
-        .radio-opt {
-            float: left;
-            width: 33%;
-            display: block;
-
-            .radio {
-                --background: transparent;
+            > ion-item {
+                --background: "transparent";
                 --color: var(--dark);
                 border: none;
 
-                div {
-                    text-align: center;
-                    width: 100%;
+                > ion-input {
+                    font-family: poppins;
                 }
+            }
+        }
 
-                ion-radio{
-                    width: 0px;
-                    height: 0px;
-                    --border-width: 0px;
-                }
+        .radio-group {
+            display: inline-block;
+            width: 100%;
 
-                .selected{
-                    display: none;
-                }
+            .radio-opt {
+                float: left;
+                width: 33%;
+                display: block;
 
-                .not-selected{
-                    display: inline;
-                }
+                .radio {
+                    --background: transparent;
+                    --color: var(--dark);
+                    border: none;
 
-                .selected-radio{
-                    .selected{
-                        display: inline;
+                    div {
+                        text-align: center;
+                        width: 100%;
                     }
-    
-                    .not-selected{
-                        display: none;
+
+                    ion-radio {
+                        width: 0px;
+                        height: 0px;
+                        --border-width: 0px;
                     }
                 }
             }
         }
-    }
 
-    .date-picker {
-        margin-top: 10%;
-        border-radius: 3em;
-        font-size: 1.2em;
-        --background: var(--gray);
-        --color: var(--dark);
-        --padding-end: 5%;
-        --padding-start: 5%;
+        .date-picker {
+            border-radius: 3em;
+            font-size: 1.2em;
+            --background: var(--gray);
+            --color: var(--dark);
+            --padding-end: 5%;
+            --padding-start: 5%;
+        }
+
+        .diag_item {
+            --background: #dfe3e3;
+            --color: var(--dark);
+            font-weight: bold;
+            border-radius: 3em;
+
+            ion-label {
+                padding-left: 7%;
+            }
+            ion-button {
+                font-size: 1.2em;
+            }
+        }
 
         .icon {
             color: var(--dark);
         }
     }
-    
+
     .form-buttons {
         position: absolute;
         bottom: 2%;
@@ -107,16 +110,16 @@
         right: 7%;
 
         .btn-div {
-            height: 2.5em;
+            height: 6vh;
         }
     }
 }
 
 ::ng-deep .picker-wrapper {
     background: var(--gray) !important;
-    
+
     .picker-opt {
-        color: #67808B;
+        color: #67808b;
     }
     .picker-opt-selected {
         color: var(--dark);
@@ -125,15 +128,15 @@
         color: var(--dark);
     }
 
-    .picker-col{
+    .picker-col {
         min-width: 50% !important;
     }
 
-    .picker-opts-right{
+    .picker-opts-right {
         min-width: 25% !important;
     }
 
-    .picker-opts-left{
+    .picker-opts-left {
         min-width: 25% !important;
     }
 }

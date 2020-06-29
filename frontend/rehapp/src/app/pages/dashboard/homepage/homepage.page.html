@@ -2,9 +2,10 @@
   <div class="main">
     <div class="header">
       <div class="name_div">
-        <h2 class="name">Vitajte {{user.username}}...</h2>
+        <h2 class="name" [style.fontSize.px]="namesize">Vitajte {{user.name}}...</h2>
       </div>
-      <h4>...dnes Vás čakajú tieto cvičenia. Robíte to pre seba, tak to neflákajte!</h4>
+      <h4 *ngIf="diagnoses.length > 0">...dnes Vás čakajú tieto cvičenia. Robíte to pre seba, tak to neflákajte!</h4>
+      <h4 *ngIf="diagnoses.length == 0">...dnes Vás nečakajú žiadne cvičenia. Teší nás, že sa Vám podarilo eliminovať bolesť!</h4>
     </div>
     <div class="diagnoses">
       <div class="fade-wrapper">
@@ -16,7 +17,7 @@
               <div class="video_img">
                 <div class="play" [ngClass]="{active_play:(i==selectedIndex)}"></div>
               </div>
-              <ion-label class="program_txt">{{diag}}</ion-label>
+              <ion-label class="program_txt" [style.fontSize.px]="fontsize[i]" >{{diag.name}}</ion-label>
             </div>
           </div>
         </div>
@@ -26,8 +27,11 @@
 
     <div class="confirm">
       <div class="btn-div">
-        <ion-button (click)="begin()" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
+        <ion-button (click)="begin()" *ngIf="diagnoses.length > 0" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
           Začať cvičenie
+        </ion-button>
+        <ion-button (click)="addDiagnosis()" *ngIf="diagnoses.length == 0" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
+          Pridať diagnózu
         </ion-button>
       </div>
     </div>
