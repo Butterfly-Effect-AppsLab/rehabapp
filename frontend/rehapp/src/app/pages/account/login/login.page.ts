@@ -15,25 +15,31 @@ import { Plugins } from '@capacitor/core';
 })
 export class LoginPage implements OnInit {
 
-  private usermail: string = "jkucerak1@gmail.com";
+  private usermail: string = "test@test.te";
   private password: string = "Heslo123";
   emailHighlighter: string = "highlight-gray";
   passHighlighter: string = "highlight-gray";
   valid: boolean;
 
   constructor(
-    private APIservice: APIService, 
-    private accountService: AccountService, 
-    private router: Router, 
+    private APIservice: APIService,
+    private accountService: AccountService,
+    private router: Router,
     private alertController: AlertController,
     private stateService: StateService
-    ) {
-      accountService.loginError.subscribe((data)=>{
-        if(data)
-          this.presentAlert(data);
-          this.stateService.stopLoading();
-      })
-    }
+  ) {
+    accountService.loginError.subscribe(
+      (resp) => {
+        if (resp) {
+          if (resp['description'] == 'Google account email not verified')
+          this.presentAlert("...nepodarilo sa overiť emailovú adresu.");
+        }
+        this.stateService.stopLoading();
+      }),
+      (err) => {
+        console.log(err);        
+      }
+  }
 
   ngOnInit() {
     this.checkValidation();
@@ -62,10 +68,10 @@ export class LoginPage implements OnInit {
           this.accountService.login(response.body);
           this.router.navigateByUrl('/dashboard');
         }
-      },  
+      },
       () => {
         this.presentAlert();
-      }  
+      }
     );
   }
 
@@ -85,15 +91,15 @@ export class LoginPage implements OnInit {
   }
 
   setHighlight(event: string, tagret: string): string {
-    if (event == "focus") 
+    if (event == "focus")
       return "highlight-blue";
     else if (event == "blur") {
       if (tagret == "email") {
-        if (this.usermail.length > 0) 
+        if (this.usermail.length > 0)
           return "highlight-dark";
       }
       else if (tagret == "pass") {
-        if (this.password.length > 0) 
+        if (this.password.length > 0)
           return "highlight-dark";
       }
       return "highlight-gray";

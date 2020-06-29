@@ -68,8 +68,9 @@
                             position: absolute;
                             font-size: x-large;
                             width: 50%;
+                            height: 100%;
                             color: var(--light);
-                            transform: translate(40vw, 20%);
+                            transform: translate(40vw, 10%);
                         }
                     }
 
@@ -88,7 +89,7 @@
         right: 7%;
 
         .btn-div {
-            height: 2.5em;
+            height: 6vh;
         }
     }
 }
