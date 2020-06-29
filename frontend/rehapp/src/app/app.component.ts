@@ -46,27 +46,6 @@ export class AppComponent {
     let params = window.location.href.split('?')[1];
 
     switch (page) {
-      case '/login':
-        if (params) {
-          this.stateService.startLoading();
-          this.apiService.sendCodeGoogle(params).subscribe(
-            (resp) => {
-              if (resp.body['access_token']) {
-                this.accountService.login(resp.body).then(() => {
-                  if (resp.body['new_user'])
-                    this.router.navigateByUrl('dashboard/demography');
-                  else
-                    this.router.navigateByUrl('dashboard');
-                });
-              }
-            },
-            (error) => {
-              this.accountService.loginError.next(error.error);
-              this.router.navigateByUrl('login');
-            }
-          );
-        }
-        break;
       case '/registration/confirmation':
         if (params) {
           this.router.navigateByUrl(page + '?' + params);
@@ -89,27 +68,6 @@ export class AppComponent {
         console.log(params);
 
         switch (page) {
-          case '/login':
-            if (params) {
-              this.stateService.startLoading();
-              this.apiService.sendCodeGoogle(params).subscribe(
-                (resp) => {
-                  if (resp.body['access_token']) {
-                    this.accountService.login(resp.body).then(() => {
-                      if (resp.body['new_user'])
-                        this.router.navigateByUrl('dashboard/demography');
-                      else
-                        this.router.navigateByUrl('dashboard');
-                    });
-                  }
-                },
-                (error) => {
-                  this.accountService.loginError.next(error.error);
-                  this.router.navigateByUrl('login');
-                }
-              );
-            }
-            break;
           case '/registration/confirmation':
             if (params) {
               this.router.navigateByUrl(page + '?' + params);
@@ -121,14 +79,6 @@ export class AppComponent {
             }
             break;
         }
-        // Example url: https://beerswift.app/tabs/tab2
-        // slug = /tabs/tab2
-        // const slug = data.url.split(".app").pop();
-        // if (slug) {
-        //     this.router.navigateByUrl(slug);
-        // }
-        // If no match, do nothing - let regular routing 
-        // logic take over
       });
     });
   }

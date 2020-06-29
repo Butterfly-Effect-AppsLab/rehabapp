@@ -24,7 +24,7 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 access_token_exp = dict(days=0, hours=0, minutes=15, seconds=0)
 refresh_token_exp = dict(days=7, hours=0, minutes=0, seconds=0)
 
-redirect_url = f"{APP_URL}/login"
+redirect_url = f"{APP_URL}"
 
 
 def generate_token(payload, exp=None):
@@ -445,6 +445,8 @@ class OauthGoogleResource:
             data=body,
             auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
         )
+
+        print(token_url, body)
 
         # Parse the tokens!
         tokens = client.parse_request_body_response(json.dumps(token_response.json()))
