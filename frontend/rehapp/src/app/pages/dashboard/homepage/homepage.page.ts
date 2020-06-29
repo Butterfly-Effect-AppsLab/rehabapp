@@ -45,7 +45,6 @@ export class HomepagePage implements OnInit {
 
   updateFonts() {
     this.namesize = this.calculateCaption(this.user.name.length);
-    console.log(this.namesize);
     
     this.diagnoses.forEach((diag, i) => {
       this.fontsize[i] = this.calculateFont(diag.name.length)
@@ -79,7 +78,8 @@ export class HomepagePage implements OnInit {
   }
 
   begin() {
-    alert(`Program ${this.diagnoses[this.selectedIndex]} 'ešte nie je pripravený :)`);
+    this.stateService.excercise = this.diagnoses[this.selectedIndex];
+    this.router.navigateByUrl('excercise')
   }
 
   addDiagnosis() {
@@ -91,7 +91,6 @@ export class HomepagePage implements OnInit {
   }
 
   programSelected(i) {
-    console.log(i);
     this.selectedIndex = i;
   }
 

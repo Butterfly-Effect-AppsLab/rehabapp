@@ -23,6 +23,7 @@ export class StateService {
   private _actualSide: BehaviorSubject<string> = new BehaviorSubject<string>("front");
   private _opositeSide: BehaviorSubject<string> = new BehaviorSubject<string>("back");
   private _userDiagnosis: Diagnose;
+  private _excercise: Diagnose;
   private isLoading = false;
   public animationInPogress = false;
   public resetValues: boolean = false;
@@ -180,4 +181,7 @@ export class StateService {
 
   public get diagnosis() { return this._userDiagnosis }
   public set diagnosis(userDiagnosis: Diagnose) { this._userDiagnosis = userDiagnosis }
+  
+  public get excercise() { return this._excercise }
+  public set excercise(excercise: Diagnose) { this._excercise = excercise }
 }

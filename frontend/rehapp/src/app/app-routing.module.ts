@@ -28,11 +28,15 @@ const routes: Routes = [
   {
     path: 'login', canActivate: [LoginGuard],
     loadChildren: () => import('./pages/account/login/login.module').then(m => m.LoginPageModule)
-  },  {
-    path: 'forgotten-pass',
+  },
+  {
+    path: 'forgotten-pass', canActivate: [LoginGuard],
     loadChildren: () => import('./pages/account/forgotten-pass/forgotten-pass.module').then( m => m.ForgottenPassPageModule)
   },
-
+  {
+    path: 'excercise', canActivate: [DashboardGuard],
+    loadChildren: () => import('./pages/excercise/excercise.module').then( m => m.ExcercisePageModule)
+  }
 ];
 
 @NgModule({
