@@ -111,7 +111,7 @@ def load_videos(diagnose_name=None):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == "duplicate":
+    if sys.argv[1] == "duplicate":
         duplicate_videos()
     elif sys.argv[1] == "load":
         load_videos(sys.argv[2])
