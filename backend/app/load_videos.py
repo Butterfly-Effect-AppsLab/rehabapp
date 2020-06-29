@@ -37,9 +37,9 @@ def duplicate_videos():
 
 def load_videos(diagnose_name='all'):
     if diagnose_name == 'all':
-        diagnoses = session.query(Diagnose).filter(Diagnose.name == diagnose_name).all()
-    else:
         diagnoses = session.query(Diagnose).all()
+    else:
+        diagnoses = session.query(Diagnose).filter(Diagnose.name == diagnose_name).all()
 
     for diagnose in diagnoses:
         name = diagnose.name
