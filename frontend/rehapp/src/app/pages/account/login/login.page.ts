@@ -80,7 +80,7 @@ export class LoginPage implements OnInit {
     console.log(googleUser);
 
     this.stateService.startLoading();
-          this.apiService.sendCodeGoogle("code="+googleUser.serverAuthCode).subscribe(
+          this.APIservice.sendCodeGoogle("code="+googleUser.serverAuthCode).subscribe(
             (resp) => {
               if (resp.body['access_token']) {
                 this.accountService.login(resp.body).then(() => {
