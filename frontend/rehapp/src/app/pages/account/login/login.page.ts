@@ -15,8 +15,8 @@ import { Plugins } from '@capacitor/core';
 })
 export class LoginPage implements OnInit {
 
-  private usermail: string = "test@test.te";
-  private password: string = "Heslo123";
+  private usermail: string = "";
+  private password: string = "";
   emailHighlighter: string = "highlight-gray";
   passHighlighter: string = "highlight-gray";
   valid: boolean;

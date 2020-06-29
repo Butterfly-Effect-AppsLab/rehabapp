@@ -23,7 +23,6 @@ export class StateService {
   private _actualSide: BehaviorSubject<string> = new BehaviorSubject<string>("front");
   private _opositeSide: BehaviorSubject<string> = new BehaviorSubject<string>("back");
   private _userDiagnosis: Diagnose;
-  private _excercise: Diagnose;
   private isLoading = false;
   public animationInPogress = false;
   public resetValues: boolean = false;
@@ -41,46 +40,13 @@ export class StateService {
   updateTree(resp) {
     this.questions = resp['questions'];
     this.checksum = resp['checksum'];
-    console.log(this.questions);
-    this.setObject('tree', resp);
-  }
-
-  async getObject(keyToFind: string) {
-    const ret = await Storage.get({ key: keyToFind });
-
-    if (ret.value != undefined) {
-      console.log("Tree is loaded from storage.");
-
-      this.questions = JSON.parse(ret.value)['questions'];
-      this.checksum = JSON.parse(ret.value)['checksum'];
-
-      this.api.updateTree(this.checksum).subscribe(
-        (resp) => {
-          if (resp.status != 204) {
-            console.log("Tree is outdated.");
-            this.updateTree(resp.body);
-          }
-        }
-      );
-    }
-    else {
-      console.log("Tree is not in storage.");
-      this.loadTreeFromAPI();
-    }
+    this.storage.setObject('tree', resp);
   }
 
   async getVideoObject(keyToFind: string) {
     const ret = await Storage.get({ key: keyToFind });
 
     return JSON.parse(ret.value);
-  }
-
-  async setObject(keyToSave: string, objectToSave: object) {
-    await Storage.set({
-      key: keyToSave,
-      value: JSON.stringify(objectToSave)
-    });
-    this.storage.setObject('tree', resp);
   }
 
   loadTreeFromStorage() {
@@ -152,7 +118,7 @@ export class StateService {
       return;
 
     if (this.componentStack.length == 0) {
-      this.router.navigateByUrl('/onboarding');
+      this.router. navigateByUrl('/onboarding');
       return;
     }
 
@@ -220,7 +186,4 @@ export class StateService {
 
   public get diagnosis() { return this._userDiagnosis }
   public set diagnosis(userDiagnosis: Diagnose) { this._userDiagnosis = userDiagnosis }
-  
-  public get excercise() { return this._excercise }
-  public set excercise(excercise: Diagnose) { this._excercise = excercise }
 }

@@ -2,7 +2,7 @@
   <div class="main">
     <div class="header">
       <div class="name_div">
-        <h2 class="name" [style.fontSize.px]="namesize">{{username}}...</h2>
+        <h2 class="name" [style.fontSize.px]="namesize" (click)='f()'>{{username}}...</h2>
       </div>
       <ion-item button class="diagnosis" lines="none" (click)="presentPopover($event)">
         <ion-label *ngIf="diagnosisShown">Diagnóza {{diagnosisShown}}</ion-label>
@@ -12,11 +12,13 @@
         <ion-label *ngIf="!diagnosisShown">Žiadna známa diagnóza</ion-label>
       </ion-item>
     </div>
+    <div *ngIf="!diagnosisShown" class="cover">  
+    </div>
     <div class="content">
       <div class="fade-wrapper">
         <div #fader_top class="fade-effect fade-top"></div>
         <div #fader_bot class="fade-effect fade-bot"></div>
-        <div *ngIf="diagnosisShown" class="content-wrapper" (scroll)="removeFader($event)">
+        <div class="content-wrapper" (scroll)="removeFader($event)">
           <div class="info">
             <ion-item button (click)="showInfo()" class="info_btn" lines="none">
               <ion-label>Info o diagnóze</ion-label>
@@ -61,9 +63,9 @@
           </div>
           <h4 class="outer_text">Vaša bolesť za posledných 7 dní...</h4>
           <div class="graph">
-            <div class="graph_image">
-              <h1>GRAF</h1>
-            </div> 
+            <div id="canvas-wrapper">
+              <canvas id="chart" #chart></canvas>
+            </div>            
             <h4 class="outer_text">Vysvetlivky</h4>
             <div class="legend">
               <ion-grid fixed>
@@ -95,6 +97,7 @@
         </div>
       </div>
     </div>
+    
     <div *ngIf="!diagnosisShown" class="confirm">
       <div class="btn-div">
         <ion-button (click)="addDiagnosis()" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">

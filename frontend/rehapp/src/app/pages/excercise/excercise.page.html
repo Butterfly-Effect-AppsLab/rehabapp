@@ -9,12 +9,15 @@
 
 <ion-content>
   <div class="main">
-    <div style="background-color: var(--blue); border-radius: 15px; height: 40%; width: 100%;"></div>
+    <div [ngClass]="{'loaded': loaded}" id="wrapper">
+      <div id="cover"></div>
+      <video id="player" #player loop controls controlsList="nodownload" preload="auto" muted="true"></video>
+    </div>
     <ion-grid fixed>
       <ion-row>
-        <ion-col *ngFor="let col of videoCount; let i = index"> 
-          <img *ngIf="actualVideo == i" src="/assets/images/icons/pagination-selected.svg" alt=""> 
-          <img *ngIf="actualVideo != i" src="/assets/images/icons/pagination-unselected.svg" alt=""> 
+        <ion-col *ngFor="let col of videoCount; let i = index">
+          <img *ngIf="actualVideo == i" src="/assets/images/icons/pagination-selected.svg" alt="">
+          <img *ngIf="actualVideo != i" src="/assets/images/icons/pagination-unselected.svg" alt="">
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -22,17 +25,19 @@
     <div class="nav_btns">
       <div class="nav_btn">
         <ion-button *ngIf="actualVideo > 0" (click)="previous()" fill="solid" shape="round" class="btn_left">
-          <ion-label><-----</ion-label>
+          <ion-label><----- </ion-label>
         </ion-button>
         <ion-button *ngIf="actualVideo == 0" (click)="previous()" fill="solid" shape="round" class="btn_disabled">
-          <ion-label><-----</ion-label>
+          <ion-label><----- </ion-label>
         </ion-button>
       </div>
       <div class="nav_btn">
-        <ion-button *ngIf="actualVideo < videoCount.length -1" (click)="next()" fill="solid" shape="round" class="btn_right">
+        <ion-button *ngIf="actualVideo < videoCount.length -1" (click)="next()" fill="solid" shape="round"
+          class="btn_right">
           <ion-label>-----></ion-label>
         </ion-button>
-        <ion-button *ngIf="actualVideo == videoCount.length -1" (click)="next()" fill="solid" shape="round" class="btn_disabled">
+        <ion-button *ngIf="actualVideo == videoCount.length -1" (click)="done()" fill="solid" shape="round"
+          class="btn_disabled">
           <ion-label>OK</ion-label>
         </ion-button>
       </div>

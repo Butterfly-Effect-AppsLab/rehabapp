@@ -37,10 +37,6 @@ const routes: Routes = [
     path: 'excercise', canActivate: [DashboardGuard],
     loadChildren: () => import('./pages/excercise/excercise.module').then( m => m.ExcercisePageModule)
   },
-  {
-    path: 'chart', 
-    loadChildren: () => import('./pages/chart/chart.module').then(m => m.ChartPageModule)
-  },
 ];
 
 @NgModule({
