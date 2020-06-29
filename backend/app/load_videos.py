@@ -41,6 +41,8 @@ def load_videos(diagnose_name='all'):
     else:
         diagnoses = session.query(Diagnose).filter(Diagnose.name == diagnose_name).all()
 
+    saved_videos = list()
+
     for diagnose in diagnoses:
         name = diagnose.name
         if "/" in name:
@@ -52,13 +54,10 @@ def load_videos(diagnose_name='all'):
         actual_videos = os.listdir(f'videos/{name}')
         list.sort(actual_videos)
 
-        saved_videos = list()
-
         for order, video in enumerate(actual_videos):
             video_name = f'{name}/{video}'
             saved_videos.append(video_name)
             video_path = f'videos/{video_name}'
-            # size = int(os.stat(video_path).st_size / float(1 << 10))
             size = int(os.stat(video_path).st_size)
             video = open(video_path, 'rb').read()
             m = hashlib.md5()
@@ -94,13 +93,7 @@ def load_videos(diagnose_name='all'):
 
             m = hashlib.md5()
             m.update(video_json.encode())
-            print(m.hexdigest())
-
-            print('order ', order)
-            print(video_name)
-            print(size)
-
-        session.query(Video).filter(~Video.name.in_(saved_videos)).delete(False)
+    session.query(Video).filter(~Video.name.in_(saved_videos)).delete(False)
 
     try:
         session.commit()

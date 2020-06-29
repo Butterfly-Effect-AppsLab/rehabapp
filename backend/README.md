@@ -41,7 +41,7 @@ Steps to init API after pull from origin:
  `docker exec -it backend_web_1 sh -c "alembic downgrade -1"`  
  
  For duplicating video run:  
-`docker exec -it backend_web_1 sh -c "load_videos.py duplicate"`    
+`docker exec -it backend_web_1 sh -c "python load_videos.py duplicate"`    
  
   For loading video info into database run:  
-`docker exec -it backend_web_1 sh -c "load_videos.py load all"`  
+`docker exec -it backend_web_1 sh -c "python load_videos.py load all"`  
