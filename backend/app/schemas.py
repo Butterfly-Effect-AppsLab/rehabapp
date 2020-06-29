@@ -1,7 +1,7 @@
 import datetime
 
 from marshmallow import Schema, fields, post_load, EXCLUDE, validate
-from models import User, Diagnose, Area, Question, Option, Color, Tree
+from models import User, Diagnose, Area, Question, Option, Color, Tree, Video
 
 
 class UserSchema(Schema):
@@ -24,6 +24,7 @@ class UserSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class DiagnoseSchema(Schema):
@@ -45,6 +46,7 @@ class DiagnoseSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class ColorSchema(Schema):
@@ -57,6 +59,7 @@ class ColorSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class TreeSchema(Schema):
@@ -69,6 +72,7 @@ class TreeSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class QuestionSchema(Schema):
@@ -89,6 +93,7 @@ class QuestionSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class OptionSchema(Schema):
@@ -112,6 +117,7 @@ class OptionSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
 
 
 class AreaSchema(Schema):
@@ -130,3 +136,24 @@ class AreaSchema(Schema):
 
     class Meta:
         unknown = EXCLUDE
+        ordered = True
+
+
+class VideoSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    text = fields.Str()
+    diagnose_id = fields.Integer()
+    order = fields.Integer()
+    size = fields.Integer()
+    checksum_video = fields.Str()
+    checksum_row = fields.Str()
+
+    @post_load
+    def create_model(self, data, **kwargs):
+        return Video(**data)
+
+    class Meta:
+        unknown = EXCLUDE
+        ordered = True
+

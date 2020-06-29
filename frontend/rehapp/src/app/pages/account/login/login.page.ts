@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { AlertController, IonItem } from '@ionic/angular';
 import { AccountService } from 'src/app/services/account.service';
 import { StateService } from 'src/app/services/state.service';
+import "@codetrix-studio/capacitor-google-auth";
+import { Plugins } from '@capacitor/core';
 
 @Component({
   selector: 'app-login',
@@ -73,17 +75,19 @@ export class LoginPage implements OnInit {
     );
   }
 
-  loginGoogle() {
+  async loginGoogle() {
+    let googleUser = await Plugins.GoogleAuth.signIn();
+    console.log(googleUser);
 
-    this.APIservice.loginGoogle().subscribe(
-      response => {
-        window.location.href = response.body['request_uri'];
-        console.log("response: ", response.body);
-      },
-      () => {
-        this.presentAlert();
-      }
-    );
+    // this.APIservice.loginGoogle().subscribe(
+    //   response => {
+    //     window.location.href = response.body['request_uri'];
+    //     console.log("response: ", response.body);
+    //   },  
+    //   () => {
+    //     this.presentAlert();
+    //   }  
+    // );
   }
 
   setHighlight(event: string, tagret: string): string {

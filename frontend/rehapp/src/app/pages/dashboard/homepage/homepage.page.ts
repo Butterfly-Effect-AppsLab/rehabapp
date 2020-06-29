@@ -45,7 +45,7 @@ export class HomepagePage implements OnInit {
 
   updateFonts() {
     this.namesize = this.calculateCaption(this.user.name.length);
-    
+
     this.diagnoses.forEach((diag, i) => {
       this.fontsize[i] = this.calculateFont(diag.name.length)
     })
@@ -92,6 +92,7 @@ export class HomepagePage implements OnInit {
 
   programSelected(i) {
     this.selectedIndex = i;
+    this.router.navigateByUrl('dashboard/video');
   }
 
   identify() {

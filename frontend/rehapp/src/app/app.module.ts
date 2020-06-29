@@ -9,8 +9,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TokenInterceptor } from './services/token.interceptor';
 import { AuthTokenInterceptor } from './services/auth-token.interceptor';
+import "@codetrix-studio/capacitor-google-auth";
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,7 @@ import { AuthTokenInterceptor } from './services/auth-token.interceptor';
   providers: [
     StatusBar,
     SplashScreen,
+    ScreenOrientation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },

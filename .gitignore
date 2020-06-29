@@ -3,6 +3,7 @@
 */__pycache__
 /backend/app/config_dev.py
 /backend/.env
+/backend/app/videos
 
 /frontend/rehapp/src/app/services/api.config.ts
 /frontend/*/*~
