@@ -82,6 +82,42 @@ export class AppComponent {
       console.log('tusom');
       this.zone.run(() => {
         console.log(data.url);
+        let page = data.url.split('/app').pop().split('?')[0];
+    let params = data.url.split('?')[1];
+
+    switch (page) {
+      case '/login':
+        if (params) {
+          this.stateService.startLoading();
+          this.apiService.sendCodeGoogle(params).subscribe(
+            (resp) => {
+              if (resp.body['access_token']) {
+                this.accountService.login(resp.body).then(() => {
+                  if (resp.body['new_user'])
+                    this.router.navigateByUrl('dashboard/demography');
+                  else
+                    this.router.navigateByUrl('dashboard');
+                });
+              }
+            },
+            (error) => {
+              this.accountService.loginError.next(error.error);
+              this.router.navigateByUrl('login');
+            }
+          );
+        }
+        break;
+      case '/registration/confirmation':
+        if (params) {
+          this.router.navigateByUrl(page + '?' + params);
+        }
+        break;
+      case '/resetPassword':
+        if (params) {
+          this.router.navigateByUrl(page + '?' + params);
+        }
+        break;
+    }
         // Example url: https://beerswift.app/tabs/tab2
         // slug = /tabs/tab2
         // const slug = data.url.split(".app").pop();
