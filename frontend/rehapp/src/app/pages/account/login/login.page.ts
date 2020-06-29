@@ -79,15 +79,23 @@ export class LoginPage implements OnInit {
     let googleUser = await Plugins.GoogleAuth.signIn();
     console.log(googleUser);
 
-    // this.APIservice.loginGoogle().subscribe(
-    //   response => {
-    //     window.location.href = response.body['request_uri'];
-    //     console.log("response: ", response.body);
-    //   },  
-    //   () => {
-    //     this.presentAlert();
-    //   }  
-    // );
+    this.stateService.startLoading();
+          this.APIservice.sendCodeGoogle("code="+googleUser.serverAuthCode).subscribe(
+            (resp) => {
+              if (resp.body['access_token']) {
+                this.accountService.login(resp.body).then(() => {
+                  if (resp.body['new_user'])
+                    this.router.navigateByUrl('dashboard/demography');
+                  else
+                    this.router.navigateByUrl('dashboard');
+                });
+              }
+            },
+            (error) => {
+              this.accountService.loginError.next(error.error);
+              this.router.navigateByUrl('login');
+            }
+          );
   }
 
   setHighlight(event: string, tagret: string): string {
