@@ -7,7 +7,7 @@ from jwt import InvalidSignatureError, DecodeError, InvalidTokenError, ExpiredSi
 from marshmallow import ValidationError
 from oauthlib.oauth2 import WebApplicationClient
 from config import KEY
-from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL
+from config_dev import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_URL, REDIRECT_URL
 from models import *
 from oauth import get_google_provider_cfg, google_refresh_token
 from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema, VideoSchema
@@ -24,7 +24,7 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 access_token_exp = dict(days=0, hours=0, minutes=15, seconds=0)
 refresh_token_exp = dict(days=7, hours=0, minutes=0, seconds=0)
 
-redirect_url = f"{APP_URL}"
+redirect_url = f"{REDIRECT_URL}"
 
 
 def generate_token(payload, exp=None):
