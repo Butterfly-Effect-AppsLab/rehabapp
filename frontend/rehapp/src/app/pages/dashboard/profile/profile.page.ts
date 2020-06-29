@@ -88,6 +88,7 @@ export class ProfilePage implements OnInit {
             this.diagnosisShown = data.data
         }
         this.popoverIcon = "chevron-down-outline"
+        this.loadChart();
       }
     );
   }
