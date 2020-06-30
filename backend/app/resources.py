@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import cv2
 import falcon
 import jwt
 import requests
@@ -14,7 +13,6 @@ from schemas import UserSchema, AreaSchema, QuestionSchema, DiagnoseSchema, Vide
 from send_email import send_email
 import hashlib
 import json
-import base64
 import os
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -28,9 +26,9 @@ redirect_url = f"{REDIRECT_URL}"
 
 
 def generate_token(payload, exp=None):
-    payload['iat'] = datetime.utcnow()
+    payload['iat'] = datetime.now()
     if exp:
-        payload['exp'] = datetime.utcnow() + timedelta(**exp)
+        payload['exp'] = datetime.now() + timedelta(**exp)
     return jwt.encode(payload, KEY, algorithm='HS256').decode('utf-8')
 
 
@@ -127,6 +125,7 @@ class VideoResource:
 #     'video': base64.b64encode(video).decode('utf-8'),
 #     # 'videos': [base64.b64encode(video).decode('utf-8') for i in range(1000)]
 # }
+
 
 class QuestionsResource:
     def on_get(self, req, res):
@@ -534,7 +533,7 @@ class RefreshTokenResource:
 
         ret = {}
 
-        if datetime.utcfromtimestamp(payload['iat']) + timedelta(hours=24) <= datetime.utcnow():
+        if datetime.utcfromtimestamp(payload['iat']) + timedelta(hours=24) <= datetime.now():
             if user_token.google_refresh_token:
                 if not google_refresh_token(user_token.google_refresh_token):
                     session.query(UserTokens) \
@@ -581,10 +580,14 @@ class CollectDiagnosesResource:
             if diagnose in user.diagnoses:
                 raise falcon.HTTPBadRequest(description="User already has diagnose")
             else:
-                user.diagnoses.append(diagnose)
+                user_diagnose = UserDiagnose(
+                    user_id=user.id,
+                    diagnose_id=diagnose.id,
+                    start_date=datetime.now().date(),
+                )
 
-                session.add(user)
-                session.flush()
+                session.add(user_diagnose)
+                session.commit()
 
                 res.status = falcon.HTTP_200
                 res.media = {
@@ -734,3 +737,80 @@ class ResetPasswordResource:
         except ValidationError as err:
             res.media = err.messages
             res.status = falcon.HTTP_400
+
+
+class PainLevelResource:
+    def on_post(self, req, res):
+
+        session = req.context.session
+
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+        if not diagnose:
+            res.media = "Diagnose doesn't exist"
+            res.status = falcon.HTTP_404
+            return
+
+        user_schema = UserSchema()
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        user_diagnose = session.query(UserDiagnose).filter(UserDiagnose.user_id == req.context.user_id) \
+            .filter(UserDiagnose.diagnose_id == diagnose.id) \
+            .filter(UserDiagnose.deleted == False) \
+            .first()
+
+        if not user_diagnose:
+            raise falcon.HTTPBadRequest(description="User doesn't have diagnose")
+        else:
+
+            user_diagnose = session.query(UserBacklog).filter(UserBacklog.user_diagnose_id == user_diagnose.id).first()
+
+            if user_diagnose:
+                raise falcon.HTTPBadRequest(description="User have already set his pain level")
+
+            user_backlog = UserBacklog(
+                user_diagnose_id=user_diagnose.id,
+                date=datetime.now().date(),
+                level=req.media['level']
+            )
+
+            session.add(user_backlog)
+            session.commit()
+
+            res.status = falcon.HTTP_200
+            res.media = {
+                'diagnoses': user_schema.dump(user)['diagnoses']
+            }
+
+    def on_delete(self, req, res):
+
+        session = req.context.session
+
+        diagnose = session.query(Diagnose).filter(Diagnose.id == req.media['diagnose_id']).first()
+
+        if not diagnose:
+            res.media = "Diagnose doesn't exist"
+            res.status = falcon.HTTP_404
+            return
+
+        user_schema = UserSchema()
+        user = session.query(User).filter(User.id == req.context.user_id).first()
+
+        if diagnose not in user.diagnoses:
+            raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
+        else:
+            user_diagnose = session.query(UserDiagnose) \
+                .filter(UserDiagnose.user_id == user.id) \
+                .filter(UserDiagnose.diagnose_id == diagnose.id) \
+                .filter(UserDiagnose.deleted == False) \
+                .first()
+
+            user_diagnose.deleted = True
+
+            session.add(user_diagnose)
+            session.commit()
+
+            res.status = falcon.HTTP_200
+            res.media = {
+                'diagnoses': user_schema.dump(user)['diagnoses']
+            }

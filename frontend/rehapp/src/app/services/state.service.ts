@@ -79,7 +79,7 @@ export class StateService {
       key: keyToSave,
       value: JSON.stringify(objectToSave)
     });
-    this.storage.setObject('tree', resp);
+    // this.storage.setObject('tree', resp);
   }
 
   loadTreeFromStorage() {

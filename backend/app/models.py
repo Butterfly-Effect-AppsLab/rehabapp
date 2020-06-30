@@ -1,5 +1,4 @@
-import hashlib
-import json
+from datetime import datetime, timedelta, date
 
 from bcrypt import hashpw, gensalt, checkpw
 from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey, CheckConstraint, Date, Table, Float, \
@@ -12,6 +11,7 @@ postgres = DB
 engine = create_engine(postgres)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
+session = Session()
 
 tree_references = Table('tree_references', Base.metadata,
                         Column('tree_id', Integer, ForeignKey('trees.id', ondelete='CASCADE')),
@@ -67,8 +67,22 @@ class UserDiagnose(Base):
     user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
     diagnose_id = Column(Integer, ForeignKey('diagnoses.id', ondelete='CASCADE'))
     deleted = Column(Boolean, nullable=False, default=False, server_default='f')
+    start_date = Column(Date, nullable=True)
 
     diagnose = relationship("Diagnose", cascade="delete")
+    backlog = relationship('UserBacklog')
+
+    def get_backlog(self, week_day):
+        today = datetime.now().date()
+
+        return session.query(UserBacklog).filter(UserBacklog.user_diagnose_id == self.id) \
+            .filter(and_(UserBacklog.date >= (today - timedelta(days=week_day)),
+                         UserBacklog.date < today)) \
+            .all()
+
+    def get_backlog_at_date(self, day_in_week):
+        return session.query(UserBacklog).filter(UserBacklog.user_diagnose_id == self.id).filter(
+            day_in_week == UserBacklog.date).first()
 
 
 class Color(Base):
@@ -317,11 +331,13 @@ class User(Base):
     verification_token = Column(String, nullable=True)
     password_reset = Column(String, nullable=True)
 
-    diagnoses = relationship(
-        'Diagnose',
-        secondary="user_diagnoses",
-        primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
-    )
+    # diagnoses = relationship(
+    #     'Diagnose',
+    #     secondary="user_diagnoses",
+    #     primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
+    # )
+
+    diagnoses = relationship('UserDiagnose')
 
     @property
     def password(self):
@@ -376,3 +392,14 @@ class Video(Base):
     size = Column(Integer)
 
     diagnose = relationship("Diagnose")
+
+
+class UserBacklog(Base):
+    __tablename__ = "user_backlogs"
+
+    id = Column(Integer, primary_key=True)
+
+    user_diagnose_id = Column(Integer, ForeignKey('user_diagnoses.id', ondelete='SET NULL'), nullable=True)
+    date = Column(Date, nullable=False)
+    level = Column(Integer, nullable=False)
+

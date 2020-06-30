@@ -1,6 +1,6 @@
 # pull base image
 FROM python:3
-
+ENV TZ="Europe/Bratislava"
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
