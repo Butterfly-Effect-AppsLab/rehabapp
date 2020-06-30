@@ -11,12 +11,16 @@
     margin: auto;
     --background: #dfe3e3;
     --color: var(--dark);
-    --border-radius: 15px;
+    --border-radius: 15px;          /* Thank you for not working :) */
     --box-shadow: none;
 
     ion-icon {
         color: #67808B;
     }
+}
+::ng-deep .searchbar-input {
+    border-radius: 15px !important; // this dude is here, because property 
+                                    // --border-radius seems uneffective :(
 }
 
 .fade-wrapper {

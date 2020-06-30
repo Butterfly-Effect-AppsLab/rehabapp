@@ -108,7 +108,7 @@ export class ResetPage implements OnInit {
             this.stateService.stopLoading();
           });
         }
-      }, (error) => {
+      }, () => {
         this.stateService.stopLoading();
         this.presentAlert("Chyba...", "...link na zmenu hesla je neplatný.");
         this.router.navigateByUrl('login');
