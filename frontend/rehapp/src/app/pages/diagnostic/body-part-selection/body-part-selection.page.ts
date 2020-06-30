@@ -19,8 +19,8 @@ export class BodyPartSelectionPage implements OnInit {
 
   @ViewChild('buttons', { static: false }) buttons: ElementRef;
   @ViewChild('bodyWrapper', { static: false }) bodyWrapper: ElementRef;
-  @ViewChild('fader_top', {static: true}) topFader: ElementRef;
-  @ViewChild('fader_bot', {static: true}) botFader: ElementRef;
+  @ViewChild('fader_top', { static: true }) topFader: ElementRef;
+  @ViewChild('fader_bot', { static: true }) botFader: ElementRef;
 
   @ViewChild('continueBtn', { static: false }) continueBtn: ElementRef;
   @ViewChild('toggleComponent', { static: false }) toggleComponent: ToggleComponent;
@@ -28,7 +28,7 @@ export class BodyPartSelectionPage implements OnInit {
 
   actualCircle: Element;
   actualSubarea: Element;
-  actualSubareaBtn:Element = undefined;
+  actualSubareaBtn: Element = undefined;
   visibleSide: string = 'front';
   areaSelected: boolean = false;
   areaSubmitted: boolean = false;
@@ -63,7 +63,12 @@ export class BodyPartSelectionPage implements OnInit {
   duration: number = 1500;
   optionsDuration: number = 500;
 
-  constructor(public loadingController: LoadingController, private router: Router, private animationCtrl: AnimationController, public platform: Platform, public navCtrl: NavController, private stateService: StateService) {
+  constructor(public loadingController: LoadingController, 
+    private router: Router, 
+    private animationCtrl: AnimationController, 
+    public platform: Platform, 
+    public navCtrl: NavController, 
+    private stateService: StateService) {
 
     this.stateService.actualSide.subscribe(() => {
       if (this.initialized)
@@ -84,24 +89,28 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first) 
+    if (this.stateService.actualTreeComponent.getValue() != null && (<Area>this.stateService.actualTreeComponent.getValue()).first)
       this.areaSubmitted = true;
   }
 
   async ionViewDidEnter() {
-    if (this.stateService.resetValues)
-      this.setValues();
+    this.stateService.startLoading().then(
+      () => {
+        if (this.stateService.resetValues)
+          this.setValues();
 
-    if (!this.initialized) {
-      this.init();
-    }
+        if (!this.initialized) {
+          this.init();
+        }
+
+        this.botFader.nativeElement.style['display'] = "none";
+        this.stateService.stopLoading();
+      }
+    )
     var area = <Area>this.stateService.actualTreeComponent.getValue();
-
     if ((area != null && area.type == "area" && !area.first) || (area != null && area.type == "area" && area.first && this.areaSubmitted)) {
       await this.forward(0, 0);
     }
-    this.botFader.nativeElement.style['display'] = "none";
-    this.stateService.stopLoading();
   }
 
   public setValues() {
@@ -136,9 +145,13 @@ export class BodyPartSelectionPage implements OnInit {
     if (this.areaSubmitted && (<Area>this.stateService.actualTreeComponent.getValue()).first)
       this.backward();
     else {
-      await this.stateService.back();
-      if (this.areaSubmitted)
-        this.reset();
+      if (this.stateService.componentStack.length == 0)
+        this.navCtrl.back();
+      else {
+        await this.stateService.back();
+        if (this.areaSubmitted)
+          this.reset();
+      }
     }
   }
 
@@ -432,8 +445,8 @@ export class BodyPartSelectionPage implements OnInit {
     this.areaSelected = false;
   }
 
-  removeFader(event){
-    this.stateService.removeFader(event, this.topFader, this.botFader)    
+  removeFader(event) {
+    this.stateService.removeFader(event, this.topFader, this.botFader)
   }
 
   async submit() {

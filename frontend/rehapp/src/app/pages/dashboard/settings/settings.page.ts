@@ -5,6 +5,8 @@ import { StateService } from 'src/app/services/state.service';
 import { Router } from '@angular/router';
 import { Diagnose } from 'src/app/services/models/Tree';
 import { APIService } from 'src/app/services/apiservice.service';
+import { StorageService } from 'src/app/services/storage.service';
+import { Filesystem, FilesystemDirectory } from '@capacitor/core';
 
 @Component({
   selector: 'app-settings',
@@ -24,7 +26,8 @@ export class SettingsPage implements OnInit {
     private alertController: AlertController,
     private stateService: StateService,
     private api: APIService,
-    private router: Router) { }
+    private router: Router,
+    private storage: StorageService) { }
 
   ngOnInit() {
   }
@@ -51,7 +54,18 @@ export class SettingsPage implements OnInit {
     });
 
     await alert.present();
-  }
+  } 
+  
+  async presentError(header: string, text: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      subHeader: header,
+      message: text,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  } 
 
   calculateFont(length: number) {
     if (length < 8)
@@ -75,12 +89,30 @@ export class SettingsPage implements OnInit {
 
   removeDiag(index) {   
     let removeFromArr = () => { 
-      this.api.removeDiagnosis(this.diagnoses[index].id).subscribe(
+      let diagnoseId = this.diagnoses[index].id;
+      this.api.removeDiagnosis(diagnoseId).subscribe(
         (resp) => { 
           this.account.userLoggedIn.diagnoses = resp['diagnoses'];
           this.diagnoses = this.account.userLoggedIn.diagnoses;
+          this.storage.getObject(`d_${diagnoseId}`).then(
+            (obj) => {
+              if (obj && obj.videos) {
+                console.log(obj.videos);
+                
+                obj.videos.forEach(video => {
+                  this.fileDelete(video.name).then(
+                    () => { },
+                    (err) => { console.log(err); }
+                  )                  
+                });
+                this.storage.removeItem(`d_${diagnoseId}`);
+              }
+            }
+          )          
          },
-        (err) => { console.log(err); }
+         (err) => {
+          this.presentError('Chyba pri odstraňovaní programu.', err.error)
+        }
       )
     };
     this.presentAlert(`...že chcete odstrániť diagnózu ${this.diagnoses[index].name}`, removeFromArr)
@@ -93,4 +125,12 @@ export class SettingsPage implements OnInit {
   addDiagnosis() {
     this.router.navigateByUrl('/diagnostic/choice')
   }
+
+  async fileDelete(path: string) {
+    await Filesystem.deleteFile({
+      path: path,
+      directory: FilesystemDirectory.Data
+    });
+  }
+  
 }

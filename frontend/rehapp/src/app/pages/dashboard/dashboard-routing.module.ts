@@ -28,10 +28,6 @@ const routes: Routes = [
       {
         path: 'demography',
         loadChildren: () => import('./demography/demography.module').then( m => m.DemographyPageModule)
-      },
-      {
-        path: 'video',
-        loadChildren: () => import('./video/video.module').then( m => m.VideoPageModule)
       }
     ]
   }

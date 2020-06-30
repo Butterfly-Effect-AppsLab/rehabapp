@@ -17,7 +17,7 @@
         <ion-item class="input_item" lines="none" [ngClass]="emailHighlighter">
           <ion-input [(ngModel)]="usermail" (ionFocus)="setHighlight('focus')"
             (ionBlur)="setHighlight('blur')" (ionChange)="checkValidation()"
-            placeholder="Zadajte e-mail" inputmode="email" maxlength=40 autofocus="true" required="true"></ion-input>
+            placeholder="Zadajte e-mail" inputmode="email" maxlength=30 autofocus="true" required="true"></ion-input>
         </ion-item>
       </div>
       <p class="item_text">

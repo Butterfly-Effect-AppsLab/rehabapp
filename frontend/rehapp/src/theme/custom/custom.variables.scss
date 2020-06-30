@@ -82,6 +82,16 @@
         }
     }
 
+    .app-loading {
+
+        .loading-wrapper {
+            background: var(--light);
+            color: var(--dark);
+            --spinner-color: var(--blue);
+            width: 80%;
+        }
+    }
+
     .fade-effect {
         position: absolute;
         height: 3em;
