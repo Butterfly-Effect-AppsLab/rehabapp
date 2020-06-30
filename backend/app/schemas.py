@@ -151,27 +151,28 @@ class UserDiagnoseSchema(Schema):
         return arrs
 
     def get_motivation(self, obj):
+        if obj.start_date:
+            today = datetime.now().date()
+            week_day = today.weekday()
+            week_passed = (obj.start_date + timedelta(7 - obj.start_date.weekday())) <= today
+            if not week_passed:
+                return random.choice(first_week_motivations)
 
-        today = datetime.now().date()
-        week_day = today.weekday()
-        week_passed = (obj.start_date + timedelta(7 - obj.start_date.weekday())) <= today
-        if not week_passed:
-            return random.choice(first_week_motivations)
+            motivations = week_motivations[week_day]
 
-        motivations = week_motivations[week_day]
+            if week_day == 0:
+                week_day = 7
 
-        if week_day == 0:
-            week_day = 7
+            count = len(obj.get_backlog(week_day))
 
-        count = len(obj.get_backlog(week_day))
+            key = 0
 
-        key = 0
+            for key in sorted(motivations.keys()):
+                if count <= key:
+                    break
 
-        for key in sorted(motivations.keys()):
-            if count <= key:
-                break
-
-        return motivations[key]
+            return motivations[key]
+        return ""
 
     def get_week(self, obj):
 
