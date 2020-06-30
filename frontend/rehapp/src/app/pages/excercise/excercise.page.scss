@@ -92,10 +92,51 @@ video::-webkit-media-controls-panel {
     }
 }
 
-#vyber-bolesti{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 10;
-    color: blue;
+.radio {
+    --background: transparent;
+    --color: var(--dark);
+    border: none;
+
+    div {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+alert-radio-icon {
+    width: 0px;
+    height: 0px;
+    --border-width: 0px;
+}
+
+::ng-deep [aria-checked=true].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+    border-color: var(--blue)!important;
+    background-color: var(--blue)!important;
+}
+
+
+::ng-deep{
+    .alert-radio-inner.sc-ion-alert-md {
+        width: 0px;
+        height: 0px;
+    }
+}
+
+::ng-deep{
+    .alert-radio-icon.sc-ion-alert-md {
+        border-color: var(--gray)!important;
+    background-color: var(--gray)!important;
+    }
+}
+
+::ng-deep{
+    :root .app-alert {
+        --background: var(--light);
+    }
+}
+
+::ng-deep{
+    .alert-radio-label.sc-ion-alert-md{
+        text-overflow: unset;
+    }
 }

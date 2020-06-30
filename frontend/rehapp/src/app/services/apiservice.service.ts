@@ -107,8 +107,8 @@ export class APIService {
         return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": id }, HTTP_OPTIONS)
     }
 
-    public painLevel(id: number) {
-        return this.http.post<any>(environment.API_URL + "painLevel", { "diagnose_id": id }, HTTP_OPTIONS)
+    public painLevel(id: number, level: number) {
+        return this.http.post<any>(environment.API_URL + "painLevel", { "diagnose_id": id, "level":level }, HTTP_OPTIONS)
     }
 
     public removeDiagnosis(id: number) {

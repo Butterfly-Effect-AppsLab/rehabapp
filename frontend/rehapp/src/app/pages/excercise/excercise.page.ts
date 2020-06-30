@@ -67,9 +67,56 @@ export class ExcercisePage implements OnInit {
       message: 'Blahoželáme Vám!',
       buttons: [
         {
+          text: 'OK'
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentAlertRadio() {
+    const alert = await this.alertController.create({
+      cssClass: 'app-alert',
+      header: 'Úroveň bolesti',
+      inputs: [
+        {
+          name: 'level',
+          type: 'radio',
+          label: 'žiadna bolesť',
+          value: '1',
+          checked: true
+        },
+        {
+          name: 'level',
+          type: 'radio',
+          label: 'mierna bolesť',
+          value: '2',
+        },
+        {
+          name: 'level',
+          type: 'radio',
+          label: 'výrazná bolesť',
+          value: '3',
+        },
+        {
+          name: 'level',
+          type: 'radio',
+          label: 'silná bolesť',
+          value: '4',
+        },
+        {
+          name: 'level',
+          type: 'radio',
+          label: 'neznesiteľná bolesť',
+          value: '5',
+        }
+      ],
+      buttons: [
+        {
           text: 'OK',
-          handler: () => { 
-            this.apiService.painLevel(this.excersiceDiagnose.id).subscribe((resp)=>{
+          handler: (data) => { 
+            this.apiService.painLevel(this.excersiceDiagnose.id, data).subscribe((resp)=>{
               this.accountService.userLoggedIn.diagnoses = resp.body['diagnoses'];
               this.accountService.diagnoses.next(resp.body['diagnoses']);
               this.router.navigateByUrl('dashboard');
@@ -80,10 +127,10 @@ export class ExcercisePage implements OnInit {
     });
 
     await alert.present();
-  } 
+  }
 
   done() {
-    this.presentAlert();
+    this.presentAlertRadio();
   }
 
   next() {

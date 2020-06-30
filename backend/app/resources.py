@@ -770,9 +770,9 @@ class PainLevelResource:
             if user_backlog:
                 raise falcon.HTTPBadRequest(description="User have already set his pain level")
 
-            # level = req.media['level']
+            level = req.media['level']
 
-            level = random.randint(1, 5)
+            # level = random.randint(1, 5)
 
             user_backlog = UserBacklog(
                 user_diagnose_id=user_diagnose.id,
