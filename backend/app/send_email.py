@@ -12,11 +12,10 @@ def gen_confirmation_email(token):
             <body> 
                 <h3>Vážený používateľ,</h3>
                 <p> 
-                    boli ste uspesne zaregistrovany do aplikacie Rehappka. Kliknutim na nasledovny link potvrdite 
-                    svoj e-mail:<br> 
+                    boli ste úspešne zaregistrovaný do aplikácie Rehappka. Kliknutám na nasledovný odkaz potvrdíte Vašu email=ovú adresu:<br> 
                     <a href="{APP_URL}/registration/confirmation?token={token}">Potvrdenie e-mailu</a><br><br>
                     Prajeme Vám príjemný deň!<br>
-                    <h3>Tím RehabApp</h3>
+                    <h3>Tím Rehappka</h3>
                 </p> 
             </body> 
         </html> """
@@ -36,7 +35,7 @@ def gen_reset_email(token):
                     Pokiaľ o žiadosti ohľadne zmeny hesla nič neviete, tento e-mail kľudne ignorujte.<br>
                     Odkaz je platný 24 hodín.<br>
                     Prajeme Vám príjemný deň!<br>
-                    <h3>Tím RehabApp</h3>
+                    <h3>Tím Rehappka</h3>
                 </p> 
             </body> 
         </html> """
@@ -68,5 +67,9 @@ def send_email(reciever_email, token, type):
 
     # send your email
     with smtplib.SMTP(SMTP_SERVER, PORT) as server:
+        server.connect(SMTP_SERVER, PORT)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
         server.login(LOGIN, PASSWORD)
         server.sendmail(sender_email, receiver_email, message.as_string())

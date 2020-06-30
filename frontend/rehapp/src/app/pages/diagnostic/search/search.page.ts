@@ -33,19 +33,20 @@ export class SearchPage implements OnInit {
   }
 
   initOptions() {
-    this.stateService.startLoading();
-    const interval = setInterval(() => {
-      if (this.stateService.questions != undefined) {
-        this.stateService.stopLoading();
-        clearInterval(interval);
-
-        for (let [property, value] of Object.entries(this.stateService.questions)) {
-          if (property.startsWith("d_"))
-            this.allOptions.push({ text: value.name, id: value.id });
+    this.stateService.startLoading().then(()=>{
+      const interval = setInterval(() => {
+        if (this.stateService.questions != undefined) {
+          this.stateService.stopLoading();
+          clearInterval(interval);
+  
+          for (let [property, value] of Object.entries(this.stateService.questions)) {
+            if (property.startsWith("d_"))
+              this.allOptions.push({ text: value.name, id: value.id });
+          }
+          this.options = this.allOptions.sort((a, b) => (a['text'] > b['text'] ? 1 : -1))
         }
-        this.options = this.allOptions.sort((a, b) => (a['text'] > b['text'] ? 1 : -1))
-      }
-    }, 1000);
+      }, 1000);
+    });
   }
 
   handleInput(event) {

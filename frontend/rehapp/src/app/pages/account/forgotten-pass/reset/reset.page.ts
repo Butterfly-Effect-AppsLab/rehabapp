@@ -100,18 +100,19 @@ export class ResetPage implements OnInit {
     else if (!this.confirmedPass)
       this.presentAlert("Chyba...", "...zadané heslá sa nezhodujú");
     else {
-      this.stateService.startLoading();
-      this.apiService.resetPassword(this.token, this.pass).subscribe((resp) => {
-        if (resp.body['access_token']) {
-          this.accountService.login(resp.body).then(() => {
-            this.presentAlert("Vaše heslo bolo zmenené...", '...pokračujte do aplikácie.', () => { this.router.navigateByUrl('dashboard') });
-            this.stateService.stopLoading();
-          });
-        }
-      }, () => {
-        this.stateService.stopLoading();
-        this.presentAlert("Chyba...", "...link na zmenu hesla je neplatný.");
-        this.router.navigateByUrl('login');
+      this.stateService.startLoading().then(()=>{
+        this.apiService.resetPassword(this.token, this.pass).subscribe((resp) => {
+          if (resp.body['access_token']) {
+            this.accountService.login(resp.body).then(() => {
+              this.presentAlert("Vaše heslo bolo zmenené...", '...pokračujte do aplikácie.', () => { this.router.navigateByUrl('dashboard') });
+              this.stateService.stopLoading();
+            });
+          }
+        }, () => {
+          this.stateService.stopLoading();
+          this.presentAlert("Chyba...", "...link na zmenu hesla je neplatný.");
+          this.router.navigateByUrl('login');
+        });
       });
     }
   }

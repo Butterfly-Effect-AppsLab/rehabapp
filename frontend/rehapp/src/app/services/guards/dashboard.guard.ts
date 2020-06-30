@@ -20,33 +20,33 @@ export class DashboardGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     if (!this.accountService.userLoggedIn) {
-      this.stateService.startLoading();
-
-      this.api.identify().subscribe(
-        (data) => { 
-          this.stateService.stopLoading();
-          return true; 
-        },
-        (error) => { 
-          this.accountService.logout();
-          this.router.navigateByUrl('/login');
-          this.stateService.stopLoading();
-          return false; 
-        }
-      )
-
-      // setTimeout(() => {
-      //   if (!this.accountService.userLoggedIn) {
-      //     this.accountService.logout();
-      //     this.router.navigateByUrl('/login');
-      //     this.stateService.stopLoading();
-      //     return false;
-      //   }
-      //   else {
-      //     this.stateService.stopLoading();
-      //     return true;
-      //   }
-      // }, 1000);
+      this.stateService.startLoading().then(()=>{
+        this.api.identify().subscribe(
+          (data) => { 
+            this.stateService.stopLoading();
+            return true; 
+          },
+          (error) => { 
+            this.accountService.logout();
+            this.router.navigateByUrl('/login');
+            this.stateService.stopLoading();
+            return false; 
+          }
+        )
+  
+        // setTimeout(() => {
+        //   if (!this.accountService.userLoggedIn) {
+        //     this.accountService.logout();
+        //     this.router.navigateByUrl('/login');
+        //     this.stateService.stopLoading();
+        //     return false;
+        //   }
+        //   else {
+        //     this.stateService.stopLoading();
+        //     return true;
+        //   }
+        // }, 1000);
+      });
     }
     else {
       return true;
