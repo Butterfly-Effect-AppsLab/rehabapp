@@ -121,7 +121,7 @@ export class AccountService {
         }
         if (resp.body['diagnoses']) {
           console.log('Diagnoza pripada prihlasenemu');
-          this.userLoggedIn.diagnoses.push(diag);
+          this.userLoggedIn.diagnoses = resp.body['diagnoses'];
           this.diagnoses.next(this.userLoggedIn.diagnoses);
           this.router.navigateByUrl('/dashboard');
         }

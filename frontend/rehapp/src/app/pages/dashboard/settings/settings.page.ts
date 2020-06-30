@@ -93,6 +93,7 @@ export class SettingsPage implements OnInit {
       this.api.removeDiagnosis(diagnoseId).subscribe(
         (resp) => { 
           this.account.userLoggedIn.diagnoses = resp['diagnoses'];
+          this.account.diagnoses.next(resp['diagnoses']);
           this.diagnoses = this.account.userLoggedIn.diagnoses;
           this.storage.getObject(`d_${diagnoseId}`).then(
             (obj) => {

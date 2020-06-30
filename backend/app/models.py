@@ -337,7 +337,8 @@ class User(Base):
         primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
     )
 
-    diagnoses = relationship('UserDiagnose')
+    diagnoses = relationship('UserDiagnose', primaryjoin="and_(User.id==UserDiagnose.user_id, "
+                                                         "UserDiagnose.deleted==False)")
 
     @property
     def password(self):

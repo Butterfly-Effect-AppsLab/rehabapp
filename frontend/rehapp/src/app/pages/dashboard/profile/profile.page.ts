@@ -6,6 +6,7 @@ import { PopoverPage } from './popover/popover.page';
 import { Router } from '@angular/router';
 import { Diagnose } from 'src/app/services/models/Tree';
 import { Chart } from 'chart.js'
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,9 +15,9 @@ import { Chart } from 'chart.js'
 })
 export class ProfilePage implements OnInit {
 
-  @ViewChild('fader_top', { static: true }) topFader: ElementRef;
-  @ViewChild('fader_bot', { static: true }) botFader: ElementRef;
-  @ViewChild('chart', { static: true }) chart: ElementRef;
+  @ViewChild('fader_top', { static: false }) topFader: ElementRef;
+  @ViewChild('fader_bot', { static: false }) botFader: ElementRef;
+  @ViewChild('chart', { static: false }) chart: ElementRef;
 
   username: string;
   popoverIcon: string = "chevron-down-outline";
@@ -24,7 +25,7 @@ export class ProfilePage implements OnInit {
   doneIcon = "/assets/images/icons/days/done.svg";
   undoneIcon = "/assets/images/icons/days/undone.svg";
   unknownIcon = "/assets/images/icons/days/unknown.svg";
-  diagnosisShown: any;
+  public diagnosisShown: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   namesize: number = 32;
   days = {
     mon: '',
@@ -49,16 +50,22 @@ export class ProfilePage implements OnInit {
     this.account.diagnoses.subscribe((data)=>{
       this.listOfDiagnoses = data;
     });
+
+    this.diagnosisShown.subscribe((data)=>{
+      if(data){
+        this.loadChart();
+      }
+    });
   }
 
   updateDays(){
-    this.days.mon = this.checkDay(this.diagnosisShown.week[0]);
-    this.days.tue = this.checkDay(this.diagnosisShown.week[1]);
-    this.days.wed = this.checkDay(this.diagnosisShown.week[2]);
-    this.days.thu = this.checkDay(this.diagnosisShown.week[3]);
-    this.days.fri = this.checkDay(this.diagnosisShown.week[4]);
-    this.days.sat = this.checkDay(this.diagnosisShown.week[5]);
-    this.days.sun = this.checkDay(this.diagnosisShown.week[6]);
+    this.days.mon = this.checkDay(this.diagnosisShown.value.week[0]);
+    this.days.tue = this.checkDay(this.diagnosisShown.value.week[1]);
+    this.days.wed = this.checkDay(this.diagnosisShown.value.week[2]);
+    this.days.thu = this.checkDay(this.diagnosisShown.value.week[3]);
+    this.days.fri = this.checkDay(this.diagnosisShown.value.week[4]);
+    this.days.sat = this.checkDay(this.diagnosisShown.value.week[5]);
+    this.days.sun = this.checkDay(this.diagnosisShown.value.week[6]);
   }
 
   checkDay(day){
@@ -72,22 +79,21 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
     this.username = this.account.userLoggedIn.name;
     this.namesize = this.calculateFont(this.username.length)
     this.listOfDiagnoses = this.account.userLoggedIn.diagnoses;
     if (this.listOfDiagnoses.length > 0){
-      this.diagnosisShown = this.listOfDiagnoses[0];
+      this.diagnosisShown.next(this.listOfDiagnoses[0]);
       this.updateDays();
+      // this.loadChart();
     }
     else
-      this.diagnosisShown = null;
-
-    this.loadChart();
+      this.diagnosisShown.next(null);
   }
 
   async presentPopover(ev: any) {
-    if (!this.diagnosisShown)
+    if (!this.diagnosisShown.value)
       return;
     this.popoverIcon = "chevron-up-outline";
     const popover = await this.popoverController.create({
@@ -106,65 +112,61 @@ export class ProfilePage implements OnInit {
       data => {
         if (data.data) {
           if (data.data['name'])
-            this.diagnosisShown = data.data;
+            this.diagnosisShown.next(data.data);
             this.updateDays();
         }
         this.popoverIcon = "chevron-down-outline"
-        this.loadChart();
       }
     );
   }
 
   loadChart() {
     Chart.defaults.scale.gridLines.drawOnChartArea = false;
-    var myChart = new Chart(this.chart.nativeElement, {
-      type: 'bar',
-      data: {
-        labels: this.diagnosisShown.chart.x,
-        datasets: [{
-          label: 'Uroveň bolesti',
-          data: this.diagnosisShown.chart.y,
-          backgroundColor: this.diagnosisShown.chart.colors
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              // display: false,
-              drawTicks: false,
-              padding: 10,
-              beginAtZero: true,
-              max: 5
+    setTimeout(()=>{
+      if(this.chart){
+        var myChart = new Chart(this.chart.nativeElement, {
+          type: 'bar',
+          data: {
+            labels: this.diagnosisShown.value.chart.x,
+            datasets: [{
+              label: 'Uroveň bolesti',
+              data: this.diagnosisShown.value.chart.y,
+              backgroundColor: this.diagnosisShown.value.chart.colors
+            }]
+          },
+          options: {
+            maintainAspectRatio: false,
+            legend: {
+              display: false
             },
-            gridLines: {
-              // display: false,
-              // drawBorder: false,
-              drawTicks: false,
-
+            scales: {
+              yAxes: [{
+                ticks: {
+                  drawTicks: false,
+                  padding: 10,
+                  beginAtZero: true,
+                  max: 5
+                },
+                gridLines: {
+                  drawTicks: false,
+    
+                }
+              }],
+              xAxes: [{
+                ticks: {
+                  padding: 10,
+                  drawTicks: false
+                },
+                gridLines: {
+                  drawTicks: false
+                }
+              }]
             }
-          }],
-          xAxes: [{
-            ticks: {
-              padding: 10,
-              // display: false,
-              drawTicks: false
-              // beginAtZero: true,
-              // max: 10
-            },
-            gridLines: {
-              // display: false,
-              // drawBorder: false,
-              drawTicks: false
-            }
-          }]
-        }
+          }
+        });
       }
-    });
+    },100);
+    
   }
 
   calculateFont(length: number) {
@@ -187,7 +189,7 @@ export class ProfilePage implements OnInit {
   showInfo() {
     let diag = new Diagnose();
     diag.id = 0;
-    diag.name = this.diagnosisShown.name;
+    diag.name = this.diagnosisShown.value.name;
     diag.type = "diagnose";
 
     this.stateService.diagnosis = diag;

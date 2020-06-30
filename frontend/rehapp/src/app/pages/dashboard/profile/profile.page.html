@@ -5,16 +5,16 @@
         <h2 class="name" [style.fontSize.px]="namesize" (click)='f()'>{{username}}...</h2>
       </div>
       <ion-item button class="diagnosis" lines="none" (click)="presentPopover($event)">
-        <ion-label *ngIf="diagnosisShown">Diagnóza {{diagnosisShown.name}}</ion-label>
-        <ion-button *ngIf="diagnosisShown" fill="clear" slot="end">
+        <ion-label *ngIf="diagnosisShown.value">Diagnóza {{diagnosisShown.value.name}}</ion-label>
+        <ion-button *ngIf="diagnosisShown.value" fill="clear" slot="end">
           <ion-icon [name]="popoverIcon"></ion-icon>
         </ion-button>
-        <ion-label *ngIf="!diagnosisShown">Žiadna známa diagnóza</ion-label>
+        <ion-label *ngIf="!diagnosisShown.value">Žiadna známa diagnóza</ion-label>
       </ion-item>
     </div>
-    <div *ngIf="!diagnosisShown" class="cover">  
-    </div>
-    <div class="content">
+    <!-- <div *ngIf="!diagnosisShown" class="cover">  
+    </div> -->
+    <div class="content" *ngIf="diagnosisShown.value">
       <div class="fade-wrapper">
         <div #fader_top class="fade-effect fade-top"></div>
         <div #fader_bot class="fade-effect fade-bot"></div>
@@ -59,7 +59,7 @@
                 <ion-label>Ne</ion-label>
               </div>
             </div>
-            <h4 class="inner_text" *ngIf="diagnosisShown">{{diagnosisShown.motivation}}</h4>
+            <h4 class="inner_text" *ngIf="diagnosisShown.value">{{diagnosisShown.motivation}}</h4>
           </div>
           <h4 class="outer_text">Vaša bolesť za posledných 7 dní...</h4>
           <div class="graph">
@@ -98,7 +98,7 @@
       </div>
     </div>
     
-    <div *ngIf="!diagnosisShown" class="confirm">
+    <div *ngIf="!diagnosisShown.value" class="confirm">
       <div class="btn-div">
         <ion-button (click)="addDiagnosis()" expand="block" fill="solid" shape="round" class="app-big-btn app-button-dark">
           Pridať diagnózu
