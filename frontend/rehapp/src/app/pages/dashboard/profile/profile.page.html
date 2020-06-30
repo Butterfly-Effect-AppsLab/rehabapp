@@ -5,7 +5,7 @@
         <h2 class="name" [style.fontSize.px]="namesize" (click)='f()'>{{username}}...</h2>
       </div>
       <ion-item button class="diagnosis" lines="none" (click)="presentPopover($event)">
-        <ion-label *ngIf="diagnosisShown">Diagnóza {{diagnosisShown}}</ion-label>
+        <ion-label *ngIf="diagnosisShown">Diagnóza {{diagnosisShown.name}}</ion-label>
         <ion-button *ngIf="diagnosisShown" fill="clear" slot="end">
           <ion-icon [name]="popoverIcon"></ion-icon>
         </ion-button>
@@ -59,7 +59,7 @@
                 <ion-label>Ne</ion-label>
               </div>
             </div>
-            <h4 class="inner_text">Katkina motivačná hláška</h4>
+            <h4 class="inner_text" *ngIf="diagnosisShown">{{diagnosisShown.motivation}}</h4>
           </div>
           <h4 class="outer_text">Vaša bolesť za posledných 7 dní...</h4>
           <div class="graph">

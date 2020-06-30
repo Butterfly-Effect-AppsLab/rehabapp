@@ -11,8 +11,8 @@
       <div class="fade-wrapper">
         <div #fader_top class="fade-effect fade-top"></div>
         <div #fader_bot class="fade-effect fade-bot"></div>
-        <div class="program_wrapper" (scroll)="removeFader($event)">
-          <div class="programs" *ngFor="let diag of diagnoses; let i=index"> 
+        <div class="program_wrapper" (scroll)="removeFader($event)"  #wrapper>
+          <div class="programs" *ngFor="let diag of diagnoses; let i=index">
             <div class="program" (click)="programSelected(i)" [ngClass]="{active:(i==selectedIndex)}">
               <div class="video_img">
                 <div class="play" [ngClass]="{active_play:(i==selectedIndex)}"></div>

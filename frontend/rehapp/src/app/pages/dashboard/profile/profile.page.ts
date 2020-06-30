@@ -20,11 +20,11 @@ export class ProfilePage implements OnInit {
 
   username: string;
   popoverIcon: string = "chevron-down-outline";
-  listOfDiagnoses: Array<Diagnose> = []
+  listOfDiagnoses: Array<any> = []
   doneIcon = "/assets/images/icons/days/done.svg";
   undoneIcon = "/assets/images/icons/days/undone.svg";
   unknownIcon = "/assets/images/icons/days/unknown.svg";
-  diagnosisShown: string;
+  diagnosisShown: any;
   namesize: number = 32;
   days = {
     mon: '',
@@ -35,6 +35,9 @@ export class ProfilePage implements OnInit {
     sat: '',
     sun: '',
   }
+  diagnoses: any[];
+  selectedIndex: number;
+  wrapper: any;
 
   constructor(private account: AccountService,
     private popoverController: PopoverController,
@@ -42,21 +45,41 @@ export class ProfilePage implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.days.mon = this.doneIcon;
-    this.days.tue = this.doneIcon;
-    this.days.wed = this.undoneIcon;
-    this.days.thu = this.doneIcon;
-    this.days.fri = this.unknownIcon;
-    this.days.sat = this.unknownIcon;
-    this.days.sun = this.unknownIcon;
+
+    this.account.diagnoses.subscribe((data)=>{
+      this.listOfDiagnoses = data;
+    });
+  }
+
+  updateDays(){
+    this.days.mon = this.checkDay(this.diagnosisShown.week[0]);
+    this.days.tue = this.checkDay(this.diagnosisShown.week[1]);
+    this.days.wed = this.checkDay(this.diagnosisShown.week[2]);
+    this.days.thu = this.checkDay(this.diagnosisShown.week[3]);
+    this.days.fri = this.checkDay(this.diagnosisShown.week[4]);
+    this.days.sat = this.checkDay(this.diagnosisShown.week[5]);
+    this.days.sun = this.checkDay(this.diagnosisShown.week[6]);
+  }
+
+  checkDay(day){
+    switch(day){
+      case true:
+        return this.doneIcon;
+      case false:
+        return this.undoneIcon;
+      case null:
+        return this.unknownIcon;
+    }
   }
 
   ionViewDidEnter() {
     this.username = this.account.userLoggedIn.name;
     this.namesize = this.calculateFont(this.username.length)
     this.listOfDiagnoses = this.account.userLoggedIn.diagnoses;
-    if (this.listOfDiagnoses.length > 0)
-      this.diagnosisShown = this.listOfDiagnoses[0].name;
+    if (this.listOfDiagnoses.length > 0){
+      this.diagnosisShown = this.listOfDiagnoses[0];
+      this.updateDays();
+    }
     else
       this.diagnosisShown = null;
 
@@ -83,9 +106,8 @@ export class ProfilePage implements OnInit {
       data => {
         if (data.data) {
           if (data.data['name'])
-            this.diagnosisShown = data.data['name'];
-          else
-            this.diagnosisShown = data.data
+            this.diagnosisShown = data.data;
+            this.updateDays();
         }
         this.popoverIcon = "chevron-down-outline"
         this.loadChart();
@@ -98,19 +120,11 @@ export class ProfilePage implements OnInit {
     var myChart = new Chart(this.chart.nativeElement, {
       type: 'bar',
       data: {
-        labels: ['Po', 'Ut', 'St', 'St', 'Pi', 'So', 'Ne'],
+        labels: this.diagnosisShown.chart.x,
         datasets: [{
-          label: 'Pain level',
-          data: [2, 9, 3, 5, 2, 3, 0],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-          ]
+          label: 'Uroveň bolesti',
+          data: this.diagnosisShown.chart.y,
+          backgroundColor: this.diagnosisShown.chart.colors
         }]
       },
       options: {
@@ -125,7 +139,7 @@ export class ProfilePage implements OnInit {
               drawTicks: false,
               padding: 10,
               beginAtZero: true,
-              max: 10
+              max: 5
             },
             gridLines: {
               // display: false,
@@ -173,7 +187,7 @@ export class ProfilePage implements OnInit {
   showInfo() {
     let diag = new Diagnose();
     diag.id = 0;
-    diag.name = this.diagnosisShown;
+    diag.name = this.diagnosisShown.name;
     diag.type = "diagnose";
 
     this.stateService.diagnosis = diag;

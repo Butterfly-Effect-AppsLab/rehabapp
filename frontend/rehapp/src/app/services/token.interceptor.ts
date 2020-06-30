@@ -5,6 +5,7 @@ import { StorageService } from './storage.service';
 import { catchError, take, switchMap, filter, finalize } from 'rxjs/operators'
 
 import { APIService } from './apiservice.service';
+import { AccountService } from './account.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -13,7 +14,9 @@ export class TokenInterceptor implements HttpInterceptor {
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
-    private apiService: APIService, private storage: StorageService) { }
+    private apiService: APIService, 
+    private storage: StorageService,
+    private accountService: AccountService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -49,7 +52,7 @@ export class TokenInterceptor implements HttpInterceptor {
           // return of(<any>this.authenticationService.logout());
         }),
         catchError(err => {
-          // this.authenticationService.logout();
+          this.accountService.logout();
           return throwError(err.error);
         }),
         finalize(() => {

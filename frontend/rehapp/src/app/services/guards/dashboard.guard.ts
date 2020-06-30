@@ -10,8 +10,8 @@ import { StateService } from '../state.service';
 })
 export class DashboardGuard implements CanActivate {
 
-  constructor(private accountService: AccountService, 
-    private router: Router, 
+  constructor(private accountService: AccountService,
+    private router: Router,
     private api: APIService,
     private stateService: StateService) { }
 
@@ -19,20 +19,34 @@ export class DashboardGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!this.accountService.userLoggedIn) {      
+    if (!this.accountService.userLoggedIn) {
       this.stateService.startLoading();
-      setTimeout(() => {
-        if (!this.accountService.userLoggedIn) {
+
+      this.api.identify().subscribe(
+        (data) => { 
+          this.stateService.stopLoading();
+          return true; 
+        },
+        (error) => { 
           this.accountService.logout();
           this.router.navigateByUrl('/login');
           this.stateService.stopLoading();
-          return false;
+          return false; 
         }
-        else {
-          this.stateService.stopLoading();
-          return true;
-        }
-      }, 1000);
+      )
+
+      // setTimeout(() => {
+      //   if (!this.accountService.userLoggedIn) {
+      //     this.accountService.logout();
+      //     this.router.navigateByUrl('/login');
+      //     this.stateService.stopLoading();
+      //     return false;
+      //   }
+      //   else {
+      //     this.stateService.stopLoading();
+      //     return true;
+      //   }
+      // }, 1000);
     }
     else {
       return true;

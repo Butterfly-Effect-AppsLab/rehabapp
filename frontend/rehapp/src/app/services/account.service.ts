@@ -18,6 +18,7 @@ export class AccountService {
   private _refreshToken: string;
   private _accessToken: string;
   private _loginError: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public diagnoses: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private storageService: StorageService, 
     private router: Router, 
@@ -68,6 +69,7 @@ export class AccountService {
       (user) => {
         console.log("User found: ", user);
         this.userLoggedIn = user;
+        this.diagnoses.next(this.userLoggedIn.diagnoses);
         this.storageService.removeItem('user_diagnose');
         this.router.navigateByUrl('dashboard')
       },
@@ -81,6 +83,7 @@ export class AccountService {
     );
 
     this.userLoggedIn.diagnoses = responseBody['user'].diagnoses;
+    this.diagnoses.next(this.userLoggedIn.diagnoses);
     
     this.accessToken = responseBody['access_token'];
     this.refreshToken = responseBody['refresh_token'];
@@ -91,12 +94,15 @@ export class AccountService {
     console.log(this.userLoggedIn);
   }
 
-  logout() {
-    this.storageService.removeItem("user");
+  async logout() {
+    this.api.logout().subscribe(()=>{
+      this.storageService.removeItem("user");
     this.storageService.removeItem("access_token");
     this.storageService.removeItem("refresh_token");
     this.userLoggedIn = undefined;
+    this.diagnoses.next(null);
     this.router.navigateByUrl('/')
+    }); 
   }
 
   addDiagnose(diag: Diagnose) {
@@ -116,6 +122,7 @@ export class AccountService {
         if (resp.body['diagnoses']) {
           console.log('Diagnoza pripada prihlasenemu');
           this.userLoggedIn.diagnoses.push(diag);
+          this.diagnoses.next(this.userLoggedIn.diagnoses);
           this.router.navigateByUrl('/dashboard');
         }
       },

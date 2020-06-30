@@ -6,7 +6,7 @@ import { mergeMap } from 'rxjs/operators'
 
 import { environment } from 'src/environments/environment'
 
-const AUTH_URLS: Array<string> = ["users/me", "collectDiagnoses", "diagnoses"]
+const AUTH_URLS: Array<string> = ["users/me", "collectDiagnoses", "diagnoses", "painLevel"]
 
 @Injectable()
 export class AuthTokenInterceptor implements HttpInterceptor {

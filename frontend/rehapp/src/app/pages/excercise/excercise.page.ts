@@ -5,6 +5,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { FilesystemDirectory, FilesystemEncoding, Filesystem } from '@capacitor/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { APIService } from 'src/app/services/apiservice.service';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-excercise',
@@ -16,6 +18,8 @@ export class ExcercisePage implements OnInit {
   videoCount = [];
   actualVideo = 0;
   excersiceDiagnose: Diagnose = new Diagnose();
+  videoData = undefined;
+  videoText = "";
   fullscreenToggle: boolean = false;
   loaded: boolean = false;
 
@@ -33,6 +37,8 @@ export class ExcercisePage implements OnInit {
 
   constructor(private videoService: VideoService, 
     private screenOrientation: ScreenOrientation, 
+    private apiService: APIService, 
+    private accountService: AccountService,
     private alertController: AlertController,
     private router: Router) { }
 
@@ -40,14 +46,16 @@ export class ExcercisePage implements OnInit {
 
   ionViewWillEnter() {
     this.videoCount = Array(this.videoService.excerciseCount);
+    this.videoData = this.videoService.videos[0];
+    this.videoText = this.videoData.text;
     this.excersiceDiagnose = this.videoService.excercise;
-    console.log('Program: ',this.excersiceDiagnose);
+    // console.log('Program: ',this.excersiceDiagnose);
     console.log('Videos: ',this.videoService.videos);
 
-    if (!this.excersiceDiagnose) {
-      this.excersiceDiagnose = new Diagnose()
-      this.excersiceDiagnose.name = 'nezvoleny'
-    }
+    // if (!this.excersiceDiagnose) {
+    //   this.excersiceDiagnose = new Diagnose()
+    //   this.excersiceDiagnose.name = 'nezvoleny'
+    // }
 
     this.play();
   }
@@ -60,7 +68,13 @@ export class ExcercisePage implements OnInit {
       buttons: [
         {
           text: 'OK',
-          handler: () => { this.router.navigateByUrl('dashboard') }
+          handler: () => { 
+            this.apiService.painLevel(this.excersiceDiagnose.id).subscribe((resp)=>{
+              this.accountService.userLoggedIn.diagnoses = resp.body['diagnoses'];
+              this.accountService.diagnoses.next(resp.body['diagnoses']);
+              this.router.navigateByUrl('dashboard');
+            });
+          }
         }
       ]
     });
@@ -88,6 +102,8 @@ export class ExcercisePage implements OnInit {
 
   play() {
     let video = this.videoService.videos[this.actualVideo];
+    this.videoData = this.videoService.videos[this.actualVideo];
+    this.videoText = this.videoData.text;
     const videoTag: HTMLVideoElement = this.player.nativeElement;
 
     this.fileRead(video['name']).then(async (data) => {

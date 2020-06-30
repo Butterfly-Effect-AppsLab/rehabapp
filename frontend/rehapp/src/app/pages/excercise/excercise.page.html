@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="position: relative;">
   <div class="main">
     <div [ngClass]="{'loaded': loaded}" id="wrapper">
       <div id="cover"></div>
@@ -21,7 +21,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <h4>Program {{excersiceDiagnose.name}}</h4>
+    <h4>{{videoText}}</h4>
     <div class="nav_btns">
       <div class="nav_btn">
         <ion-button *ngIf="actualVideo > 0" (click)="previous()" fill="solid" shape="round" class="btn_left">
@@ -43,4 +43,6 @@
       </div>
     </div>
   </div>
+
+  <div id="vyber-bolesti"></div>
 </ion-content>

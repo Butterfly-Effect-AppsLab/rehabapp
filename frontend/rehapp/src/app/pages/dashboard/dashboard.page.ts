@@ -17,8 +17,8 @@ export class DashboardPage implements OnInit {
 
   ngOnInit() {
     this.api.identify().subscribe(
-      () => { },
-      () => { this.accountService.logout() }
+      (data) => {this.accountService.userLoggedIn = data},
+      (error) => { this.accountService.logout() }
     )
   }
 }

@@ -31,15 +31,15 @@ export class APIService {
     }
 
     public getVideos(diagnose_id: number) {
-        return this.http.get<any>(environment.API_URL+'diagnoses/'+diagnose_id+'/videos')
+        return this.http.get<any>(environment.API_URL + 'diagnoses/' + diagnose_id + '/videos')
     }
 
     public donloadVideo(video_id: number) {
-        return this.http.get<any>(environment.API_URL+'diagnoses/videos/'+video_id+'/video', {responseType: 'blob' as 'json'})
+        return this.http.get<any>(environment.API_URL + 'diagnoses/videos/' + video_id + '/video', { responseType: 'blob' as 'json' })
     }
 
     public donloadVideoData(video_id: number) {
-        return this.http.get<any>(environment.API_URL+'diagnoses/videos/'+video_id+'/data')
+        return this.http.get<any>(environment.API_URL + 'diagnoses/videos/' + video_id + '/data')
     }
 
     public getTree() {
@@ -71,7 +71,7 @@ export class APIService {
                 'birthday': userbirth
             }
         }
-        
+
         return this.http.put<any>(environment.API_URL + "users/me", user);
     }
 
@@ -91,15 +91,31 @@ export class APIService {
         // return this.http.post<any>(environment.API_URL + "refresh", token, HTTP_OPTIONS)
     }
 
+    public logout() {
+
+        return this.storage.getrefreshToken()
+            .pipe(
+                switchMap((token: string) => {
+                    return this.http.post<any>(environment.API_URL + "logout", {
+                        "refresh_token": token
+                    }, HTTP_OPTIONS)
+                })
+            )
+    }
+
     public collect(id: number) {
         return this.http.post<any>(environment.API_URL + "collectDiagnoses", { "diagnose_id": id }, HTTP_OPTIONS)
     }
 
+    public painLevel(id: number) {
+        return this.http.post<any>(environment.API_URL + "painLevel", { "diagnose_id": id }, HTTP_OPTIONS)
+    }
+
     public removeDiagnosis(id: number) {
-        return this.http.request<any>('delete',environment.API_URL + "collectDiagnoses", 
-        { 
-            body: {'diagnose_id' : id }
-        })
+        return this.http.request<any>('delete', environment.API_URL + "collectDiagnoses",
+            {
+                body: { 'diagnose_id': id }
+            })
     }
 
     public checkEmail(email: object) {
@@ -130,7 +146,7 @@ export class APIService {
 
     public registrateUser(email: string, pass: string) {
         let body = {
-            'email' : email,
+            'email': email,
             'password': pass
         }
         return this.http.post<User>(environment.API_URL + "registration", body, HTTP_OPTIONS)
@@ -158,14 +174,14 @@ export class APIService {
     }
 
     public sendCodeGoogle(code: string) {
-        return this.http.get<any>(environment.API_URL + "login/oauth/google/code?"+code, HTTP_OPTIONS)
+        return this.http.get<any>(environment.API_URL + "login/oauth/google/code?" + code, HTTP_OPTIONS)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
     public sendConfirmationToken(token: string) {
-        return this.http.post<any>(environment.API_URL + "registration/confirmation",{
+        return this.http.post<any>(environment.API_URL + "registration/confirmation", {
             'token': token
         }, HTTP_OPTIONS)
             .pipe(

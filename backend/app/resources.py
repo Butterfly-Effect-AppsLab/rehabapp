@@ -14,6 +14,7 @@ from send_email import send_email
 import hashlib
 import json
 import os
+import random
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -49,7 +50,7 @@ class VideoResource:
         if not diagnose:
             raise falcon.HTTPBadRequest(description="Diagnose doesn't exist")
 
-        if diagnose not in user.diagnoses:
+        if diagnose not in user.user_diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
 
         video_schema = VideoSchema(many=True, only=['id', 'size'])
@@ -73,7 +74,7 @@ class VideoResource:
         if not video:
             raise falcon.HTTPBadRequest(description="Video doesn't exist")
 
-        if video.diagnose not in user.diagnoses:
+        if video.diagnose not in user.user_diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
 
         video_schema = VideoSchema()
@@ -99,11 +100,12 @@ class VideoResource:
         if not video:
             raise falcon.HTTPBadRequest(description="Video doesn't exist")
 
-        if video.diagnose not in user.diagnoses:
+        if video.diagnose not in user.user_diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this video's diagnose")
 
         res.content_type = 'video/mp4'
         res.data = open(f"videos/{video.name}", 'rb').read()
+
 
 # how to send img as base64encoded string
 # video_schema = VideoSchema(many=True, only=['id', 'size'])
@@ -221,7 +223,7 @@ class MeResource:
                 if not user_diagnose:
                     raise falcon.HTTPBadRequest(description="Collected diagnose doesn't exist")
 
-                if user_diagnose.diagnose not in user.diagnoses:
+                if user_diagnose.diagnose not in user.user_diagnoses:
                     user_diagnose.user_id = user.id
                     session.add(user_diagnose)
                     session.commit()
@@ -577,7 +579,7 @@ class CollectDiagnosesResource:
             user_schema = UserSchema()
             user = session.query(User).filter(User.id == req.context.user_id).first()
 
-            if diagnose in user.diagnoses:
+            if diagnose in user.user_diagnoses:
                 raise falcon.HTTPBadRequest(description="User already has diagnose")
             else:
                 user_diagnose = UserDiagnose(
@@ -621,7 +623,7 @@ class CollectDiagnosesResource:
         user_schema = UserSchema()
         user = session.query(User).filter(User.id == req.context.user_id).first()
 
-        if diagnose not in user.diagnoses:
+        if diagnose not in user.user_diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
         else:
             user_diagnose = session.query(UserDiagnose) \
@@ -763,15 +765,19 @@ class PainLevelResource:
             raise falcon.HTTPBadRequest(description="User doesn't have diagnose")
         else:
 
-            user_diagnose = session.query(UserBacklog).filter(UserBacklog.user_diagnose_id == user_diagnose.id).first()
+            user_backlog = session.query(UserBacklog).filter(UserBacklog.user_diagnose_id == user_diagnose.id).first()
 
-            if user_diagnose:
+            if user_backlog:
                 raise falcon.HTTPBadRequest(description="User have already set his pain level")
+
+            # level = req.media['level']
+
+            level = random.randint(1, 5)
 
             user_backlog = UserBacklog(
                 user_diagnose_id=user_diagnose.id,
                 date=datetime.now().date(),
-                level=req.media['level']
+                level=level
             )
 
             session.add(user_backlog)
@@ -796,7 +802,7 @@ class PainLevelResource:
         user_schema = UserSchema()
         user = session.query(User).filter(User.id == req.context.user_id).first()
 
-        if diagnose not in user.diagnoses:
+        if diagnose not in user.user_diagnoses:
             raise falcon.HTTPBadRequest(description="User doesn't have this diagnose")
         else:
             user_diagnose = session.query(UserDiagnose) \

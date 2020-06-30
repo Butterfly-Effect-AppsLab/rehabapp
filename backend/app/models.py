@@ -331,11 +331,11 @@ class User(Base):
     verification_token = Column(String, nullable=True)
     password_reset = Column(String, nullable=True)
 
-    # diagnoses = relationship(
-    #     'Diagnose',
-    #     secondary="user_diagnoses",
-    #     primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
-    # )
+    user_diagnoses = relationship(
+        'Diagnose',
+        secondary="user_diagnoses",
+        primaryjoin="and_(User.id==UserDiagnose.user_id, UserDiagnose.deleted==False)"
+    )
 
     diagnoses = relationship('UserDiagnose')
 

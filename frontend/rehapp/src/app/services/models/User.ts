@@ -6,7 +6,7 @@ export class User {
     private _email: string;
     private _sex: string;
     private _birthday: string;
-    private _diagnoses: Array<Diagnose>;
+    private _diagnoses: Array<any>;
 
     constructor(username: string, email?: string, password?: string, sex?: string, birthday?: string) {
         this._username = username;
@@ -74,11 +74,11 @@ export class User {
         return this._diagnoses;
     }
 
-    public set diagnoses(diagnoses: Array<Diagnose>) {
+    public set diagnoses(diagnoses: Array<any>) {
         this._diagnoses = diagnoses;
     }
 
-    public addDiagnosis(diagnosis: Diagnose) {
+    public addDiagnosis(diagnosis: any) {
         this._diagnoses.push(diagnosis)
     }
 

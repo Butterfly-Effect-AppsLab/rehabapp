@@ -61,7 +61,7 @@ class UserSchema(Schema):
     verification_token = fields.String(default=None, load_only=True)
     password_reset = fields.String(default=None, load_only=True)
 
-    diagnoses = fields.Nested(lambda: UserDiagnoseSchema(only=["id", "start_date", "motivation", "week", "chart", "today"]), many=True,
+    diagnoses = fields.Nested(lambda: UserDiagnoseSchema(only=["id","name","start_date", "motivation", "week", "chart", "today"]), many=True,
                               dump_only=True)
 
     @post_load
@@ -96,17 +96,20 @@ class DiagnoseSchema(Schema):
 
 
 class UserDiagnoseSchema(Schema):
-    id = fields.Int(dump_only=True)
+    # id = fields.Int(dump_only=True)
     user_id = fields.Int()
     diagnose_id = fields.Int()
     start_date = fields.Date()
 
-    diagnose = fields.Nested(lambda: DiagnoseSchema(only=["id", "name"]), dump_only=True, many=False)
+    # diagnose = fields.Nested(lambda: DiagnoseSchema(only=["id", "name"]), dump_only=True, many=False)
 
     chart = fields.Method("get_chart")
     motivation = fields.Method("get_motivation")
     week = fields.Method("get_week")
     today = fields.Method("get_today")
+
+    id = fields.Method("get_id")
+    name = fields.Method("get_name")
 
     def get_chart(self, obj):
 
@@ -185,6 +188,12 @@ class UserDiagnoseSchema(Schema):
         today = datetime.now().date()
 
         return obj.get_backlog_at_date(today) is not None
+
+    def get_id(self, obj):
+        return obj.diagnose.id
+
+    def get_name(self, obj):
+        return obj.diagnose.name
 
     @post_load
     def create_model(self, data, **kwargs):

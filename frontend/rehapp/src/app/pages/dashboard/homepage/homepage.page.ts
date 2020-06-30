@@ -19,9 +19,10 @@ export class HomepagePage implements OnInit {
 
   @ViewChild('fader_top', { static: true }) topFader: ElementRef;
   @ViewChild('fader_bot', { static: true }) botFader: ElementRef;
+  @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
 
   user: User = new User("");
-  diagnoses: Array<Diagnose> = []
+  diagnoses: Array<Diagnose> = [];
   selectedIndex = 0;
   fontsize: Array<number> = [];
   namesize: number = 32;
@@ -43,13 +44,26 @@ export class HomepagePage implements OnInit {
 
   ngOnInit() {
     this.user = new User('');
-    this.diagnoses = this.accountService.userLoggedIn.diagnoses;
+    this.accountService.diagnoses.subscribe((data)=>{
+      console.log(data);
+      this.diagnoses = [];
+
+    for(let i=0; i< data.length; i++){
+      if (!data[i].today)
+      this.diagnoses.push(data[i]);
+    }
+
+    this.selectedIndex = 0;
+    this.wrapper.nativeElement.scrollTop = 0;
+    this.wrapper.nativeElement.scrollTop = 0;
+    });
+    // this.diagnoses = this.accountService.userLoggedIn.diagnoses;
     this.updateFonts();
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.user = this.accountService.userLoggedIn;
-    this.diagnoses = this.user.diagnoses;
+    // this.diagnoses = this.user.diagnoses;
     this.updateFonts();
 
     this.stateService.stopLoading();
