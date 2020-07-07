@@ -116,23 +116,25 @@ export class StateService {
 
     if (this.isLoading)
       return;
-
+    
     if (this.componentStack.length == 0) {
       this.router. navigateByUrl('/onboarding');
       return;
     }
-
+    
     var oldTreeComponent = this.actualTreeComponent.getValue();
     this.actualTreeComponent.next(this.componentStack.pop());
 
     if (oldTreeComponent.type == "area") {
-      await this.startLoading();
-      this.router.navigateByUrl('/diagnostic');
+      this.startLoading().then(
+        () => this.router.navigateByUrl('/diagnostic')
+      );
     }
-
+    
     if (this.actualTreeComponent.getValue().type == "area") {
-      await this.startLoading();
-      this.router.navigateByUrl('/diagnostic');
+      this.startLoading().then(
+        () => this.router.navigateByUrl('/diagnostic')
+      );
     }
   }
 
