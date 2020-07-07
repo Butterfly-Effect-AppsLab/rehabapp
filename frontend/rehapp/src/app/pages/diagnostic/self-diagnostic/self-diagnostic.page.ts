@@ -30,7 +30,7 @@ export class SelfDiagnosticPage implements OnInit {
 
   async ionViewDidEnter() {
     await this.ngOnInit();
-    this.stateService.stopLoading();
+    this.stateService.stopLoading();    
   }
 
   ngOnDestroy() {

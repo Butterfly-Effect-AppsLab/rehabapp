@@ -94,6 +94,7 @@ export class BodyPartSelectionPage implements OnInit {
   }
 
   async ionViewDidEnter() {
+    this.stateService.stopLoading();
     this.stateService.startLoading().then(
       () => {
         if (this.stateService.resetValues)
